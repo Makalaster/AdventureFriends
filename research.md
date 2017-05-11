@@ -37,3 +37,48 @@ Hurdles
 What prevents you from playing more often?
 Groups
 How many people are in a typical play group?
+
+#### Research Highlights
+##### Observations
+
+Only one person played more than once a month.
+
+##### Insights
+People like to be imaginative and creative. They like problem solving in real time and hanging out with friends.
+The main issue with being able to play is getting people together and keeping a consistent schedule.
+Everyone needs dice, character sheets, pencils, reference materials.
+Groups are usually around 4-5 people.
+
+##### Design Recommendations
+Keep things organized.
+Include some sort of scheduling functionality.
+Allow for creativity and problem solving.
+
+##### New topics or open questions to research further
+Potential asynchronous play?
+Voice/video chat?
+
+#### User Personas
+##### Sketch, bio, demographics
+Late 20s
+Live in cities
+Busy lives
+Played more games in the past
+Enjoy hanging out with friends
+
+##### Behaviors and Habits
+
+
+##### Stories, Scenarios, and Frustrations
+
+
+##### Needs/Problems/Goals
+
+
+#### Problem Statement
+
+
+#### Competetive Analysis
+
+
+#### User Stories
