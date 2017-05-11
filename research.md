@@ -67,16 +67,29 @@ Played more games in the past
 Enjoy hanging out with friends
 
 ##### Behaviors and Habits
-
+Review previous game sessions.
 
 ##### Stories, Scenarios, and Frustrations
-
+Most current digital aides or alternatives for ttrpgs are as much of a hindrance as they are a help.
 
 ##### Needs/Problems/Goals
-
+Stay organized.
+Enable planning.
+Allow for more frequent play.
+Reduce amount of "stuff" needed to play.
 
 #### Problem Statement
+##### How might we?
+How might I enable users to play more often?
+How might I facilitate planning or lowering barriers to play?
+How might I enable more organization?
+How might I allow game setup to take less time and preparation?
 
+##### Problem Statement
+My user base needs a way to play more regularly, because it is difficult as an adult to get a group of people together on a regular basis with so much necessary planning involved.
+
+##### Hypothesis
+I believe that by creating an app that allows for simultaneous remote play in addition to enhancing local play, for adult ttrpg players I will achieve a smoother, more regular experience. I will know this to be true when I can test the game with friends and we can play several sessions.
 
 #### Competetive Analysis
 
