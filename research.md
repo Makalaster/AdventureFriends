@@ -21,7 +21,7 @@ What are hurdles to getting a game going?
 What prevents people from playing more often?
 Is being in physical space together necessary?
 
-7. Methodology - I will send out a google forms survey that people can answer when they are ready.
+7. Methodology - I will send out a google forms survey that people can answer when they are ready. https://goo.gl/forms/jeOFgHFZNTitWIpt1
 
 8. Participants - People with whom I have played board games or people I know regularly play board games. They may have expressed issues with getting games going and want to play more, but for various reasons have not been able to.
 
