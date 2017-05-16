@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -15,6 +17,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.firebase.ui.auth.AuthUI;
@@ -25,12 +28,14 @@ import com.makalaster.adventurefriends.LoginActivity;
 import com.makalaster.adventurefriends.R;
 
 public class LobbyActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener,
+                    CampaignListFragment.OnCampaignSelectedListener {
     private static final String TAG = "LobbyActivity";
     public static final String USER_NAME = "name";
     public static final String USER_EMAIL = "email";
 
     private FirebaseAuth mAuth;
+    private FragmentManager mFragmentManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,15 +45,6 @@ public class LobbyActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         mAuth = FirebaseAuth.getInstance();
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -64,6 +60,15 @@ public class LobbyActivity extends AppCompatActivity
         TextView drawerUser = (TextView) hView.findViewById(R.id.user_name);
         drawerUser.setText(extras.getString(USER_NAME));
         navigationView.setNavigationItemSelectedListener(this);
+
+        mFragmentManager = getSupportFragmentManager();
+        loadCampaignFragment();
+    }
+
+    private void loadCampaignFragment() {
+        FragmentTransaction transaction = mFragmentManager.beginTransaction();
+        CampaignListFragment campaignListFragment = CampaignListFragment.newInstance();
+        transaction.add(R.id.lobby_fragment_container, campaignListFragment).commit();
     }
 
     @Override
@@ -131,5 +136,10 @@ public class LobbyActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onCampaignSelected(String campaignId) {
+
     }
 }

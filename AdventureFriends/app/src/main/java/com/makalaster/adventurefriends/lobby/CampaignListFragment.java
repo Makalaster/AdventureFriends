@@ -3,32 +3,33 @@ package com.makalaster.adventurefriends.lobby;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.makalaster.adventurefriends.R;
+import com.makalaster.adventurefriends.lobby.campaignRecyclerView.CampaignListRecyclerViewAdapter;
+import com.makalaster.adventurefriends.model.campaign.Campaign;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link CampaignListFragment.OnFragmentInteractionListener} interface
+ * {@link OnCampaignSelectedListener} interface
  * to handle interaction events.
  * Use the {@link CampaignListFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
 public class CampaignListFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    private OnFragmentInteractionListener mListener;
+    private OnCampaignSelectedListener mListener;
 
     public CampaignListFragment() {
         // Required empty public constructor
@@ -38,27 +39,15 @@ public class CampaignListFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
      * @return A new instance of fragment CampaignListFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static CampaignListFragment newInstance(String param1, String param2) {
+    public static CampaignListFragment newInstance() {
         CampaignListFragment fragment = new CampaignListFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+
         fragment.setArguments(args);
         return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
@@ -68,21 +57,44 @@ public class CampaignListFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_campaign_list, container, false);
     }
 
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        List<Campaign> campaigns = new ArrayList<>();
+        campaigns.add(new Campaign("Campaign 1", "Drax"));
+        campaigns.add(new Campaign("Campaign 2", "Groot"));
+        campaigns.add(new Campaign("Campaign 3", "Mantis"));
+
+        RecyclerView campaignRecycler = (RecyclerView) view.findViewById(R.id.campaign_list_recycler_view);
+        campaignRecycler.setLayoutManager(new LinearLayoutManager(view.getContext(), LinearLayoutManager.VERTICAL, false));
+        campaignRecycler.setAdapter(new CampaignListRecyclerViewAdapter(campaigns));
+
+        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.new_campaign_fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
+    }
+
     // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
+    public void onButtonPressed(String str) {
         if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+            mListener.onCampaignSelected(str);
         }
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
+        if (context instanceof OnCampaignSelectedListener) {
+            mListener = (OnCampaignSelectedListener) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+                    + " must implement OnCampaignSelectedListener");
         }
     }
 
@@ -102,8 +114,7 @@ public class CampaignListFragment extends Fragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+    public interface OnCampaignSelectedListener {
+        void onCampaignSelected(String campaignId);
     }
 }
