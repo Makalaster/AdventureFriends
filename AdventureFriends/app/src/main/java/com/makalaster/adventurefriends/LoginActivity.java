@@ -1,19 +1,28 @@
 package com.makalaster.adventurefriends;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.firebase.ui.auth.AuthUI;
+import com.firebase.ui.auth.ErrorCodes;
+import com.firebase.ui.auth.IdpResponse;
+import com.firebase.ui.auth.ResultCodes;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.makalaster.adventurefriends.lobby.LobbyActivity;
+
+import java.util.Arrays;
 
 public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
+    private static final int AF_SIGN_IN = 1;
 
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
@@ -24,46 +33,55 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         mAuth = FirebaseAuth.getInstance();
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    Log.d(TAG, "onAuthStateChanged: " + user.getUid());
-                } else {
-                    Log.d(TAG, "onAuthStateChanged: user logged out");
+        if (mAuth.getCurrentUser() != null) {
+            startActivity(new Intent(this, LobbyActivity.class));
+        } else {
+            startActivityForResult(
+                    AuthUI.getInstance()
+                    .createSignInIntentBuilder()
+                    .setProviders(Arrays.asList(new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build(),
+                                                new AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build(),
+                                                new AuthUI.IdpConfig.Builder(AuthUI.FACEBOOK_PROVIDER).build(),
+                                                new AuthUI.IdpConfig.Builder(AuthUI.TWITTER_PROVIDER).build()))
+                    .setIsSmartLockEnabled(false)
+                    .build(),
+                    AF_SIGN_IN
+            );
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == AF_SIGN_IN) {
+            IdpResponse response = IdpResponse.fromResultIntent(data);
+
+            if (resultCode == ResultCodes.OK) {
+                Log.d(TAG, "onActivityResult: done!");
+            } else {
+                // Sign in failed
+                if (response == null) {
+                    // User pressed back button
+                    Log.d(TAG, "onActivityResult: back pressed");
+                } else if (response.getErrorCode() == ErrorCodes.NO_NETWORK) {
+                    Log.d(TAG, "onActivityResult: no network");
+                } else if (response.getErrorCode() == ErrorCodes.UNKNOWN_ERROR) {
+                    Log.d(TAG, "onActivityResult: unknown error");
                 }
             }
-        };
+        }
     }
 
     @Override
     protected void onStart() {
         super.onStart();
 
-        mAuth.addAuthStateListener(mAuthListener);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
 
-        if (mAuthListener != null) {
-            mAuth.removeAuthStateListener(mAuthListener);
-        }
-    }
-
-    public void createAccount(String email, String password) {
-        mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        Log.d(TAG, "onComplete: " + task.isSuccessful());
-
-                        if (!task.isSuccessful()) {
-                            Toast.makeText(LoginActivity.this, "Sign in failed", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
     }
 }
