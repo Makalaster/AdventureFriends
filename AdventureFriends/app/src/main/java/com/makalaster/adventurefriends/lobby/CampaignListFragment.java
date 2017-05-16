@@ -1,11 +1,9 @@
 package com.makalaster.adventurefriends.lobby;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
 
 import com.makalaster.adventurefriends.R;
 import com.makalaster.adventurefriends.lobby.campaignRecyclerView.CampaignListRecyclerViewAdapter;
@@ -96,7 +93,7 @@ public class CampaignListFragment extends Fragment implements View.OnClickListen
         mCreateNewCampaignRadioButton = (RadioButton) chooserView.findViewById(R.id.create_campaign_radio_button);
         mCreateNewCampaignRadioButton.setOnClickListener(this);
 
-        builder.setTitle("Create or join?")
+        builder.setTitle("Join or create?")
                 .setNegativeButton("Cancel", null)
                 .setPositiveButton("GO", null);
 
@@ -174,7 +171,7 @@ public class CampaignListFragment extends Fragment implements View.OnClickListen
      */
     public interface OnCampaignSelectedListener {
         void onCampaignSelected(String campaignId);
-        Campaign onNewCampaign();
+        void onNewCampaign();
         void onJoinCampaign(String campaignId);
     }
 }

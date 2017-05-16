@@ -3,12 +3,9 @@ package com.makalaster.adventurefriends.lobby;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -18,7 +15,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,11 +24,12 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.makalaster.adventurefriends.LoginActivity;
 import com.makalaster.adventurefriends.R;
-import com.makalaster.adventurefriends.model.campaign.Campaign;
+import com.makalaster.adventurefriends.dm.DMActivity;
 
 public class LobbyActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
-                    CampaignListFragment.OnCampaignSelectedListener {
+                    CampaignListFragment.OnCampaignSelectedListener,
+                    NewCampaignFragment.OnCreateNewCampaignListener {
     private static final String TAG = "LobbyActivity";
     public static final String USER_NAME = "name";
     public static final String USER_EMAIL = "email";
@@ -151,13 +148,30 @@ public class LobbyActivity extends AppCompatActivity
     }
 
     @Override
-    public Campaign onNewCampaign() {
-        Toast.makeText(this, "Creating new campaign", Toast.LENGTH_SHORT).show();
-        return null;
+    public void onNewCampaign() {
+        Fragment newCampaignFragment = NewCampaignFragment.newInstance();
+        mFragmentManager.beginTransaction()
+                .addToBackStack(null)
+                .replace(R.id.lobby_fragment_container, newCampaignFragment)
+                .commit();
     }
 
     @Override
     public void onJoinCampaign(String campaignId) {
         Toast.makeText(this, "Joining campaign " + campaignId, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onCreateNewCampaign(String title, String description, String baseGame) {
+        if (!baseGame.equals("Dungeons & Dragons")) {
+            Toast.makeText(this, "Please choose Dungeons & Dragons. Nothing else is available yet.", Toast.LENGTH_SHORT).show();
+        } else {
+            Intent dmIntent = new Intent(this, DMActivity.class);
+            dmIntent.putExtra("title", title);
+            dmIntent.putExtra("description", description);
+            dmIntent.putExtra("base_game", baseGame);
+            startActivity(dmIntent);
+            finish();
+        }
     }
 }
