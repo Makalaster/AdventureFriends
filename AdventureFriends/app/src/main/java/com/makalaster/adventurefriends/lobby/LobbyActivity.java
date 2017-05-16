@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
@@ -140,6 +141,10 @@ public class LobbyActivity extends AppCompatActivity
 
     @Override
     public void onCampaignSelected(String campaignId) {
-
+        Fragment campaignDetailFragment = CampaignDetailFragment.newInstance(campaignId);
+        mFragmentManager.beginTransaction()
+                .addToBackStack(null)
+                .replace(R.id.lobby_fragment_container, campaignDetailFragment)
+                .commit();
     }
 }

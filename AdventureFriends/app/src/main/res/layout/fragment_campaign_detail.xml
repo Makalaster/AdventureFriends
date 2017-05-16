@@ -1,9 +1,34 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             tools:context="com.makalaster.adventurefriends.lobby.CampaignDetailFragment">
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="8dp"
+    tools:context="com.makalaster.adventurefriends.lobby.CampaignDetailFragment">
+
+    <TextView
+        android:id="@+id/campaign_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:id="@+id/play_existing_campaign_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="play"/>
+
+    <Button
+        android:id="@+id/view_campaign_logs_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="view logs"/>
+
+    <Button
+        android:id="@+id/schedule_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="schedule"/>
 
 
-
-</FrameLayout>
+</LinearLayout>
