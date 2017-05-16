@@ -80,6 +80,7 @@ public class LoginActivity extends AppCompatActivity {
         lobbyIntent.putExtra(LobbyActivity.USER_EMAIL, mAuth.getCurrentUser().getEmail());
         lobbyIntent.putExtra(LobbyActivity.USER_NAME, mAuth.getCurrentUser().getDisplayName());
         startActivity(lobbyIntent);
+        finish();
     }
 
     @Override
