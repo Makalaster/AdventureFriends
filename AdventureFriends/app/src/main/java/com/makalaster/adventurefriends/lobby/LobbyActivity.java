@@ -27,6 +27,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.makalaster.adventurefriends.LoginActivity;
 import com.makalaster.adventurefriends.R;
+import com.makalaster.adventurefriends.model.campaign.Campaign;
 
 public class LobbyActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
@@ -146,5 +147,15 @@ public class LobbyActivity extends AppCompatActivity
                 .addToBackStack(null)
                 .replace(R.id.lobby_fragment_container, campaignDetailFragment)
                 .commit();
+    }
+
+    @Override
+    public Campaign onNewCampaign() {
+        return null;
+    }
+
+    @Override
+    public void onJoinCampaign(String campaignId) {
+
     }
 }

@@ -7,11 +7,15 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 import com.makalaster.adventurefriends.R;
 import com.makalaster.adventurefriends.lobby.campaignRecyclerView.CampaignListRecyclerViewAdapter;
@@ -28,8 +32,10 @@ import java.util.List;
  * Use the {@link CampaignListFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CampaignListFragment extends Fragment {
+public class CampaignListFragment extends Fragment implements View.OnClickListener{
     private OnCampaignSelectedListener mListener;
+    private EditText mCampaignIdEditText;
+    private RadioButton mJoinExistingCampaignRadioButton, mCreateNewCampaignRadioButton;
 
     public CampaignListFragment() {
         // Required empty public constructor
@@ -74,16 +80,33 @@ public class CampaignListFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                onButtonPressed();
             }
         });
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(String str) {
+    public void onButtonPressed() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        View chooserView = LayoutInflater.from(getContext()).inflate(R.layout.layout_create_or_join_dialog, null);
+        builder.setView(chooserView);
+
+        mCampaignIdEditText = (EditText) chooserView.findViewById(R.id.existing_campaign_edit_text);
+        mCampaignIdEditText.setOnClickListener(this);
+        mJoinExistingCampaignRadioButton = (RadioButton) chooserView.findViewById(R.id.join_campaign_radio_button);
+        mJoinExistingCampaignRadioButton.setChecked(true);
+        mJoinExistingCampaignRadioButton.setOnClickListener(this);
+        mCreateNewCampaignRadioButton = (RadioButton) chooserView.findViewById(R.id.create_campaign_radio_button);
+        mCreateNewCampaignRadioButton.setOnClickListener(this);
+
+        builder.setTitle("Create or join?")
+                .setNegativeButton("Cancel", null)
+                .setPositiveButton("GO", null);
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
         if (mListener != null) {
-            mListener.onCampaignSelected(str);
+            mListener.onNewCampaign();
         }
     }
 
@@ -104,6 +127,30 @@ public class CampaignListFragment extends Fragment {
         mListener = null;
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.join_campaign_radio_button:
+                if (mCreateNewCampaignRadioButton.isChecked()) {
+                    mCreateNewCampaignRadioButton.setChecked(false);
+                    mCampaignIdEditText.setEnabled(true);
+                }
+                break;
+            case R.id.create_campaign_radio_button:
+                if (mJoinExistingCampaignRadioButton.isChecked()) {
+                    mJoinExistingCampaignRadioButton.setChecked(false);
+                    mCampaignIdEditText.setEnabled(false);
+                }
+                break;
+            case R.id.existing_campaign_edit_text:
+                if (mCreateNewCampaignRadioButton.isChecked()) {
+                    mCreateNewCampaignRadioButton.setChecked(false);
+                    mJoinExistingCampaignRadioButton.setChecked(true);
+                }
+                break;
+        }
+    }
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -116,5 +163,7 @@ public class CampaignListFragment extends Fragment {
      */
     public interface OnCampaignSelectedListener {
         void onCampaignSelected(String campaignId);
+        Campaign onNewCampaign();
+        void onJoinCampaign(String campaignId);
     }
 }
