@@ -47,7 +47,6 @@ public class CampaignListFragment extends Fragment implements View.OnClickListen
      *
      * @return A new instance of fragment CampaignListFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static CampaignListFragment newInstance() {
         CampaignListFragment fragment = new CampaignListFragment();
         Bundle args = new Bundle();
@@ -91,7 +90,6 @@ public class CampaignListFragment extends Fragment implements View.OnClickListen
         builder.setView(chooserView);
 
         mCampaignIdEditText = (EditText) chooserView.findViewById(R.id.existing_campaign_edit_text);
-        mCampaignIdEditText.setOnClickListener(this);
         mJoinExistingCampaignRadioButton = (RadioButton) chooserView.findViewById(R.id.join_campaign_radio_button);
         mJoinExistingCampaignRadioButton.setChecked(true);
         mJoinExistingCampaignRadioButton.setOnClickListener(this);
@@ -102,12 +100,31 @@ public class CampaignListFragment extends Fragment implements View.OnClickListen
                 .setNegativeButton("Cancel", null)
                 .setPositiveButton("GO", null);
 
-        AlertDialog dialog = builder.create();
+        final AlertDialog dialog = builder.create();
         dialog.show();
 
-        if (mListener != null) {
-            mListener.onNewCampaign();
-        }
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mJoinExistingCampaignRadioButton.isChecked()) {
+                    String campaignId = mCampaignIdEditText.getText().toString().trim();
+                    if (campaignId.isEmpty()) {
+                        mCampaignIdEditText.setError("Please enter a valid campaign ID");
+                        mCampaignIdEditText.requestFocus();
+                    } else {
+                        if (mListener != null) {
+                            mListener.onJoinCampaign(campaignId);
+                            dialog.dismiss();
+                        }
+                    }
+                } else {
+                    if (mListener != null) {
+                        mListener.onNewCampaign();
+                        dialog.dismiss();
+                    }
+                }
+            }
+        });
     }
 
     @Override
@@ -140,12 +157,6 @@ public class CampaignListFragment extends Fragment implements View.OnClickListen
                 if (mJoinExistingCampaignRadioButton.isChecked()) {
                     mJoinExistingCampaignRadioButton.setChecked(false);
                     mCampaignIdEditText.setEnabled(false);
-                }
-                break;
-            case R.id.existing_campaign_edit_text:
-                if (mCreateNewCampaignRadioButton.isChecked()) {
-                    mCreateNewCampaignRadioButton.setChecked(false);
-                    mJoinExistingCampaignRadioButton.setChecked(true);
                 }
                 break;
         }

@@ -20,6 +20,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -151,11 +152,12 @@ public class LobbyActivity extends AppCompatActivity
 
     @Override
     public Campaign onNewCampaign() {
+        Toast.makeText(this, "Creating new campaign", Toast.LENGTH_SHORT).show();
         return null;
     }
 
     @Override
     public void onJoinCampaign(String campaignId) {
-
+        Toast.makeText(this, "Joining campaign " + campaignId, Toast.LENGTH_SHORT).show();
     }
 }
