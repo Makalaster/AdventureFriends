@@ -13,13 +13,13 @@ import com.makalaster.adventurefriends.R;
 
 public class CampaignViewHolder extends RecyclerView.ViewHolder {
     public TextView mCampaignName, mCharacterName;
-    public ImageView mNextArrow;
+    public View mCampaignListItem;
 
     public CampaignViewHolder(View itemView) {
         super(itemView);
 
         mCampaignName = (TextView) itemView.findViewById(R.id.campaign_name);
         mCharacterName = (TextView) itemView.findViewById(R.id.character_name);
-        mNextArrow = (ImageView) itemView.findViewById(R.id.next_arrow);
+        mCampaignListItem = itemView.findViewById(R.id.campaign_list_item);
     }
 }

@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.makalaster.adventurefriends.R;
+import com.makalaster.adventurefriends.lobby.CampaignListFragment;
 import com.makalaster.adventurefriends.model.campaign.Campaign;
 
 import java.util.List;
@@ -16,9 +17,11 @@ import java.util.List;
 
 public class CampaignListRecyclerViewAdapter extends RecyclerView.Adapter<CampaignViewHolder> {
     private List<Campaign> mCampaigns;
+    private CampaignListFragment.OnCampaignSelectedListener mOnCampaignSelectedListener;
 
-    public CampaignListRecyclerViewAdapter(List<Campaign> campaigns) {
+    public CampaignListRecyclerViewAdapter(List<Campaign> campaigns, CampaignListFragment.OnCampaignSelectedListener listener) {
         mCampaigns = campaigns;
+        mOnCampaignSelectedListener = listener;
     }
 
     @Override
@@ -30,8 +33,16 @@ public class CampaignListRecyclerViewAdapter extends RecyclerView.Adapter<Campai
 
     @Override
     public void onBindViewHolder(CampaignViewHolder holder, int position) {
-        holder.mCampaignName.setText(mCampaigns.get(position).getCampaignName());
-        holder.mCharacterName.setText(mCampaigns.get(position).getPlayerName());
+        final Campaign currentCampaign = mCampaigns.get(position);
+
+        holder.mCampaignName.setText(currentCampaign.getCampaignName());
+        holder.mCharacterName.setText(currentCampaign.getPlayerName());
+        holder.mCampaignListItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mOnCampaignSelectedListener.onCampaignSelected(currentCampaign.getCampaignId());
+            }
+        });
     }
 
     @Override

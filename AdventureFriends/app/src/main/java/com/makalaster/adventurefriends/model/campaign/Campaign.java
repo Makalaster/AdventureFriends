@@ -5,11 +5,16 @@ package com.makalaster.adventurefriends.model.campaign;
  */
 
 public class Campaign {
-    private String mCampaignName, mPlayerName;
+    private String mCampaignId, mCampaignName, mPlayerName;
 
-    public Campaign(String campaignName, String playerName) {
+    public Campaign(String campaignId, String campaignName, String playerName) {
+        mCampaignId = campaignId;
         mCampaignName = campaignName;
         mPlayerName = playerName;
+    }
+
+    public String getCampaignId() {
+        return mCampaignId;
     }
 
     public String getCampaignName() {
