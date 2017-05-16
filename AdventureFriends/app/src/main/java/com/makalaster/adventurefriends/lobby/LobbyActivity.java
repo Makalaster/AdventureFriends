@@ -3,6 +3,7 @@ package com.makalaster.adventurefriends.lobby;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -12,11 +13,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import com.makalaster.adventurefriends.R;
 
 public class LobbyActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    private static final String TAG = "LobbyActivity";
+    public static final String USER_NAME = "name";
+    public static final String USER_EMAIL = "email";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,9 +43,15 @@ public class LobbyActivity extends AppCompatActivity
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
+        Bundle extras = getIntent().getExtras();
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        View hView = navigationView.getHeaderView(0);
+        TextView drawerEmail = (TextView) hView.findViewById(R.id.user_email);
+        drawerEmail.setText(extras.getString(USER_EMAIL));
+        TextView drawerUser = (TextView) hView.findViewById(R.id.user_name);
+        drawerUser.setText(extras.getString(USER_NAME));
         navigationView.setNavigationItemSelectedListener(this);
     }
 

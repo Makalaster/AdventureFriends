@@ -25,7 +25,6 @@ public class LoginActivity extends AppCompatActivity {
     private static final int AF_SIGN_IN = 1;
 
     private FirebaseAuth mAuth;
-    private FirebaseAuth.AuthStateListener mAuthListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +33,7 @@ public class LoginActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         if (mAuth.getCurrentUser() != null) {
-            startActivity(new Intent(this, LobbyActivity.class));
+            goToLobby();
         } else {
             startActivityForResult(
                     AuthUI.getInstance()
@@ -58,7 +57,7 @@ public class LoginActivity extends AppCompatActivity {
             IdpResponse response = IdpResponse.fromResultIntent(data);
 
             if (resultCode == ResultCodes.OK) {
-                Log.d(TAG, "onActivityResult: done!");
+                goToLobby();
             } else {
                 // Sign in failed
                 if (response == null) {
@@ -71,6 +70,16 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         }
+    }
+
+    private void goToLobby() {
+        Intent lobbyIntent = new Intent(this, LobbyActivity.class);
+        FirebaseUser user = mAuth.getCurrentUser();
+        Log.d(TAG, "goToLobby: " + user.getEmail());
+        Log.d(TAG, "goToLobby: " + user.getDisplayName());
+        lobbyIntent.putExtra(LobbyActivity.USER_EMAIL, mAuth.getCurrentUser().getEmail());
+        lobbyIntent.putExtra(LobbyActivity.USER_NAME, mAuth.getCurrentUser().getDisplayName());
+        startActivity(lobbyIntent);
     }
 
     @Override
