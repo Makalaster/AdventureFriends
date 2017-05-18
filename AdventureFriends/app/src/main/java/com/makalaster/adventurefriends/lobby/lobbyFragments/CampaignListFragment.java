@@ -14,8 +14,12 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.RadioButton;
 
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.makalaster.adventurefriends.R;
 import com.makalaster.adventurefriends.lobby.campaignRecyclerView.CampaignListRecyclerViewAdapter;
+import com.makalaster.adventurefriends.lobby.campaignRecyclerView.CampaignViewHolder;
 import com.makalaster.adventurefriends.model.campaign.Campaign;
 
 import java.util.ArrayList;
@@ -60,17 +64,28 @@ public class CampaignListFragment extends Fragment implements View.OnClickListen
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        List<Campaign> campaigns = new ArrayList<>();
-        campaigns.add(new Campaign("campaign1", "Campaign 1", "Drax", "DMid1"));
-        campaigns.add(new Campaign("campaign2", "Campaign 2", "Groot", "DMid2"));
-        campaigns.add(new Campaign("campaign3", "Campaign 3", "Mantis", "DMid3"));
+        DatabaseReference campaignList = FirebaseDatabase.getInstance().getReference("campaigns");
 
         RecyclerView campaignRecycler = (RecyclerView) view.findViewById(R.id.campaign_list_recycler_view);
         campaignRecycler.setLayoutManager(new LinearLayoutManager(view.getContext(), LinearLayoutManager.VERTICAL, false));
-        campaignRecycler.setAdapter(new CampaignListRecyclerViewAdapter(campaigns, mListener));
+        campaignRecycler.setAdapter(new FirebaseRecyclerAdapter<Campaign, CampaignViewHolder>(
+                Campaign.class, R.layout.layout_campaign_list_item, CampaignViewHolder.class, campaignList) {
+                    @Override
+                    protected void populateViewHolder(CampaignViewHolder viewHolder, final Campaign model, int position) {
+                        viewHolder.mCampaignName.setText(model.getCampaignName());
+                        viewHolder.mCharacterName.setText(model.getCharacterName());
+                        viewHolder.mCampaignListItem.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                mListener.onCampaignSelected(model.getCampaignId());
+                            }
+                        });
+                    }
+                }
+        );
 
         FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.new_campaign_fab);
         fab.setOnClickListener(new View.OnClickListener() {

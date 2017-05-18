@@ -12,9 +12,13 @@ import java.util.List;
  */
 
 public class Campaign {
-    private String mCampaignId, mCampaignName, mBaseGame, mDmId;
+    private String mCampaignId, mCampaignName, mBaseGame, mDmId, mCharacterName;
     private List<Player> mPlayers;
     private List<Module> mModules;
+
+    public Campaign() {
+        //Empty constructor required by FirebaseRecyclerAdapter
+    }
 
     public Campaign(String campaignId, String campaignName, String baseGame, String dmId) {
         mCampaignId = campaignId;
@@ -23,10 +27,15 @@ public class Campaign {
         mPlayers = new ArrayList<>();
         mModules = new LinkedList<>();
         mDmId = dmId;
+        mCharacterName = "DM";
     }
 
     public String getCampaignId() {
         return mCampaignId;
+    }
+
+    public void setCampaignId(String campaignId) {
+        mCampaignId = campaignId;
     }
 
     public String getCampaignName() {
@@ -55,5 +64,13 @@ public class Campaign {
 
     public String getDmId() {
         return mDmId;
+    }
+
+    public String getCharacterName() {
+        return mCharacterName;
+    }
+
+    public void setCharacterName(String characterName) {
+        mCharacterName = characterName;
     }
 }
