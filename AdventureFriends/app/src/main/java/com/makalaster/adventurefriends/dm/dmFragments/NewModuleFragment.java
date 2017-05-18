@@ -8,6 +8,11 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.makalaster.adventurefriends.R;
 
@@ -23,6 +28,9 @@ public class NewModuleFragment extends Fragment {
     private static final String TAG = "NewModuleFragment";
 
     private OnNewCampaignCreatedListener mListener;
+    private EditText mNewModuleTitle, mNewModuleSummary;
+    private Spinner mModuleTypeSpinner;
+    private Button mCreateModuleButton;
 
     public NewModuleFragment() {
         // Required empty public constructor
@@ -52,6 +60,32 @@ public class NewModuleFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        mNewModuleTitle = (EditText) view.findViewById(R.id.new_module_title);
+        mNewModuleSummary = (EditText) view.findViewById(R.id.new_module_summary);
+        mModuleTypeSpinner = (Spinner) view.findViewById(R.id.new_module_type_spinner);
+        mCreateModuleButton = (Button) view.findViewById(R.id.create_new_module_button);
+
+        mCreateModuleButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                createModule();
+            }
+        });
+    }
+
+    private void createModule() {
+        String title = mNewModuleTitle.getText().toString().trim();
+        String summary = mNewModuleSummary.getText().toString().trim();
+
+        if (title.isEmpty()) {
+            mNewModuleTitle.setError("Please enter a title");
+            mNewModuleTitle.requestFocus();
+        } else if (mModuleTypeSpinner.getSelectedItemPosition() == 0) {
+            Toast.makeText(getContext(), "Please select a module type", Toast.LENGTH_SHORT).show();
+        } else {
+            mListener.onNewModuleCreated(title, summary, mModuleTypeSpinner.getSelectedItemPosition());
+        }
     }
 
     @Override

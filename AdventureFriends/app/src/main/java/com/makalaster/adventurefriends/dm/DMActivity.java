@@ -19,11 +19,14 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.makalaster.adventurefriends.R;
 import com.makalaster.adventurefriends.dm.dmFragments.ModuleListFragment;
 import com.makalaster.adventurefriends.dm.dmFragments.NewModuleFragment;
 import com.makalaster.adventurefriends.lobby.LobbyActivity;
 import com.makalaster.adventurefriends.model.campaign.Campaign;
+import com.makalaster.adventurefriends.model.campaign.Module;
 
 public class DMActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
@@ -32,6 +35,7 @@ public class DMActivity extends AppCompatActivity
 
     private FirebaseAuth mAuth;
     private FragmentManager mFragmentManager;
+    private String mCampaignId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,8 +55,8 @@ public class DMActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        String campaignId = getIntent().getStringExtra(ModuleListFragment.ARG_CAMPAIGN_ID);
-        loadModuleList(campaignId);
+        mCampaignId = getIntent().getStringExtra(ModuleListFragment.ARG_CAMPAIGN_ID);
+        loadModuleList(mCampaignId);
     }
 
     private void loadModuleList(String id) {
@@ -142,6 +146,11 @@ public class DMActivity extends AppCompatActivity
 
     @Override
     public void onNewModuleCreated(String title, String summary, int type) {
+        DatabaseReference currentCampaignReference = FirebaseDatabase.getInstance().getReference("campaigns/" + mCampaignId);
+        DatabaseReference newModule = currentCampaignReference.child("modules").push();
+        String id = newModule.getKey();
+        newModule.setValue(new Module(id, title, summary, type));
 
+        loadModuleList(mCampaignId);
     }
 }

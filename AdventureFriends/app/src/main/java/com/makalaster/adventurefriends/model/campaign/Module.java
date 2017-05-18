@@ -11,7 +11,7 @@ import java.util.List;
  */
 
 public class Module {
-    public static final int MODULE_BATTLE = 0, MODULE_STORY = 1, MODULE_NON_BATTLE = 2;
+    public static final int MODULE_BATTLE = 1, MODULE_STORY = 2, MODULE_NON_BATTLE = 3;
     private int mType;
     private String mId, mTitle, mSummary;
     private List<Note> mNotes;
@@ -25,6 +25,7 @@ public class Module {
         mId = id;
         mTitle = title;
         mSummary = summary;
+        mType = type;
 
         mNotes = new ArrayList<>();
         mNPCs = new ArrayList<>();
