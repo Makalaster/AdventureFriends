@@ -28,6 +28,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.makalaster.adventurefriends.LoginActivity;
 import com.makalaster.adventurefriends.R;
 import com.makalaster.adventurefriends.dm.DMActivity;
+import com.makalaster.adventurefriends.dm.dmFragments.ModuleListFragment;
 import com.makalaster.adventurefriends.lobby.lobbyFragments.CampaignDetailFragment;
 import com.makalaster.adventurefriends.lobby.lobbyFragments.CampaignListFragment;
 import com.makalaster.adventurefriends.lobby.lobbyFragments.NewCampaignFragment;
@@ -189,13 +190,10 @@ public class LobbyActivity extends AppCompatActivity
             DatabaseReference campaignReference = FirebaseDatabase.getInstance().getReference("campaigns");
             DatabaseReference newCampaign = campaignReference.push();
             String id = newCampaign.getKey();
-            newCampaign.setValue(new Campaign(id, title, baseGame, dmId));
+            newCampaign.setValue(new Campaign(id, title, baseGame, dmId, description));
 
             Intent dmIntent = new Intent(this, DMActivity.class);
-            dmIntent.putExtra("id", id);
-            dmIntent.putExtra("title", title);
-            dmIntent.putExtra("description", description);
-            dmIntent.putExtra("base_game", baseGame);
+            dmIntent.putExtra(ModuleListFragment.ARG_CAMPAIGN_ID, id);
             startActivity(dmIntent);
             finish();
         }

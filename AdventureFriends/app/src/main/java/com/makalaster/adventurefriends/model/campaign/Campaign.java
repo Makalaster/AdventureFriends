@@ -1,6 +1,5 @@
 package com.makalaster.adventurefriends.model.campaign;
 
-import com.makalaster.adventurefriends.model.User;
 import com.makalaster.adventurefriends.model.player.Player;
 
 import java.util.ArrayList;
@@ -12,7 +11,7 @@ import java.util.List;
  */
 
 public class Campaign {
-    private String mCampaignId, mCampaignName, mBaseGame, mDmId, mCharacterName;
+    private String mCampaignId, mCampaignName, mBaseGame, mDmId, mCharacterName, mDescription;
     private List<Player> mPlayers;
     private List<Module> mModules;
 
@@ -20,7 +19,7 @@ public class Campaign {
         //Empty constructor required by FirebaseRecyclerAdapter
     }
 
-    public Campaign(String campaignId, String campaignName, String baseGame, String dmId) {
+    public Campaign(String campaignId, String campaignName, String baseGame, String dmId, String description) {
         mCampaignId = campaignId;
         mCampaignName = campaignName;
         mBaseGame = baseGame;
@@ -28,6 +27,7 @@ public class Campaign {
         mModules = new LinkedList<>();
         mDmId = dmId;
         mCharacterName = "DM";
+        mDescription = description;
     }
 
     public String getCampaignId() {
@@ -58,6 +58,22 @@ public class Campaign {
         return mPlayers;
     }
 
+    public void setDmId(String dmId) {
+        mDmId = dmId;
+    }
+
+    public void setPlayers(List<Player> players) {
+        mPlayers = players;
+    }
+
+    public void setModules(List<Module> modules) {
+        mModules = modules;
+    }
+
+    public void addModule(Module module) {
+        mModules.add(module);
+    }
+
     public List<Module> getModules() {
         return mModules;
     }
@@ -72,5 +88,13 @@ public class Campaign {
 
     public void setCharacterName(String characterName) {
         mCharacterName = characterName;
+    }
+
+    public String getDescription() {
+        return mDescription;
+    }
+
+    public void setDescription(String description) {
+        mDescription = description;
     }
 }

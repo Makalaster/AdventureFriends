@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -17,12 +19,16 @@ import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.makalaster.adventurefriends.R;
+import com.makalaster.adventurefriends.dm.dmFragments.ModuleListFragment;
 import com.makalaster.adventurefriends.lobby.LobbyActivity;
+import com.makalaster.adventurefriends.model.campaign.Campaign;
 
 public class DMActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener,
+                    ModuleListFragment.OnModuleInteractionListener {
 
     private FirebaseAuth mAuth;
+    private FragmentManager mFragmentManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,14 +37,7 @@ public class DMActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        mFragmentManager = getSupportFragmentManager();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -49,10 +48,14 @@ public class DMActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        Bundle campaignDetails = getIntent().getExtras();
-        ((TextView)findViewById(R.id.new_campaign_title)).setText(campaignDetails.getString("title"));
-        ((TextView)findViewById(R.id.new_campaign_description)).setText(campaignDetails.getString("description"));
-        ((TextView)findViewById(R.id.new_campaign_base_game)).setText(campaignDetails.getString("base_game"));
+        String campaignId = getIntent().getStringExtra(ModuleListFragment.ARG_CAMPAIGN_ID);
+        loadModuleList(campaignId);
+    }
+
+    private void loadModuleList(String id) {
+        FragmentTransaction transaction = mFragmentManager.beginTransaction();
+        ModuleListFragment moduleListFragment = ModuleListFragment.newInstance(id);
+        transaction.add(R.id.dm_fragment_container, moduleListFragment).commit();
     }
 
     @Override
@@ -116,5 +119,15 @@ public class DMActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onAddNewModule() {
+
+    }
+
+    @Override
+    public void onSelectModule() {
+
     }
 }
