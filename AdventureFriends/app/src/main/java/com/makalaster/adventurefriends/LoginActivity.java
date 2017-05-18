@@ -16,8 +16,10 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.makalaster.adventurefriends.lobby.LobbyActivity;
+import com.makalaster.adventurefriends.model.User;
 
 import java.util.Arrays;
 
@@ -75,7 +77,14 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void checkForUserInDatabaseAndAddIfNotPresent() {
+        DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
 
+        if (currentUser != null) {
+            if (database.child("users").child(currentUser.getUid()) == null) {
+                database.child("users").child(currentUser.getUid()).setValue(new User(currentUser.getUid()));
+            }
+        }
     }
 
     private void goToLobby() {
