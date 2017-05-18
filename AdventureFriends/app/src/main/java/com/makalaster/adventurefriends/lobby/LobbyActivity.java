@@ -38,7 +38,8 @@ import com.makalaster.adventurefriends.model.campaign.Campaign;
 public class LobbyActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
                     CampaignListFragment.OnCampaignSelectedListener,
-                    NewCampaignFragment.OnCreateNewCampaignListener {
+                    NewCampaignFragment.OnCreateNewCampaignListener,
+                    CampaignDetailFragment.OnButtonPressedListener {
     private static final String TAG = "LobbyActivity";
     public static final String USER_NAME = "name";
     public static final String USER_EMAIL = "email";
@@ -196,6 +197,18 @@ public class LobbyActivity extends AppCompatActivity
             dmIntent.putExtra(ModuleListFragment.ARG_CAMPAIGN_ID, id);
             startActivity(dmIntent);
             finish();
+        }
+    }
+
+    @Override
+    public void onPlayPressed(String dmId, String campaignId) {
+        if (mAuth.getCurrentUser() != null) {
+            if (mAuth.getCurrentUser().getUid().equals(dmId)) {
+                Intent dmIntent = new Intent(this, DMActivity.class);
+                dmIntent.putExtra(ModuleListFragment.ARG_CAMPAIGN_ID, campaignId);
+                startActivity(dmIntent);
+                finish();
+            }
         }
     }
 }

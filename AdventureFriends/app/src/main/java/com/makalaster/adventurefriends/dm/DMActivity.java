@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
@@ -20,12 +21,14 @@ import android.widget.TextView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.makalaster.adventurefriends.R;
 import com.makalaster.adventurefriends.dm.dmFragments.ModuleListFragment;
+import com.makalaster.adventurefriends.dm.dmFragments.NewModuleFragment;
 import com.makalaster.adventurefriends.lobby.LobbyActivity;
 import com.makalaster.adventurefriends.model.campaign.Campaign;
 
 public class DMActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
-                    ModuleListFragment.OnModuleInteractionListener {
+                    ModuleListFragment.OnModuleInteractionListener,
+                    NewModuleFragment.OnNewCampaignCreatedListener {
 
     private FirebaseAuth mAuth;
     private FragmentManager mFragmentManager;
@@ -53,9 +56,11 @@ public class DMActivity extends AppCompatActivity
     }
 
     private void loadModuleList(String id) {
-        FragmentTransaction transaction = mFragmentManager.beginTransaction();
         ModuleListFragment moduleListFragment = ModuleListFragment.newInstance(id);
-        transaction.add(R.id.dm_fragment_container, moduleListFragment).commit();
+        mFragmentManager.beginTransaction()
+                .addToBackStack(null)
+                .replace(R.id.dm_fragment_container, moduleListFragment)
+                .commit();
     }
 
     @Override
@@ -123,11 +128,20 @@ public class DMActivity extends AppCompatActivity
 
     @Override
     public void onAddNewModule() {
+        Fragment newModuleFragment = NewModuleFragment.newInstance();
+        mFragmentManager.beginTransaction()
+                .addToBackStack(null)
+                .replace(R.id.dm_fragment_container, newModuleFragment)
+                .commit();
+    }
+
+    @Override
+    public void onModuleSelected(String moduleId) {
 
     }
 
     @Override
-    public void onSelectModule() {
+    public void onNewModuleCreated(String title, String summary, int type) {
 
     }
 }

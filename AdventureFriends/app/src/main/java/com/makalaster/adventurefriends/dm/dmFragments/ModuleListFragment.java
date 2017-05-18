@@ -116,8 +116,15 @@ public class ModuleListFragment extends Fragment {
         moduleRecyclerView.setAdapter(new FirebaseRecyclerAdapter<Module, ModuleViewHolder>
                 (Module.class, R.layout.layout_module_list_item, ModuleViewHolder.class, modulesReference) {
             @Override
-            protected void populateViewHolder(ModuleViewHolder viewHolder, Module model, int position) {
-
+            protected void populateViewHolder(ModuleViewHolder viewHolder, final Module model, int position) {
+                viewHolder.mModuleName.setText(model.getTitle());
+                viewHolder.mModuleType.setText(model.getType());
+                viewHolder.mModuleListItem.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mListener.onModuleSelected(model.getId());
+                    }
+                });
             }
         });
 
@@ -125,17 +132,9 @@ public class ModuleListFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                mListener.onAddNewModule();
             }
         });
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onAddNewModule();
-        }
     }
 
     @Override
@@ -167,6 +166,6 @@ public class ModuleListFragment extends Fragment {
      */
     public interface OnModuleInteractionListener {
         void onAddNewModule();
-        void onSelectModule();
+        void onModuleSelected(String moduleId);
     }
 }
