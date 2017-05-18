@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.makalaster.adventurefriends.R;
-import com.makalaster.adventurefriends.lobby.CampaignListFragment;
+import com.makalaster.adventurefriends.lobby.lobbyFragments.CampaignListFragment;
 import com.makalaster.adventurefriends.model.campaign.Campaign;
 
 import java.util.List;
@@ -36,7 +36,7 @@ public class CampaignListRecyclerViewAdapter extends RecyclerView.Adapter<Campai
         final Campaign currentCampaign = mCampaigns.get(position);
 
         holder.mCampaignName.setText(currentCampaign.getCampaignName());
-        holder.mCharacterName.setText(currentCampaign.getPlayerName());
+        holder.mCharacterName.setText(currentCampaign.getBaseGame());
         holder.mCampaignListItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

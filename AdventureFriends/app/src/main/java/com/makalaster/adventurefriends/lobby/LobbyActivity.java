@@ -23,9 +23,15 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.makalaster.adventurefriends.LoginActivity;
 import com.makalaster.adventurefriends.R;
 import com.makalaster.adventurefriends.dm.DMActivity;
+import com.makalaster.adventurefriends.lobby.lobbyFragments.CampaignDetailFragment;
+import com.makalaster.adventurefriends.lobby.lobbyFragments.CampaignListFragment;
+import com.makalaster.adventurefriends.lobby.lobbyFragments.NewCampaignFragment;
+import com.makalaster.adventurefriends.model.campaign.Campaign;
 
 public class LobbyActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
@@ -173,7 +179,13 @@ public class LobbyActivity extends AppCompatActivity
         if (!baseGame.equals("Dungeons & Dragons")) {
             Toast.makeText(this, "Please choose Dungeons & Dragons. Nothing else is available yet.", Toast.LENGTH_SHORT).show();
         } else {
+            DatabaseReference campaignReference = FirebaseDatabase.getInstance().getReference("campaigns");
+            DatabaseReference newCampaign = campaignReference.push();
+            String id = newCampaign.getKey();
+            newCampaign.setValue(new Campaign(id, title, baseGame));
+
             Intent dmIntent = new Intent(this, DMActivity.class);
+            dmIntent.putExtra("id", id);
             dmIntent.putExtra("title", title);
             dmIntent.putExtra("description", description);
             dmIntent.putExtra("base_game", baseGame);

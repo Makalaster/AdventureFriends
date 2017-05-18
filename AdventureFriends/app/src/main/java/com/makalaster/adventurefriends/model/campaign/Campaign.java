@@ -1,16 +1,26 @@
 package com.makalaster.adventurefriends.model.campaign;
 
+import com.makalaster.adventurefriends.model.player.Player;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * Created by Makalaster on 5/16/17.
  */
 
 public class Campaign {
-    private String mCampaignId, mCampaignName, mPlayerName;
+    private String mCampaignId, mCampaignName, mBaseGame;
+    private List<Player> mPlayers;
+    private List<Module> mModules;
 
-    public Campaign(String campaignId, String campaignName, String playerName) {
+    public Campaign(String campaignId, String campaignName, String baseGame) {
         mCampaignId = campaignId;
         mCampaignName = campaignName;
-        mPlayerName = playerName;
+        mBaseGame = baseGame;
+        mPlayers = new ArrayList<>();
+        mModules = new LinkedList<>();
     }
 
     public String getCampaignId() {
@@ -25,11 +35,11 @@ public class Campaign {
         mCampaignName = campaignName;
     }
 
-    public String getPlayerName() {
-        return mPlayerName;
+    public String getBaseGame() {
+        return mBaseGame;
     }
 
-    public void setPlayerName(String playerName) {
-        mPlayerName = playerName;
+    public void setBaseGame(String baseGame) {
+        mBaseGame = baseGame;
     }
 }

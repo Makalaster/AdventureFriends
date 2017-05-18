@@ -1,4 +1,4 @@
-package com.makalaster.adventurefriends.lobby;
+package com.makalaster.adventurefriends.lobby.lobbyFragments;
 
 import android.content.Context;
 import android.os.Bundle;
