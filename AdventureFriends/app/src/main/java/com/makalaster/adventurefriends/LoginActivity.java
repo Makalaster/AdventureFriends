@@ -16,6 +16,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
 import com.makalaster.adventurefriends.lobby.LobbyActivity;
 
 import java.util.Arrays;
@@ -57,6 +58,7 @@ public class LoginActivity extends AppCompatActivity {
             IdpResponse response = IdpResponse.fromResultIntent(data);
 
             if (resultCode == ResultCodes.OK) {
+                checkForUserInDatabaseAndAddIfNotPresent();
                 goToLobby();
             } else {
                 // Sign in failed
@@ -72,26 +74,12 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+    private void checkForUserInDatabaseAndAddIfNotPresent() {
+
+    }
+
     private void goToLobby() {
-        Intent lobbyIntent = new Intent(this, LobbyActivity.class);
-        FirebaseUser user = mAuth.getCurrentUser();
-        Log.d(TAG, "goToLobby: " + user.getEmail());
-        Log.d(TAG, "goToLobby: " + user.getDisplayName());
-        lobbyIntent.putExtra(LobbyActivity.USER_EMAIL, mAuth.getCurrentUser().getEmail());
-        lobbyIntent.putExtra(LobbyActivity.USER_NAME, mAuth.getCurrentUser().getDisplayName());
-        startActivity(lobbyIntent);
+        startActivity(new Intent(this, LobbyActivity.class));
         finish();
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-
     }
 }
