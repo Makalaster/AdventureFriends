@@ -66,6 +66,10 @@ public class Campaign {
         mPlayers = players;
     }
 
+    public void addPlayer(Player player) {
+        mPlayers.add(player);
+    }
+
     public void setModules(List<Module> modules) {
         mModules = modules;
     }

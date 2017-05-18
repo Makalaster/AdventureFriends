@@ -117,7 +117,7 @@ public class ModuleListFragment extends Fragment {
                 (Module.class, R.layout.layout_module_list_item, ModuleViewHolder.class, modulesReference) {
             @Override
             protected void populateViewHolder(ModuleViewHolder viewHolder, Module model, int position) {
-                
+
             }
         });
 
