@@ -1,5 +1,6 @@
 package com.makalaster.adventurefriends.model.campaign;
 
+import com.makalaster.adventurefriends.model.User;
 import com.makalaster.adventurefriends.model.player.Player;
 
 import java.util.ArrayList;
@@ -11,16 +12,17 @@ import java.util.List;
  */
 
 public class Campaign {
-    private String mCampaignId, mCampaignName, mBaseGame;
+    private String mCampaignId, mCampaignName, mBaseGame, mDmId;
     private List<Player> mPlayers;
     private List<Module> mModules;
 
-    public Campaign(String campaignId, String campaignName, String baseGame) {
+    public Campaign(String campaignId, String campaignName, String baseGame, String dmId) {
         mCampaignId = campaignId;
         mCampaignName = campaignName;
         mBaseGame = baseGame;
         mPlayers = new ArrayList<>();
         mModules = new LinkedList<>();
+        mDmId = dmId;
     }
 
     public String getCampaignId() {
@@ -41,5 +43,17 @@ public class Campaign {
 
     public void setBaseGame(String baseGame) {
         mBaseGame = baseGame;
+    }
+
+    public List<Player> getPlayers() {
+        return mPlayers;
+    }
+
+    public List<Module> getModules() {
+        return mModules;
+    }
+
+    public String getDmId() {
+        return mDmId;
     }
 }

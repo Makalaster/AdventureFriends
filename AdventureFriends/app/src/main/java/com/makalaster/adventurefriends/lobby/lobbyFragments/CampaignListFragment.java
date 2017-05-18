@@ -64,9 +64,9 @@ public class CampaignListFragment extends Fragment implements View.OnClickListen
         super.onViewCreated(view, savedInstanceState);
 
         List<Campaign> campaigns = new ArrayList<>();
-        campaigns.add(new Campaign("campaign1", "Campaign 1", "Drax"));
-        campaigns.add(new Campaign("campaign2", "Campaign 2", "Groot"));
-        campaigns.add(new Campaign("campaign3", "Campaign 3", "Mantis"));
+        campaigns.add(new Campaign("campaign1", "Campaign 1", "Drax", "DMid1"));
+        campaigns.add(new Campaign("campaign2", "Campaign 2", "Groot", "DMid2"));
+        campaigns.add(new Campaign("campaign3", "Campaign 3", "Mantis", "DMid3"));
 
         RecyclerView campaignRecycler = (RecyclerView) view.findViewById(R.id.campaign_list_recycler_view);
         campaignRecycler.setLayoutManager(new LinearLayoutManager(view.getContext(), LinearLayoutManager.VERTICAL, false));

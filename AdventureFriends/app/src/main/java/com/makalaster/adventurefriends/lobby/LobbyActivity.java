@@ -31,6 +31,7 @@ import com.makalaster.adventurefriends.dm.DMActivity;
 import com.makalaster.adventurefriends.lobby.lobbyFragments.CampaignDetailFragment;
 import com.makalaster.adventurefriends.lobby.lobbyFragments.CampaignListFragment;
 import com.makalaster.adventurefriends.lobby.lobbyFragments.NewCampaignFragment;
+import com.makalaster.adventurefriends.model.User;
 import com.makalaster.adventurefriends.model.campaign.Campaign;
 
 public class LobbyActivity extends AppCompatActivity
@@ -179,10 +180,16 @@ public class LobbyActivity extends AppCompatActivity
         if (!baseGame.equals("Dungeons & Dragons")) {
             Toast.makeText(this, "Please choose Dungeons & Dragons. Nothing else is available yet.", Toast.LENGTH_SHORT).show();
         } else {
+            FirebaseUser user = mAuth.getCurrentUser();
+            String dmId = null;
+            if (user != null) {
+                dmId = user.getUid();
+            }
+
             DatabaseReference campaignReference = FirebaseDatabase.getInstance().getReference("campaigns");
             DatabaseReference newCampaign = campaignReference.push();
             String id = newCampaign.getKey();
-            newCampaign.setValue(new Campaign(id, title, baseGame));
+            newCampaign.setValue(new Campaign(id, title, baseGame, dmId));
 
             Intent dmIntent = new Intent(this, DMActivity.class);
             dmIntent.putExtra("id", id);
