@@ -12,11 +12,15 @@ import java.util.List;
 
 public class User {
     private String mId;
+    private String mName;
+    private String mEmail;
     private List<Campaign> mCampaigns;
     private List<Character> mCharacters;
 
-    public User(String id) {
+    public User(String id, String name, String email) {
         mId = id;
+        mName = name;
+        mEmail = email;
         mCampaigns = new ArrayList<>();
         mCharacters = new ArrayList<>();
     }
@@ -31,5 +35,13 @@ public class User {
 
     public List<Character> getCharacters() {
         return mCharacters;
+    }
+
+    public String getName() {
+        return mName;
+    }
+
+    public String getEmail() {
+        return mEmail;
     }
 }
