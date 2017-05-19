@@ -96,7 +96,7 @@ public class NotesPageFragment extends Fragment {
         newNoteFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mListener.onAddNote(mModuleId);
+                mListener.onAddNote();
             }
         });
     }
@@ -129,7 +129,7 @@ public class NotesPageFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface NoteListener {
-        void onAddNote(String moduleId);
+        void onAddNote();
         void onSelectNote(String noteId);
     }
 }

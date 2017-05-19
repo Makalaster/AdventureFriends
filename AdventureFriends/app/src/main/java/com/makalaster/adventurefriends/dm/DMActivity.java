@@ -21,9 +21,11 @@ import com.makalaster.adventurefriends.R;
 import com.makalaster.adventurefriends.dm.dmFragments.ModuleListFragment;
 import com.makalaster.adventurefriends.dm.dmFragments.NewModuleFragment;
 import com.makalaster.adventurefriends.dm.dmFragments.module.MapPageFragment;
+import com.makalaster.adventurefriends.dm.dmFragments.module.ModuleHolder;
 import com.makalaster.adventurefriends.dm.dmFragments.module.ModulePagerFragment;
 import com.makalaster.adventurefriends.dm.dmFragments.module.NPCsPageFragment;
 import com.makalaster.adventurefriends.dm.dmFragments.module.NewNoteFragment;
+import com.makalaster.adventurefriends.dm.dmFragments.module.NoteDetailFragment;
 import com.makalaster.adventurefriends.dm.dmFragments.module.NotesPageFragment;
 import com.makalaster.adventurefriends.dm.dmFragments.module.OverviewPageFragment;
 import com.makalaster.adventurefriends.lobby.LobbyActivity;
@@ -38,7 +40,8 @@ public class DMActivity extends AppCompatActivity
         NPCsPageFragment.OnAddNPCListener,
         NotesPageFragment.NoteListener,
         MapPageFragment.OnFragmentInteractionListener,
-        NewNoteFragment.OnCreateNoteListener {
+        NewNoteFragment.OnCreateNoteListener,
+        NoteDetailFragment.OnNoteSavedListener {
 
     private FirebaseAuth mAuth;
     private FragmentManager mFragmentManager;
@@ -87,7 +90,14 @@ public class DMActivity extends AppCompatActivity
                     CampaignHolder.getInstance().clearCampaign();
                     confirmAndExit();
                     break;
+                case "new_note":
+                    mFragmentManager.popBackStack();
+                    break;
+                case "note_detail":
+                    mFragmentManager.popBackStack();
+                    break;
                 default:
+                    ModuleHolder.getInstance().clearModule();
                     mFragmentManager.popBackStack();
                     loadModuleList(mCampaignId);
             }
@@ -158,6 +168,7 @@ public class DMActivity extends AppCompatActivity
 
     @Override
     public void onModuleSelected(String moduleId) {
+        ModuleHolder.getInstance().loadModule(mCampaignId, moduleId);
         Fragment pagerFragment = ModulePagerFragment.newInstance(moduleId);
         mFragmentManager.beginTransaction()
                 .addToBackStack(null)
@@ -199,34 +210,52 @@ public class DMActivity extends AppCompatActivity
     }
 
     @Override
-    public void onAddNote(String moduleId) {
-        Fragment newNoteFragment = NewNoteFragment.newInstance(moduleId);
+    public void onAddNote() {
+        Fragment newNoteFragment = NewNoteFragment.newInstance();
         mFragmentManager.beginTransaction()
                 .addToBackStack(null)
-                .replace(R.id.dm_fragment_container, newNoteFragment, "module_detail")
+                .replace(R.id.dm_fragment_container, newNoteFragment, "new_note")
                 .commit();
     }
 
     @Override
     public void onSelectNote(String noteId) {
-
+        Fragment noteDetailFragment = NoteDetailFragment.newInstance(noteId);
+        mFragmentManager.beginTransaction()
+                .addToBackStack(null)
+                .replace(R.id.dm_fragment_container, noteDetailFragment, "note_detail")
+                .commit();
     }
 
     @Override
-    public void onCreateNote(String moduleId, String title, String body) {
-        DatabaseReference currentModuleReference = FirebaseDatabase.getInstance().getReference("campaigns/" + mCampaignId + "/modules/" + moduleId);
+    public void onCreateNote(String title, String body) {
+        Module module = ModuleHolder.getInstance().getModule();
+
+        DatabaseReference currentModuleReference = FirebaseDatabase.getInstance().getReference("campaigns/" + mCampaignId + "/modules/" + module.getId());
         DatabaseReference newNote = currentModuleReference.child("notes").push();
         String id = newNote.getKey();
         Note newLocalNote = new Note(id, title, body);
         newNote.setValue(newLocalNote);
-        CampaignHolder.getInstance().getModuleById(moduleId).addNote(id, newLocalNote);
+        ModuleHolder.getInstance().addNote(id, newLocalNote);
 
         mFragmentManager.popBackStack();
-        //loadModuleList(mCampaignId);
     }
 
     @Override
     public void onFragmentInteraction(Uri uri) {
 
+    }
+
+    @Override
+    public void onSaveNote(String noteId, String newTitle, String newBody) {
+        ModuleHolder moduleHolder = ModuleHolder.getInstance();
+        String moduleId = moduleHolder.getModule().getId();
+        Note note = moduleHolder.getNoteById(noteId);
+        note.setTitle(newTitle);
+        note.setBody(newBody);
+
+        DatabaseReference noteToUpdate = FirebaseDatabase.getInstance().getReference(
+                "campaigns/" + mCampaignId + "/modules/" + moduleId + "/notes/" + noteId);
+        noteToUpdate.setValue(note);
     }
 }

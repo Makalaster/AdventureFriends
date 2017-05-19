@@ -23,12 +23,9 @@ import com.makalaster.adventurefriends.R;
  * create an instance of this fragment.
  */
 public class NewModuleFragment extends Fragment {
-    private static final String TAG = "NewModuleFragment";
-
     private OnNewModuleCreatedListener mListener;
     private EditText mNewModuleTitle, mNewModuleSummary;
     private Spinner mModuleTypeSpinner;
-    private Button mCreateModuleButton;
 
     public NewModuleFragment() {
         // Required empty public constructor
@@ -62,9 +59,9 @@ public class NewModuleFragment extends Fragment {
         mNewModuleTitle = (EditText) view.findViewById(R.id.new_module_title);
         mNewModuleSummary = (EditText) view.findViewById(R.id.new_module_summary);
         mModuleTypeSpinner = (Spinner) view.findViewById(R.id.new_module_type_spinner);
-        mCreateModuleButton = (Button) view.findViewById(R.id.create_new_module_button);
+        Button createModuleButton = (Button) view.findViewById(R.id.create_new_module_button);
 
-        mCreateModuleButton.setOnClickListener(new View.OnClickListener() {
+        createModuleButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 createModule();

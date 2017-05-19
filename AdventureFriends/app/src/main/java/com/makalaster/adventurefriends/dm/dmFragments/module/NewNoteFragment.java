@@ -22,9 +22,6 @@ import com.makalaster.adventurefriends.R;
  * create an instance of this fragment.
  */
 public class NewNoteFragment extends Fragment {
-    private static final String ARG_MODULE_ID = "module_id";
-
-    private String mModuleId;
     private OnCreateNoteListener mListener;
 
     public NewNoteFragment() {
@@ -37,20 +34,12 @@ public class NewNoteFragment extends Fragment {
      *
      * @return A new instance of fragment NewNoteFragment.
      */
-    public static NewNoteFragment newInstance(String moduleId) {
+    public static NewNoteFragment newInstance() {
         NewNoteFragment fragment = new NewNoteFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_MODULE_ID, moduleId);
+
         fragment.setArguments(args);
         return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mModuleId = getArguments().getString(ARG_MODULE_ID);
-        }
     }
 
     @Override
@@ -80,7 +69,7 @@ public class NewNoteFragment extends Fragment {
                     bodyEditText.setError("Please enter a body");
                     bodyEditText.requestFocus();
                 } else {
-                    mListener.onCreateNote(mModuleId, title, body);
+                    mListener.onCreateNote(title, body);
                 }
             }
         });
@@ -114,6 +103,6 @@ public class NewNoteFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnCreateNoteListener {
-        void onCreateNote(String moduleId, String title, String body);
+        void onCreateNote(String title, String body);
     }
 }
