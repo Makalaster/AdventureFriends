@@ -24,6 +24,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.makalaster.adventurefriends.R;
 import com.makalaster.adventurefriends.dm.dmFragments.ModuleListFragment;
 import com.makalaster.adventurefriends.dm.dmFragments.NewModuleFragment;
+import com.makalaster.adventurefriends.dm.dmFragments.module.ModulePagerFragment;
 import com.makalaster.adventurefriends.lobby.LobbyActivity;
 import com.makalaster.adventurefriends.model.campaign.Campaign;
 import com.makalaster.adventurefriends.model.campaign.Module;
@@ -141,7 +142,11 @@ public class DMActivity extends AppCompatActivity
 
     @Override
     public void onModuleSelected(String moduleId) {
-
+        Fragment pagerFragment = ModulePagerFragment.newInstance(moduleId);
+        mFragmentManager.beginTransaction()
+                .addToBackStack(null)
+                .replace(R.id.dm_fragment_container, pagerFragment)
+                .commit();
     }
 
     @Override

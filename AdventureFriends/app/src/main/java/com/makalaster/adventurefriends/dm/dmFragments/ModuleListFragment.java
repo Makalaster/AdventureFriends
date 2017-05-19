@@ -1,20 +1,16 @@
 package com.makalaster.adventurefriends.dm.dmFragments;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DataSnapshot;
@@ -118,7 +114,7 @@ public class ModuleListFragment extends Fragment {
             @Override
             protected void populateViewHolder(ModuleViewHolder viewHolder, final Module model, int position) {
                 viewHolder.mModuleName.setText(model.getTitle());
-                viewHolder.mModuleType.setText(model.getType());
+                viewHolder.mModuleType.setText(model.getTypeAsString());
                 viewHolder.mModuleListItem.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

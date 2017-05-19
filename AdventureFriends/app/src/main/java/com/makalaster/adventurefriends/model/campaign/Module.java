@@ -79,7 +79,28 @@ public class Module {
         mNPCs.add(npc);
     }
 
-    public String getType() {
+    public void setType(int type) {
+        mType = type;
+    }
+
+    public int getType() {
+        return mType;
+    }
+
+    public static int getModuleBattle() {
+
+        return MODULE_BATTLE;
+    }
+
+    public static int getModuleStory() {
+        return MODULE_STORY;
+    }
+
+    public static int getModuleNonBattle() {
+        return MODULE_NON_BATTLE;
+    }
+
+    public String getTypeAsString() {
         String type;
         switch (mType) {
             case MODULE_BATTLE:
