@@ -1,6 +1,7 @@
 package com.makalaster.adventurefriends.dm;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -24,7 +25,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.makalaster.adventurefriends.R;
 import com.makalaster.adventurefriends.dm.dmFragments.ModuleListFragment;
 import com.makalaster.adventurefriends.dm.dmFragments.NewModuleFragment;
+import com.makalaster.adventurefriends.dm.dmFragments.module.MapPageFragment;
 import com.makalaster.adventurefriends.dm.dmFragments.module.ModulePagerFragment;
+import com.makalaster.adventurefriends.dm.dmFragments.module.NPCsPageFragment;
+import com.makalaster.adventurefriends.dm.dmFragments.module.NotesPageFragment;
+import com.makalaster.adventurefriends.dm.dmFragments.module.OverviewPageFragment;
 import com.makalaster.adventurefriends.lobby.LobbyActivity;
 import com.makalaster.adventurefriends.model.campaign.Campaign;
 import com.makalaster.adventurefriends.model.campaign.Module;
@@ -32,7 +37,11 @@ import com.makalaster.adventurefriends.model.campaign.Module;
 public class DMActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
                     ModuleListFragment.OnModuleInteractionListener,
-                    NewModuleFragment.OnNewCampaignCreatedListener {
+                    NewModuleFragment.OnNewCampaignCreatedListener,
+                    OverviewPageFragment.OnFragmentInteractionListener,
+                    NPCsPageFragment.OnFragmentInteractionListener,
+                    NotesPageFragment.OnFragmentInteractionListener,
+                    MapPageFragment.OnFragmentInteractionListener {
 
     private FirebaseAuth mAuth;
     private FragmentManager mFragmentManager;
@@ -63,8 +72,8 @@ public class DMActivity extends AppCompatActivity
     private void loadModuleList(String id) {
         ModuleListFragment moduleListFragment = ModuleListFragment.newInstance(id);
         mFragmentManager.beginTransaction()
-                .addToBackStack(null)
-                .replace(R.id.dm_fragment_container, moduleListFragment)
+                //.addToBackStack(null)
+                .replace(R.id.dm_fragment_container, moduleListFragment, "module_list")
                 .commit();
     }
 
@@ -74,14 +83,22 @@ public class DMActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
-            confirmAndExit();
+            switch (mFragmentManager.findFragmentById(R.id.dm_fragment_container).getTag()) {
+                case "module_list":
+                    super.onBackPressed();
+                    confirmAndExit();
+                    break;
+                default:
+                    mFragmentManager.popBackStack();
+                    loadModuleList(mCampaignId);
+            }
         }
     }
 
     private void confirmAndExit() {
         Intent returnToLobby = new Intent(this, LobbyActivity.class);
         startActivity(returnToLobby);
+        finish();
     }
 
     @Override
@@ -136,7 +153,7 @@ public class DMActivity extends AppCompatActivity
         Fragment newModuleFragment = NewModuleFragment.newInstance();
         mFragmentManager.beginTransaction()
                 .addToBackStack(null)
-                .replace(R.id.dm_fragment_container, newModuleFragment)
+                .replace(R.id.dm_fragment_container, newModuleFragment, "new_module")
                 .commit();
     }
 
@@ -145,7 +162,7 @@ public class DMActivity extends AppCompatActivity
         Fragment pagerFragment = ModulePagerFragment.newInstance(moduleId);
         mFragmentManager.beginTransaction()
                 .addToBackStack(null)
-                .replace(R.id.dm_fragment_container, pagerFragment)
+                .replace(R.id.dm_fragment_container, pagerFragment, "module_detail")
                 .commit();
     }
 
@@ -156,6 +173,12 @@ public class DMActivity extends AppCompatActivity
         String id = newModule.getKey();
         newModule.setValue(new Module(id, title, summary, type));
 
+        mFragmentManager.popBackStack();
         loadModuleList(mCampaignId);
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
     }
 }
