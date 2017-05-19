@@ -4,15 +4,21 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.makalaster.adventurefriends.R;
 import com.makalaster.adventurefriends.dm.CampaignHolder;
+import com.makalaster.adventurefriends.dm.dmFragments.module.moduleItemRecyclerView.ItemHolder;
+import com.makalaster.adventurefriends.model.Note;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -27,7 +33,6 @@ public class NotesPageFragment extends Fragment {
     private static final String ARG_MODULE_ID = "module_id";
 
     private String mModuleId;
-
     private NoteListener mListener;
 
     public NotesPageFragment() {
@@ -71,6 +76,29 @@ public class NotesPageFragment extends Fragment {
         String campaignId = CampaignHolder.getInstance().getCampaign().getCampaignId();
         DatabaseReference notesRef = FirebaseDatabase.getInstance().getReference(
                 "campaigns/" + campaignId + "/modules/" + mModuleId + "/notes");
+
+        RecyclerView notesRecycler = (RecyclerView) view.findViewById(R.id.notes_recycler_view);
+        notesRecycler.setLayoutManager(new LinearLayoutManager(view.getContext(), LinearLayoutManager.VERTICAL, false));
+        notesRecycler.setAdapter(new FirebaseRecyclerAdapter<Note, ItemHolder>(Note.class, R.layout.layout_module_item, ItemHolder.class, notesRef) {
+            @Override
+            protected void populateViewHolder(ItemHolder viewHolder, final Note model, int position) {
+                viewHolder.mName.setText(model.getTitle());
+                viewHolder.mItem.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mListener.onSelectNote(model.getId());
+                    }
+                });
+            }
+        });
+
+        FloatingActionButton newNoteFab = (FloatingActionButton) view.findViewById(R.id.new_note_fab);
+        newNoteFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListener.onAddNote(mModuleId);
+            }
+        });
     }
 
     @Override
@@ -101,7 +129,7 @@ public class NotesPageFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface NoteListener {
-        void onAddNote();
+        void onAddNote(String moduleId);
         void onSelectNote(String noteId);
     }
 }

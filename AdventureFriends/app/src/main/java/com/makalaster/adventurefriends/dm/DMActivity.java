@@ -23,19 +23,22 @@ import com.makalaster.adventurefriends.dm.dmFragments.NewModuleFragment;
 import com.makalaster.adventurefriends.dm.dmFragments.module.MapPageFragment;
 import com.makalaster.adventurefriends.dm.dmFragments.module.ModulePagerFragment;
 import com.makalaster.adventurefriends.dm.dmFragments.module.NPCsPageFragment;
+import com.makalaster.adventurefriends.dm.dmFragments.module.NewNoteFragment;
 import com.makalaster.adventurefriends.dm.dmFragments.module.NotesPageFragment;
 import com.makalaster.adventurefriends.dm.dmFragments.module.OverviewPageFragment;
 import com.makalaster.adventurefriends.lobby.LobbyActivity;
+import com.makalaster.adventurefriends.model.Note;
 import com.makalaster.adventurefriends.model.campaign.Module;
 
 public class DMActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         ModuleListFragment.OnModuleInteractionListener,
-        NewModuleFragment.OnNewCampaignCreatedListener,
+        NewModuleFragment.OnNewModuleCreatedListener,
         OverviewPageFragment.OnLoadModuleListener,
         NPCsPageFragment.OnAddNPCListener,
         NotesPageFragment.NoteListener,
-        MapPageFragment.OnFragmentInteractionListener {
+        MapPageFragment.OnFragmentInteractionListener,
+        NewNoteFragment.OnCreateNoteListener {
 
     private FirebaseAuth mAuth;
     private FragmentManager mFragmentManager;
@@ -191,22 +194,39 @@ public class DMActivity extends AppCompatActivity
     }
 
     @Override
-    public void onSelectNPC() {
+    public void onSelectNPC(String id) {
 
     }
 
     @Override
-    public void onFragmentInteraction(Uri uri) {
-
-    }
-
-    @Override
-    public void onAddNote() {
-
+    public void onAddNote(String moduleId) {
+        Fragment newNoteFragment = NewNoteFragment.newInstance(moduleId);
+        mFragmentManager.beginTransaction()
+                .addToBackStack(null)
+                .replace(R.id.dm_fragment_container, newNoteFragment, "module_detail")
+                .commit();
     }
 
     @Override
     public void onSelectNote(String noteId) {
+
+    }
+
+    @Override
+    public void onCreateNote(String moduleId, String title, String body) {
+        DatabaseReference currentModuleReference = FirebaseDatabase.getInstance().getReference("campaigns/" + mCampaignId + "/modules/" + moduleId);
+        DatabaseReference newNote = currentModuleReference.child("notes").push();
+        String id = newNote.getKey();
+        Note newLocalNote = new Note(id, title, body);
+        newNote.setValue(newLocalNote);
+        CampaignHolder.getInstance().getModuleById(moduleId).addNote(id, newLocalNote);
+
+        mFragmentManager.popBackStack();
+        //loadModuleList(mCampaignId);
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
 
     }
 }

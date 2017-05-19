@@ -5,13 +5,22 @@ package com.makalaster.adventurefriends.model.npc;
  */
 
 public class NPC {
-    private String mName;
+    private String mName, mId;
 
     public NPC() {
     }
 
-    public NPC(String name) {
+    public NPC(String id, String name) {
+        mId = id;
         mName = name;
+    }
+
+    public String getId() {
+        return mId;
+    }
+
+    public void setId(String id) {
+        mId = id;
     }
 
     public String getName() {

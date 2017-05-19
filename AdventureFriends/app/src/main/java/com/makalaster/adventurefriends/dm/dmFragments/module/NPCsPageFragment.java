@@ -91,12 +91,12 @@ public class NPCsPageFragment extends Fragment {
         npcRecycler.setLayoutManager(new LinearLayoutManager(view.getContext(), LinearLayoutManager.VERTICAL, false));
         npcRecycler.setAdapter(new FirebaseRecyclerAdapter<NPC, ItemHolder>(NPC.class, R.layout.layout_module_item, ItemHolder.class, npcs) {
             @Override
-            protected void populateViewHolder(ItemHolder viewHolder, NPC model, int position) {
+            protected void populateViewHolder(ItemHolder viewHolder, final NPC model, int position) {
                 viewHolder.mName.setText(model.getName());
                 viewHolder.mItem.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        mListener.onSelectNPC();
+                        mListener.onSelectNPC(model.getId());
                     }
                 });
             }
@@ -132,6 +132,6 @@ public class NPCsPageFragment extends Fragment {
      */
     public interface OnAddNPCListener {
         void onAddNPC();
-        void onSelectNPC();
+        void onSelectNPC(String id);
     }
 }

@@ -69,5 +69,4 @@ public class ModulePagerFragment extends Fragment {
         TabLayout moduleTabs = (TabLayout) view.findViewById(R.id.module_tab_layout);
         moduleTabs.setupWithViewPager(modulePager);
     }
-
 }

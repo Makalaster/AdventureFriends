@@ -1,13 +1,43 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             tools:context="com.makalaster.adventurefriends.dm.dmFragments.module.NewNoteFragment">
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.makalaster.adventurefriends.dm.dmFragments.module.NewNoteFragment">
 
-    <!-- TODO: Update blank fragment layout -->
+    <!-- TODO extract strings -->
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment"/>
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Enter a note title:"/>
 
-</FrameLayout>
+    <EditText
+        android:id="@+id/new_note_title"
+        android:scrollHorizontally="true"
+        android:inputType="textCapWords"
+        android:maxLines="1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Title"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Enter the note body:"/>
+
+    <EditText
+        android:id="@+id/new_note_body"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:hint="Body"
+        android:gravity="top"
+        android:inputType="textMultiLine"/>
+
+    <Button
+        android:id="@+id/create_new_note_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="create"/>
+
+</LinearLayout>
