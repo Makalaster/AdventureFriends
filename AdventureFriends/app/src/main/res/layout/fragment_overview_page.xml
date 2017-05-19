@@ -1,13 +1,40 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             tools:context="com.makalaster.adventurefriends.dm.dmFragments.module.OverviewPageFragment">
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:context="com.makalaster.adventurefriends.dm.dmFragments.module.OverviewPageFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
+        android:id="@+id/module_title"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment"/>
+        android:layout_height="wrap_content"/>
 
-</FrameLayout>
+    <TextView
+        android:id="@+id/module_type"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/module_summary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <!-- TODO extract strings-->
+    <Button
+        android:id="@+id/launch_module_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="launch module"/>
+
+    <Button
+        android:id="@+id/complete_module_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="complete module"/>
+
+
+
+</LinearLayout>

@@ -14,7 +14,7 @@ import java.util.Map;
 
 public class Campaign {
     private String mCampaignId, mCampaignName, mBaseGame, mDmId, mCharacterName, mDescription;
-    private List<Player> mPlayers;
+    private Map<String, Player> mPlayers;
     private Map<String, Module> mModules;
 
     public Campaign() {
@@ -25,7 +25,7 @@ public class Campaign {
         mCampaignId = campaignId;
         mCampaignName = campaignName;
         mBaseGame = baseGame;
-        mPlayers = new ArrayList<>();
+        mPlayers = new HashMap<>();
         mModules = new HashMap<>();
         mDmId = dmId;
         mCharacterName = "DM";
@@ -56,7 +56,7 @@ public class Campaign {
         mBaseGame = baseGame;
     }
 
-    public List<Player> getPlayers() {
+    public Map<String, Player> getPlayers() {
         return mPlayers;
     }
 
@@ -64,12 +64,12 @@ public class Campaign {
         mDmId = dmId;
     }
 
-    public void setPlayers(List<Player> players) {
+    public void setPlayers(HashMap<String, Player> players) {
         mPlayers = players;
     }
 
-    public void addPlayer(Player player) {
-        mPlayers.add(player);
+    public void addPlayer(String id, Player player) {
+        mPlayers.put(id, player);
     }
 
     public void setModules(Map<String, Module> modules) {

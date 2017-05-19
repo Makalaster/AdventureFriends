@@ -1,36 +1,36 @@
 package com.makalaster.adventurefriends.dm.dmFragments.module;
 
 import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.makalaster.adventurefriends.R;
-import com.makalaster.adventurefriends.dm.CampaignHolder;
-import com.makalaster.adventurefriends.model.campaign.Module;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link OnLoadModuleListener} interface
+ * {@link NewNPCFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link OverviewPageFragment#newInstance} factory method to
+ * Use the {@link NewNPCFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class OverviewPageFragment extends Fragment {
+public class NewNPCFragment extends Fragment {
+    // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_MODULE_ID = "MODULE_ID";
+    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM2 = "param2";
 
-    private String mModuleId;
-    private Module mCurrentModule;
+    // TODO: Rename and change types of parameters
+    private String mParam1;
+    private String mParam2;
 
-    private OnLoadModuleListener mListener;
+    private OnFragmentInteractionListener mListener;
 
-    public OverviewPageFragment() {
+    public NewNPCFragment() {
         // Required empty public constructor
     }
 
@@ -38,13 +38,16 @@ public class OverviewPageFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param moduleId Parameter 1.
-     * @return A new instance of fragment OverviewPageFragment.
+     * @param param1 Parameter 1.
+     * @param param2 Parameter 2.
+     * @return A new instance of fragment NewNPCFragment.
      */
-    public static OverviewPageFragment newInstance(String moduleId) {
-        OverviewPageFragment fragment = new OverviewPageFragment();
+    // TODO: Rename and change types and number of parameters
+    public static NewNPCFragment newInstance(String param1, String param2) {
+        NewNPCFragment fragment = new NewNPCFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_MODULE_ID, moduleId);
+        args.putString(ARG_PARAM1, param1);
+        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -53,35 +56,33 @@ public class OverviewPageFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mModuleId = getArguments().getString(ARG_MODULE_ID);
+            mParam1 = getArguments().getString(ARG_PARAM1);
+            mParam2 = getArguments().getString(ARG_PARAM2);
         }
-        mCurrentModule = CampaignHolder.getInstance().getModuleById(mModuleId);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_overview_page, container, false);
+        return inflater.inflate(R.layout.fragment_new_npc, container, false);
     }
 
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        ((TextView)view.findViewById(R.id.module_title)).setText(mCurrentModule.getTitle());
-        ((TextView)view.findViewById(R.id.module_type)).setText(mCurrentModule.getTypeAsString());
-        ((TextView)view.findViewById(R.id.module_summary)).setText(mCurrentModule.getSummary());
+    // TODO: Rename method, update argument and hook method into UI event
+    public void onButtonPressed(Uri uri) {
+        if (mListener != null) {
+            mListener.onFragmentInteraction(uri);
+        }
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnLoadModuleListener) {
-            mListener = (OnLoadModuleListener) context;
+        if (context instanceof OnFragmentInteractionListener) {
+            mListener = (OnFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnLoadModuleListener");
+                    + " must implement NoteListener");
         }
     }
 
@@ -101,8 +102,8 @@ public class OverviewPageFragment extends Fragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnLoadModuleListener {
-        void onLaunchModule(String moduleId);
-        void onCompleteModule(String moduleId);
+    public interface OnFragmentInteractionListener {
+        // TODO: Update argument type and name
+        void onFragmentInteraction(Uri uri);
     }
 }

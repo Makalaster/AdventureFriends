@@ -3,12 +3,8 @@ package com.makalaster.adventurefriends.dm;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -17,7 +13,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
@@ -31,17 +26,16 @@ import com.makalaster.adventurefriends.dm.dmFragments.module.NPCsPageFragment;
 import com.makalaster.adventurefriends.dm.dmFragments.module.NotesPageFragment;
 import com.makalaster.adventurefriends.dm.dmFragments.module.OverviewPageFragment;
 import com.makalaster.adventurefriends.lobby.LobbyActivity;
-import com.makalaster.adventurefriends.model.campaign.Campaign;
 import com.makalaster.adventurefriends.model.campaign.Module;
 
 public class DMActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
-                    ModuleListFragment.OnModuleInteractionListener,
-                    NewModuleFragment.OnNewCampaignCreatedListener,
-                    OverviewPageFragment.OnFragmentInteractionListener,
-                    NPCsPageFragment.OnFragmentInteractionListener,
-                    NotesPageFragment.OnFragmentInteractionListener,
-                    MapPageFragment.OnFragmentInteractionListener {
+        ModuleListFragment.OnModuleInteractionListener,
+        NewModuleFragment.OnNewCampaignCreatedListener,
+        OverviewPageFragment.OnLoadModuleListener,
+        NPCsPageFragment.OnAddNPCListener,
+        NotesPageFragment.NoteListener,
+        MapPageFragment.OnFragmentInteractionListener {
 
     private FirebaseAuth mAuth;
     private FragmentManager mFragmentManager;
@@ -87,6 +81,7 @@ public class DMActivity extends AppCompatActivity
             switch (mFragmentManager.findFragmentById(R.id.dm_fragment_container).getTag()) {
                 case "module_list":
                     super.onBackPressed();
+                    CampaignHolder.getInstance().clearCampaign();
                     confirmAndExit();
                     break;
                 default:
@@ -172,14 +167,46 @@ public class DMActivity extends AppCompatActivity
         DatabaseReference currentCampaignReference = FirebaseDatabase.getInstance().getReference("campaigns/" + mCampaignId);
         DatabaseReference newModule = currentCampaignReference.child("modules").push();
         String id = newModule.getKey();
-        newModule.setValue(new Module(id, title, summary, type));
+        Module newLocalModule = new Module(id, title, summary, type);
+        newModule.setValue(newLocalModule);
+        CampaignHolder.getInstance().addModule(id, newLocalModule);
 
         mFragmentManager.popBackStack();
         loadModuleList(mCampaignId);
     }
 
     @Override
+    public void onLaunchModule(String moduleId) {
+
+    }
+
+    @Override
+    public void onCompleteModule(String moduleId) {
+
+    }
+
+    @Override
+    public void onAddNPC() {
+
+    }
+
+    @Override
+    public void onSelectNPC() {
+
+    }
+
+    @Override
     public void onFragmentInteraction(Uri uri) {
+
+    }
+
+    @Override
+    public void onAddNote() {
+
+    }
+
+    @Override
+    public void onSelectNote(String noteId) {
 
     }
 }

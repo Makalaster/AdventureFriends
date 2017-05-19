@@ -4,36 +4,29 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.makalaster.adventurefriends.model.campaign.Module;
-
 /**
- * Created by Makalaster on 5/18/17.
+ * Created by Makalaster on 5/18/17. Adapter for module pager
  */
 
 public class ModulePagerAdapter extends FragmentPagerAdapter {
     private String mModuleId;
-    private Module mCurrentModule;
 
     public ModulePagerAdapter(FragmentManager fm, String moduleId) {
         super(fm);
         mModuleId = moduleId;
     }
 
-    private Module getModule() {
-        return null;
-    }
-
     @Override
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return OverviewPageFragment.newInstance("","");
+                return OverviewPageFragment.newInstance(mModuleId);
             case 1:
-                return NPCsPageFragment.newInstance("", "");
+                return NPCsPageFragment.newInstance(mModuleId);
             case 2:
-                return NotesPageFragment.newInstance("","");
+                return NotesPageFragment.newInstance(mModuleId);
             case 3:
-                return MapPageFragment.newInstance("", "");
+                return MapPageFragment.newInstance(mModuleId);
             default:
                 return null;
         }

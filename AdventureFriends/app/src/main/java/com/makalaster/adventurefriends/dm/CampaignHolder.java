@@ -49,6 +49,7 @@ public class CampaignHolder {
 
     public void clearCampaign() {
         mCampaign = null;
+        mModules = null;
     }
 
     public Module getModuleById(String moduleId) {
@@ -57,5 +58,9 @@ public class CampaignHolder {
 
     public Campaign getCampaign() {
         return mCampaign;
+    }
+
+    public void addModule(String newId, Module newModule) {
+        mModules.put(newId, newModule);
     }
 }

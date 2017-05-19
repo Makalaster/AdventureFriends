@@ -5,4 +5,20 @@ package com.makalaster.adventurefriends.model.npc;
  */
 
 public class NPC {
+    private String mName;
+
+    public NPC() {
+    }
+
+    public NPC(String name) {
+        mName = name;
+    }
+
+    public String getName() {
+        return mName;
+    }
+
+    public void setName(String name) {
+        mName = name;
+    }
 }

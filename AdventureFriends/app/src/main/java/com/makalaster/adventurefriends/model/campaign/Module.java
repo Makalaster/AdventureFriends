@@ -4,6 +4,7 @@ import com.makalaster.adventurefriends.model.Note;
 import com.makalaster.adventurefriends.model.npc.NPC;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -14,8 +15,8 @@ public class Module {
     public static final int MODULE_BATTLE = 1, MODULE_STORY = 2, MODULE_NON_BATTLE = 3;
     private int mType;
     private String mId, mTitle, mSummary;
-    private List<Note> mNotes;
-    private List<NPC> mNPCs;
+    private HashMap<String, Note> mNotes;
+    private HashMap<String, NPC> mNPCs;
 
     public Module() {
         //Empty constructor required by FirebaseRecyclerAdapter
@@ -27,8 +28,8 @@ public class Module {
         mSummary = summary;
         mType = type;
 
-        mNotes = new ArrayList<>();
-        mNPCs = new ArrayList<>();
+        mNotes = new HashMap<>();
+        mNPCs = new HashMap<>();
     }
 
     public String getId() {
@@ -55,28 +56,28 @@ public class Module {
         mSummary = summary;
     }
 
-    public List<Note> getNotes() {
+    public HashMap<String, Note> getNotes() {
         return mNotes;
     }
 
-    public void setNotes(List<Note> notes) {
+    public void setNotes(HashMap<String, Note> notes) {
         mNotes = notes;
     }
 
-    public void addNote(Note note) {
-        mNotes.add(note);
+    public void addNote(String id, Note note) {
+        mNotes.put(id, note);
     }
 
-    public List<NPC> getNPCs() {
+    public HashMap<String, NPC> getNPCs() {
         return mNPCs;
     }
 
-    public void setNPCs(List<NPC> NPCs) {
+    public void setNPCs(HashMap<String, NPC> NPCs) {
         mNPCs = NPCs;
     }
 
-    public void addNPC(NPC npc) {
-        mNPCs.add(npc);
+    public void addNPC(String id, NPC npc) {
+        mNPCs.put(id, npc);
     }
 
     public void setType(int type) {
