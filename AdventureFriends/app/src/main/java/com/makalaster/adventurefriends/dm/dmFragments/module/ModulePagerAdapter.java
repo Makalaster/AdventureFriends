@@ -19,6 +19,10 @@ public class ModulePagerAdapter extends FragmentPagerAdapter {
         mModuleId = moduleId;
     }
 
+    private Module getModule() {
+        return null;
+    }
+
     @Override
     public Fragment getItem(int position) {
         switch (position) {

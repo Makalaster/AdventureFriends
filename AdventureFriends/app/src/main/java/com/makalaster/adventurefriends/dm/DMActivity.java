@@ -64,6 +64,7 @@ public class DMActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        //TODO display user account info in nav drawer
 
         mCampaignId = getIntent().getStringExtra(ModuleListFragment.ARG_CAMPAIGN_ID);
         loadModuleList(mCampaignId);

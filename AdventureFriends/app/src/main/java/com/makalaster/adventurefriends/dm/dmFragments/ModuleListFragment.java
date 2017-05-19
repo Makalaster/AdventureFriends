@@ -19,6 +19,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.makalaster.adventurefriends.R;
+import com.makalaster.adventurefriends.dm.CampaignHolder;
 import com.makalaster.adventurefriends.dm.moduleRecyclerView.ModuleViewHolder;
 import com.makalaster.adventurefriends.model.campaign.Campaign;
 import com.makalaster.adventurefriends.model.campaign.Module;
@@ -67,31 +68,9 @@ public class ModuleListFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mCampaignId = getArguments().getString(ARG_CAMPAIGN_ID);
+            mCurrentCampaign = CampaignHolder.getInstance().getCampaign();
+
             mCurrentCampaignReference = FirebaseDatabase.getInstance().getReference("campaigns/" + mCampaignId);
-
-            mCurrentCampaignReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    mCurrentCampaign = dataSnapshot.getValue(Campaign.class);
-                    populateLabels();
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
-        }
-    }
-
-    private void populateLabels() {
-        if (getView() != null) {
-            View view = getView();
-
-            ((TextView)view.findViewById(R.id.campaign_title)).setText(mCurrentCampaign.getCampaignName());
-            ((TextView)view.findViewById(R.id.campaign_id)).setText(mCurrentCampaign.getCampaignId());
-            ((TextView)view.findViewById(R.id.campaign_description)).setText(mCurrentCampaign.getDescription());
-            ((TextView)view.findViewById(R.id.campaign_base_game)).setText(mCurrentCampaign.getBaseGame());
         }
     }
 
@@ -105,6 +84,8 @@ public class ModuleListFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        populateLabels(view);
 
         DatabaseReference modulesReference = mCurrentCampaignReference.child("modules");
         RecyclerView moduleRecyclerView = (RecyclerView) view.findViewById(R.id.module_recycler_view);
@@ -131,6 +112,13 @@ public class ModuleListFragment extends Fragment {
                 mListener.onAddNewModule();
             }
         });
+    }
+
+    private void populateLabels(View view) {
+        ((TextView)view.findViewById(R.id.campaign_title)).setText(mCurrentCampaign.getCampaignName());
+        ((TextView)view.findViewById(R.id.campaign_id)).setText(mCurrentCampaign.getCampaignId());
+        ((TextView)view.findViewById(R.id.campaign_description)).setText(mCurrentCampaign.getDescription());
+        ((TextView)view.findViewById(R.id.campaign_base_game)).setText(mCurrentCampaign.getBaseGame());
     }
 
     @Override

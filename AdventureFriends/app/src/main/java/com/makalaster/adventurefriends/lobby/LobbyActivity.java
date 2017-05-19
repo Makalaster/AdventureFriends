@@ -27,6 +27,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.makalaster.adventurefriends.LoginActivity;
 import com.makalaster.adventurefriends.R;
+import com.makalaster.adventurefriends.dm.CampaignHolder;
 import com.makalaster.adventurefriends.dm.DMActivity;
 import com.makalaster.adventurefriends.dm.dmFragments.ModuleListFragment;
 import com.makalaster.adventurefriends.lobby.lobbyFragments.CampaignDetailFragment;
@@ -206,6 +207,7 @@ public class LobbyActivity extends AppCompatActivity
             if (mAuth.getCurrentUser().getUid().equals(dmId)) {
                 Intent dmIntent = new Intent(this, DMActivity.class);
                 dmIntent.putExtra(ModuleListFragment.ARG_CAMPAIGN_ID, campaignId);
+                CampaignHolder.getInstance().loadCampaign(campaignId);
                 startActivity(dmIntent);
                 finish();
             }

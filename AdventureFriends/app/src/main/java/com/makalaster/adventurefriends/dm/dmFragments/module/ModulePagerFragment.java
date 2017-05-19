@@ -20,7 +20,7 @@ import com.makalaster.adventurefriends.R;
  */
 public class ModulePagerFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_MODULE_ID = "param1";
+    private static final String ARG_MODULE_ID = "module_id";
 
     private String mModuleId;
 
@@ -35,7 +35,6 @@ public class ModulePagerFragment extends Fragment {
      * @param moduleId Parameter 1.
      * @return A new instance of fragment ModulePagerFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static ModulePagerFragment newInstance(String moduleId) {
         ModulePagerFragment fragment = new ModulePagerFragment();
         Bundle args = new Bundle();
