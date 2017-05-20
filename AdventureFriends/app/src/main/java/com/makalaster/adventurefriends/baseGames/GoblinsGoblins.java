@@ -1,10 +1,20 @@
 package com.makalaster.adventurefriends.baseGames;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
 
+import com.makalaster.adventurefriends.model.character.components.Ability;
+import com.makalaster.adventurefriends.model.character.components.Job;
+import com.makalaster.adventurefriends.model.character.components.Size;
+import com.makalaster.adventurefriends.model.character.components.item.Defense;
+import com.makalaster.adventurefriends.model.character.components.item.Edible;
+import com.makalaster.adventurefriends.model.character.components.item.Item;
+import com.makalaster.adventurefriends.model.character.components.item.Weapon;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -137,13 +147,101 @@ public class GoblinsGoblins extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    //TODO get list of all sizes
-    //TODO get list of all jobs
-    //TODO get list of all abilities
-    //TODO get list of all items
-    //TODO get list of all weapons
-    //TODO get list of all defense
-    //TODO get list of all edibles
-    //TODO get lists of abilities by job
+    public List<Size> getAllSizes() {
+        List<Size> sizes = new ArrayList<>();
 
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor sizeCursor = db.query(SizesTable.TABLE_NAME, null, null, null, null, null, null);
+
+        if (sizeCursor.moveToFirst()) {
+            while (!sizeCursor.isAfterLast()) {
+                long id = sizeCursor.getLong(sizeCursor.getColumnIndex(SizesTable.COLUMN_ID));
+                String name = sizeCursor.getString(sizeCursor.getColumnIndex(SizesTable.COLUMN_NAME));
+                String bonus = sizeCursor.getString(sizeCursor.getColumnIndex(SizesTable.COLUMN_BONUS));
+                String description = sizeCursor.getString(sizeCursor.getColumnIndex(SizesTable.COLUMN_DESCRIPTION));
+                sizes.add(new Size(id, name, description, bonus));
+                sizeCursor.moveToNext();
+            }
+        }
+        sizeCursor.close();
+
+        return sizes;
+    }
+
+    public List<Job> getAllJobs() {
+        List<Job> jobs = new ArrayList<>();
+
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor jobsCursor = db.query(JobsTable.TABLE_NAME, null, null, null, null, null, null);
+
+        if (jobsCursor.moveToFirst()) {
+            while (!jobsCursor.isAfterLast()) {
+                long id = jobsCursor.getLong(jobsCursor.getColumnIndex(JobsTable.COLUMN_ID));
+                String name = jobsCursor.getString(jobsCursor.getColumnIndex(JobsTable.COLUMN_NAME));
+                String bonus = jobsCursor.getString(jobsCursor.getColumnIndex(JobsTable.COLUMN_BONUS));
+                String description = jobsCursor.getString(jobsCursor.getColumnIndex(JobsTable.COLUMN_DESCRIPTION));
+                jobs.add(new Job(id, name, description, bonus));
+                jobsCursor.moveToNext();
+            }
+        }
+        jobsCursor.close();
+
+        return jobs;
+    }
+
+    //TODO get list of all abilities
+    public List<Ability> getAllAbilities() {
+        List<Ability> abilities = new ArrayList<>();
+
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor abilitiesCursor = db.query(AbilitiesTable.TABLE_NAME, null, null, null, null, null, null);
+
+        if (abilitiesCursor.moveToFirst()) {
+            while (!abilitiesCursor.isAfterLast()) {
+                long id = abilitiesCursor.getLong(abilitiesCursor.getColumnIndex(AbilitiesTable.COLUMN_ID));
+                String name = abilitiesCursor.getString(abilitiesCursor.getColumnIndex(AbilitiesTable.COLUMN_NAME));
+                int level = abilitiesCursor.getInt(abilitiesCursor.getColumnIndex(AbilitiesTable.COLUMN_LEVEL));
+                String quote = abilitiesCursor.getString(abilitiesCursor.getColumnIndex(AbilitiesTable.COLUMN_QUOTE));
+
+            }
+        }
+        abilitiesCursor.close();
+
+        return abilities;
+    }
+
+    //TODO get lists of abilities by job
+    public List<Ability> getAbilitiesByJob(int job) {
+        List<Ability> abilities = new ArrayList<>();
+
+        return abilities;
+    }
+
+    //TODO get list of all items
+    public List<Item> getAllItems() {
+        List<Item> items = new ArrayList<>();
+
+        return items;
+    }
+
+    //TODO get list of all weapons
+    public List<Weapon> getAllWeapons() {
+        List<Weapon> weapons = new ArrayList<>();
+
+        return weapons;
+    }
+
+    //TODO get list of all defense
+    public List<Defense> getAllDefense() {
+        List<Defense> defense = new ArrayList<>();
+
+        return defense;
+    }
+
+    //TODO get list of all edibles
+    public List<Edible> getAllEdibles() {
+        List<Edible> edibles = new ArrayList<>();
+
+        return edibles;
+    }
 }
