@@ -7,7 +7,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.makalaster.adventurefriends.model.Note;
 import com.makalaster.adventurefriends.model.campaign.Module;
-import com.makalaster.adventurefriends.model.npc.NPC;
+import com.makalaster.adventurefriends.model.character.NPC;
 
 import java.util.HashMap;
 

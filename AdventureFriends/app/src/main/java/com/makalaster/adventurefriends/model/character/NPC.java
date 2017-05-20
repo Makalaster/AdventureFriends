@@ -1,4 +1,4 @@
-package com.makalaster.adventurefriends.model.npc;
+package com.makalaster.adventurefriends.model.character;
 
 /**
  * Created by Makalaster on 5/18/17.

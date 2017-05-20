@@ -1,11 +1,9 @@
 package com.makalaster.adventurefriends.model.campaign;
 
 import com.makalaster.adventurefriends.model.Note;
-import com.makalaster.adventurefriends.model.npc.NPC;
+import com.makalaster.adventurefriends.model.character.NPC;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 /**
  * Created by Makalaster on 5/18/17.

@@ -1,7 +1,6 @@
 package com.makalaster.adventurefriends.dm.dmFragments.module;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -18,7 +17,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.makalaster.adventurefriends.R;
 import com.makalaster.adventurefriends.dm.CampaignHolder;
 import com.makalaster.adventurefriends.dm.dmFragments.module.moduleItemRecyclerView.ItemHolder;
-import com.makalaster.adventurefriends.model.npc.NPC;
+import com.makalaster.adventurefriends.model.character.NPC;
 
 /**
  * A simple {@link Fragment} subclass.

@@ -16,6 +16,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.makalaster.adventurefriends.baseGames.DBAssetHelper;
 import com.makalaster.adventurefriends.lobby.LobbyActivity;
 import com.makalaster.adventurefriends.model.User;
 
@@ -31,6 +32,9 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        DBAssetHelper dbSetup = new DBAssetHelper(this);
+        dbSetup.getReadableDatabase();
 
         mAuth = FirebaseAuth.getInstance();
         if (mAuth.getCurrentUser() != null) {
