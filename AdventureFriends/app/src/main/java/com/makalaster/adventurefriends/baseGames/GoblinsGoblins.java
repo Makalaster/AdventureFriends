@@ -1,4 +1,4 @@
-package com.makalaster.adventurefriends.BaseGames;
+package com.makalaster.adventurefriends.baseGames;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
