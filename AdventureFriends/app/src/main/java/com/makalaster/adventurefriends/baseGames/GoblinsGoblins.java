@@ -160,6 +160,7 @@ public class GoblinsGoblins extends SQLiteOpenHelper {
                 String bonus = sizeCursor.getString(sizeCursor.getColumnIndex(SizesTable.COLUMN_BONUS));
                 String description = sizeCursor.getString(sizeCursor.getColumnIndex(SizesTable.COLUMN_DESCRIPTION));
                 sizes.add(new Size(id, name, description, bonus));
+
                 sizeCursor.moveToNext();
             }
         }
@@ -181,6 +182,7 @@ public class GoblinsGoblins extends SQLiteOpenHelper {
                 String bonus = jobsCursor.getString(jobsCursor.getColumnIndex(JobsTable.COLUMN_BONUS));
                 String description = jobsCursor.getString(jobsCursor.getColumnIndex(JobsTable.COLUMN_DESCRIPTION));
                 jobs.add(new Job(id, name, description, bonus));
+
                 jobsCursor.moveToNext();
             }
         }
@@ -189,7 +191,6 @@ public class GoblinsGoblins extends SQLiteOpenHelper {
         return jobs;
     }
 
-    //TODO get list of all abilities
     public List<Ability> getAllAbilities() {
         List<Ability> abilities = new ArrayList<>();
 
@@ -202,7 +203,14 @@ public class GoblinsGoblins extends SQLiteOpenHelper {
                 String name = abilitiesCursor.getString(abilitiesCursor.getColumnIndex(AbilitiesTable.COLUMN_NAME));
                 int level = abilitiesCursor.getInt(abilitiesCursor.getColumnIndex(AbilitiesTable.COLUMN_LEVEL));
                 String quote = abilitiesCursor.getString(abilitiesCursor.getColumnIndex(AbilitiesTable.COLUMN_QUOTE));
+                String description = abilitiesCursor.getString(abilitiesCursor.getColumnIndex(AbilitiesTable.COLUMN_DESCRIPTION));
+                int damage = abilitiesCursor.getInt(abilitiesCursor.getColumnIndex(AbilitiesTable.COLUMN_DAMAGE));
+                int range = abilitiesCursor.getInt(abilitiesCursor.getColumnIndex(AbilitiesTable.COLUMN_RANGE));
+                int jobId = abilitiesCursor.getInt(abilitiesCursor.getColumnIndex(AbilitiesTable.COLUMN_JOB_ID));
+                String effects = abilitiesCursor.getString(abilitiesCursor.getColumnIndex(AbilitiesTable.COLUMN_EFFECTS));
+                abilities.add(new Ability(id, name, quote, description, effects, level, damage, range, jobId));
 
+                abilitiesCursor.moveToNext();
             }
         }
         abilitiesCursor.close();
@@ -217,9 +225,26 @@ public class GoblinsGoblins extends SQLiteOpenHelper {
         return abilities;
     }
 
-    //TODO get list of all items
     public List<Item> getAllItems() {
         List<Item> items = new ArrayList<>();
+
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor itemCursor = db.query(ItemsTable.TABLE_NAME, null, null, null, null, null, null);
+
+        if (itemCursor.moveToFirst()) {
+            while (!itemCursor.isAfterLast()) {
+                long id = itemCursor.getLong(itemCursor.getColumnIndex(ItemsTable.COLUMN_ID));
+                String name = itemCursor.getString(itemCursor.getColumnIndex(ItemsTable.COLUMN_NAME));
+                String description = itemCursor.getString(itemCursor.getColumnIndex(ItemsTable.COLUMN_DESCRIPTION));
+                String type = itemCursor.getString(itemCursor.getColumnIndex(ItemsTable.COLUMN_TYPE));
+                int tier = itemCursor.getInt(itemCursor.getColumnIndex(ItemsTable.COLUMN_TIER));
+                int value = itemCursor.getInt(itemCursor.getColumnIndex(ItemsTable.COLUMN_VALUE));
+                items.add(new Item(id, name, description, type, tier, value));
+
+                itemCursor.moveToNext();
+            }
+        }
+        itemCursor.close();
 
         return items;
     }
