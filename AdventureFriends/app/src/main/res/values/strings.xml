@@ -22,6 +22,7 @@
     <string name="new_campaign_spinner_prompt">Please choose a base game</string>
     <string-array name="base_games">
         <item>Select a base game…</item>
+        <item>Goblins? Goblins!</item>
         <item>Dungeons &amp; Dragons</item>
         <item>Pathfinder</item>
         <item>Beyonder</item>

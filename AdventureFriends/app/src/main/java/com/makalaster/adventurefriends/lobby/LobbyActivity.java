@@ -180,8 +180,8 @@ public class LobbyActivity extends AppCompatActivity
 
     @Override
     public void onCreateNewCampaign(String title, String description, String baseGame) {
-        if (!baseGame.equals("Dungeons & Dragons")) {
-            Toast.makeText(this, "Please choose Dungeons & Dragons. Nothing else is available yet.", Toast.LENGTH_SHORT).show();
+        if (!baseGame.equals("Goblins? Goblins!")) {
+            Toast.makeText(this, baseGame + " support coming soon!", Toast.LENGTH_SHORT).show();
         } else {
             FirebaseUser user = mAuth.getCurrentUser();
             String dmId = null;
