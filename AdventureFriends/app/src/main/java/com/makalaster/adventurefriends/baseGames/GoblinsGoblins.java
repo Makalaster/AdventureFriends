@@ -199,16 +199,7 @@ public class GoblinsGoblins extends SQLiteOpenHelper {
 
         if (abilitiesCursor.moveToFirst()) {
             while (!abilitiesCursor.isAfterLast()) {
-                long id = abilitiesCursor.getLong(abilitiesCursor.getColumnIndex(AbilitiesTable.COLUMN_ID));
-                String name = abilitiesCursor.getString(abilitiesCursor.getColumnIndex(AbilitiesTable.COLUMN_NAME));
-                int level = abilitiesCursor.getInt(abilitiesCursor.getColumnIndex(AbilitiesTable.COLUMN_LEVEL));
-                String quote = abilitiesCursor.getString(abilitiesCursor.getColumnIndex(AbilitiesTable.COLUMN_QUOTE));
-                String description = abilitiesCursor.getString(abilitiesCursor.getColumnIndex(AbilitiesTable.COLUMN_DESCRIPTION));
-                int damage = abilitiesCursor.getInt(abilitiesCursor.getColumnIndex(AbilitiesTable.COLUMN_DAMAGE));
-                int range = abilitiesCursor.getInt(abilitiesCursor.getColumnIndex(AbilitiesTable.COLUMN_RANGE));
-                int jobId = abilitiesCursor.getInt(abilitiesCursor.getColumnIndex(AbilitiesTable.COLUMN_JOB_ID));
-                String effects = abilitiesCursor.getString(abilitiesCursor.getColumnIndex(AbilitiesTable.COLUMN_EFFECTS));
-                abilities.add(new Ability(id, name, quote, description, effects, level, damage, range, jobId));
+                abilities.add(buildAbility(abilitiesCursor));
 
                 abilitiesCursor.moveToNext();
             }
@@ -218,11 +209,39 @@ public class GoblinsGoblins extends SQLiteOpenHelper {
         return abilities;
     }
 
-    //TODO get lists of abilities by job
     public List<Ability> getAbilitiesByJob(int job) {
         List<Ability> abilities = new ArrayList<>();
 
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor abilitiesCursor = db.query(AbilitiesTable.TABLE_NAME, null,
+                AbilitiesTable.COLUMN_JOB_ID + " = ?",
+                new String[]{String.valueOf(job)},
+                null, null, null);
+
+        if (abilitiesCursor.moveToFirst()) {
+            while (!abilitiesCursor.isAfterLast()) {
+                abilities.add(buildAbility(abilitiesCursor));
+
+                abilitiesCursor.moveToNext();
+            }
+        }
+        abilitiesCursor.close();
+
         return abilities;
+    }
+
+    private Ability buildAbility(Cursor cursor) {
+        long id = cursor.getLong(cursor.getColumnIndex(AbilitiesTable.COLUMN_ID));
+        String name = cursor.getString(cursor.getColumnIndex(AbilitiesTable.COLUMN_NAME));
+        int level = cursor.getInt(cursor.getColumnIndex(AbilitiesTable.COLUMN_LEVEL));
+        String quote = cursor.getString(cursor.getColumnIndex(AbilitiesTable.COLUMN_QUOTE));
+        String description = cursor.getString(cursor.getColumnIndex(AbilitiesTable.COLUMN_DESCRIPTION));
+        int damage = cursor.getInt(cursor.getColumnIndex(AbilitiesTable.COLUMN_DAMAGE));
+        int range = cursor.getInt(cursor.getColumnIndex(AbilitiesTable.COLUMN_RANGE));
+        int jobId = cursor.getInt(cursor.getColumnIndex(AbilitiesTable.COLUMN_JOB_ID));
+        String effects = cursor.getString(cursor.getColumnIndex(AbilitiesTable.COLUMN_EFFECTS));
+
+        return new Ability(id, name, quote, description, effects, level, damage, range, jobId);
     }
 
     public List<Item> getAllItems() {
@@ -249,23 +268,87 @@ public class GoblinsGoblins extends SQLiteOpenHelper {
         return items;
     }
 
-    //TODO get list of all weapons
     public List<Weapon> getAllWeapons() {
         List<Weapon> weapons = new ArrayList<>();
+
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor weaponCursor = db.query(ItemsTable.TABLE_NAME, null,
+                ItemsTable.COLUMN_TYPE + " LIKE ?",
+                new String[]{"weapon%"},
+                null, null, null);
+
+        if (weaponCursor.moveToFirst()) {
+            while (!weaponCursor.isAfterLast()) {
+                long id = weaponCursor.getLong(weaponCursor.getColumnIndex(ItemsTable.COLUMN_ID));
+                String name = weaponCursor.getString(weaponCursor.getColumnIndex(ItemsTable.COLUMN_NAME));
+                String description = weaponCursor.getString(weaponCursor.getColumnIndex(ItemsTable.COLUMN_DESCRIPTION));
+                String type = weaponCursor.getString(weaponCursor.getColumnIndex(ItemsTable.COLUMN_TYPE));
+                int tier = weaponCursor.getInt(weaponCursor.getColumnIndex(ItemsTable.COLUMN_TIER));
+                int value = weaponCursor.getInt(weaponCursor.getColumnIndex(ItemsTable.COLUMN_VALUE));
+                String effect = weaponCursor.getString(weaponCursor.getColumnIndex(ItemsTable.COLUMN_EFFECT));
+                int range = weaponCursor.getInt(weaponCursor.getColumnIndex(ItemsTable.COLUMN_RANGE));
+                weapons.add(new Weapon(id, name, description, type, tier, value, Integer.parseInt(effect.substring(4)), range));
+
+                weaponCursor.moveToNext();
+            }
+        }
+        weaponCursor.close();
 
         return weapons;
     }
 
-    //TODO get list of all defense
     public List<Defense> getAllDefense() {
         List<Defense> defense = new ArrayList<>();
+
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor defenseCursor = db.query(ItemsTable.TABLE_NAME, null,
+                ItemsTable.COLUMN_TYPE + " LIKE ?",
+                new String[]{"defense%"},
+                null, null, null);
+
+        if (defenseCursor.moveToFirst()) {
+            while (!defenseCursor.isAfterLast()) {
+                long id = defenseCursor.getLong(defenseCursor.getColumnIndex(ItemsTable.COLUMN_ID));
+                String name = defenseCursor.getString(defenseCursor.getColumnIndex(ItemsTable.COLUMN_NAME));
+                String description = defenseCursor.getString(defenseCursor.getColumnIndex(ItemsTable.COLUMN_DESCRIPTION));
+                String type = defenseCursor.getString(defenseCursor.getColumnIndex(ItemsTable.COLUMN_TYPE));
+                int tier = defenseCursor.getInt(defenseCursor.getColumnIndex(ItemsTable.COLUMN_TIER));
+                int value = defenseCursor.getInt(defenseCursor.getColumnIndex(ItemsTable.COLUMN_VALUE));
+                String effect = defenseCursor.getString(defenseCursor.getColumnIndex(ItemsTable.COLUMN_EFFECT));
+                defense.add(new Defense(id, name, description, type, tier, value, Integer.parseInt(effect.substring(4))));
+
+                defenseCursor.moveToNext();
+            }
+        }
+        defenseCursor.close();
 
         return defense;
     }
 
-    //TODO get list of all edibles
     public List<Edible> getAllEdibles() {
         List<Edible> edibles = new ArrayList<>();
+
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor edibleCursor = db.query(ItemsTable.TABLE_NAME, null,
+                ItemsTable.COLUMN_TYPE + " LIKE ?",
+                new String[]{"weapon%"},
+                null, null, null);
+
+        if (edibleCursor.moveToFirst()) {
+            while (!edibleCursor.isAfterLast()) {
+                long id = edibleCursor.getLong(edibleCursor.getColumnIndex(ItemsTable.COLUMN_ID));
+                String name = edibleCursor.getString(edibleCursor.getColumnIndex(ItemsTable.COLUMN_NAME));
+                String description = edibleCursor.getString(edibleCursor.getColumnIndex(ItemsTable.COLUMN_DESCRIPTION));
+                String type = edibleCursor.getString(edibleCursor.getColumnIndex(ItemsTable.COLUMN_TYPE));
+                int tier = edibleCursor.getInt(edibleCursor.getColumnIndex(ItemsTable.COLUMN_TIER));
+                int value = edibleCursor.getInt(edibleCursor.getColumnIndex(ItemsTable.COLUMN_VALUE));
+                String effect = edibleCursor.getString(edibleCursor.getColumnIndex(ItemsTable.COLUMN_EFFECT));
+                edibles.add(new Edible(id, name, description, type, tier, value, effect));
+
+                edibleCursor.moveToNext();
+            }
+        }
+        edibleCursor.close();
 
         return edibles;
     }
