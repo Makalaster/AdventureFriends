@@ -1,7 +1,7 @@
 package com.makalaster.adventurefriends.model.campaign;
 
 import com.makalaster.adventurefriends.model.Note;
-import com.makalaster.adventurefriends.model.character.NPC;
+import com.makalaster.adventurefriends.model.character.NonPlayerCharacter;
 
 import java.util.HashMap;
 
@@ -14,7 +14,7 @@ public class Module {
     private int mType;
     private String mId, mTitle, mSummary;
     private HashMap<String, Note> mNotes;
-    private HashMap<String, NPC> mNPCs;
+    private HashMap<String, NonPlayerCharacter> mNPCs;
 
     public Module() {
         //Empty constructor required by FirebaseRecyclerAdapter
@@ -66,16 +66,16 @@ public class Module {
         mNotes.put(id, note);
     }
 
-    public HashMap<String, NPC> getNPCs() {
+    public HashMap<String, NonPlayerCharacter> getNPCs() {
         return mNPCs;
     }
 
-    public void setNPCs(HashMap<String, NPC> NPCs) {
+    public void setNPCs(HashMap<String, NonPlayerCharacter> NPCs) {
         mNPCs = NPCs;
     }
 
-    public void addNPC(String id, NPC npc) {
-        mNPCs.put(id, npc);
+    public void addNPC(String id, NonPlayerCharacter nonPlayerCharacter) {
+        mNPCs.put(id, nonPlayerCharacter);
     }
 
     public void setType(int type) {

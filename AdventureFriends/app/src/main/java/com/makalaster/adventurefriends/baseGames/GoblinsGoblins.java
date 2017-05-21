@@ -169,6 +169,24 @@ public class GoblinsGoblins extends SQLiteOpenHelper {
         return sizes;
     }
 
+    public Size getSizeById(long id) {
+        Size size = null;
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor sizeCursor = db.query(SizesTable.TABLE_NAME, null,
+                SizesTable.COLUMN_ID + " = ?",
+                new String[]{String.valueOf(id)},
+                null, null, null);
+        if (sizeCursor.moveToFirst()) {
+            String name = sizeCursor.getString(sizeCursor.getColumnIndex(SizesTable.COLUMN_NAME));
+            String description = sizeCursor.getString(sizeCursor.getColumnIndex(SizesTable.COLUMN_DESCRIPTION));
+            String bonus = sizeCursor.getString(sizeCursor.getColumnIndex(SizesTable.COLUMN_BONUS));
+
+            size = new Size(id, name, description, bonus);
+        }
+        sizeCursor.close();
+        return size;
+    }
+
     public List<Job> getAllJobs() {
         List<Job> jobs = new ArrayList<>();
 
@@ -189,6 +207,24 @@ public class GoblinsGoblins extends SQLiteOpenHelper {
         jobsCursor.close();
 
         return jobs;
+    }
+
+    public Job getJobById(long id) {
+        Job job = null;
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor jobCursor = db.query(JobsTable.TABLE_NAME, null,
+                SizesTable.COLUMN_ID + " = ?",
+                new String[]{String.valueOf(id)},
+                null, null, null);
+        if (jobCursor.moveToFirst()) {
+            String name = jobCursor.getString(jobCursor.getColumnIndex(SizesTable.COLUMN_NAME));
+            String description = jobCursor.getString(jobCursor.getColumnIndex(SizesTable.COLUMN_DESCRIPTION));
+            String bonus = jobCursor.getString(jobCursor.getColumnIndex(SizesTable.COLUMN_BONUS));
+
+            job = new Job(id, name, description, bonus);
+        }
+        jobCursor.close();
+        return job;
     }
 
     public List<Ability> getAllAbilities() {

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.makalaster.adventurefriends.dm.dmFragments.module.NewNoteFragment">
+    tools:context="com.makalaster.adventurefriends.dm.dmFragments.module.notes.NewNoteFragment">
 
     <!-- TODO extract strings -->
     <TextView

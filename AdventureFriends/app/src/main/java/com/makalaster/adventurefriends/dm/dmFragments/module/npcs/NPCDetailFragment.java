@@ -1,4 +1,4 @@
-package com.makalaster.adventurefriends.dm.dmFragments.module;
+package com.makalaster.adventurefriends.dm.dmFragments.module.npcs;
 
 import android.content.Context;
 import android.net.Uri;
@@ -13,12 +13,12 @@ import com.makalaster.adventurefriends.R;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link NewNPCFragment.OnFragmentInteractionListener} interface
+ * {@link NPCDetailFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link NewNPCFragment#newInstance} factory method to
+ * Use the {@link NPCDetailFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class NewNPCFragment extends Fragment {
+public class NPCDetailFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -30,7 +30,7 @@ public class NewNPCFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public NewNPCFragment() {
+    public NPCDetailFragment() {
         // Required empty public constructor
     }
 
@@ -40,11 +40,11 @@ public class NewNPCFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment NewNPCFragment.
+     * @return A new instance of fragment NPCDetailFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static NewNPCFragment newInstance(String param1, String param2) {
-        NewNPCFragment fragment = new NewNPCFragment();
+    public static NPCDetailFragment newInstance(String param1, String param2) {
+        NPCDetailFragment fragment = new NPCDetailFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -65,7 +65,7 @@ public class NewNPCFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_new_npc, container, false);
+        return inflater.inflate(R.layout.fragment_npcdetail, container, false);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -82,7 +82,7 @@ public class NewNPCFragment extends Fragment {
             mListener = (OnFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement NoteListener");
+                    + " must implement CreateNPCListener");
         }
     }
 

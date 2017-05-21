@@ -24,13 +24,17 @@ import com.makalaster.adventurefriends.dm.dmFragments.module.MapPageFragment;
 import com.makalaster.adventurefriends.dm.dmFragments.module.ModuleHolder;
 import com.makalaster.adventurefriends.dm.dmFragments.module.ModulePagerFragment;
 import com.makalaster.adventurefriends.dm.dmFragments.module.NPCsPageFragment;
-import com.makalaster.adventurefriends.dm.dmFragments.module.NewNoteFragment;
-import com.makalaster.adventurefriends.dm.dmFragments.module.NoteDetailFragment;
+import com.makalaster.adventurefriends.dm.dmFragments.module.notes.NewNoteFragment;
+import com.makalaster.adventurefriends.dm.dmFragments.module.notes.NoteDetailFragment;
 import com.makalaster.adventurefriends.dm.dmFragments.module.NotesPageFragment;
 import com.makalaster.adventurefriends.dm.dmFragments.module.OverviewPageFragment;
+import com.makalaster.adventurefriends.dm.dmFragments.module.npcs.NewNPCFragment;
 import com.makalaster.adventurefriends.lobby.LobbyActivity;
 import com.makalaster.adventurefriends.model.Note;
 import com.makalaster.adventurefriends.model.campaign.Module;
+import com.makalaster.adventurefriends.model.character.NonPlayerCharacter;
+import com.makalaster.adventurefriends.model.character.components.Job;
+import com.makalaster.adventurefriends.model.character.components.Size;
 
 public class DMActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
@@ -38,6 +42,7 @@ public class DMActivity extends AppCompatActivity
         NewModuleFragment.OnNewModuleCreatedListener,
         OverviewPageFragment.OnLoadModuleListener,
         NPCsPageFragment.OnAddNPCListener,
+        NewNPCFragment.CreateNPCListener,
         NotesPageFragment.NoteListener,
         MapPageFragment.OnFragmentInteractionListener,
         NewNoteFragment.OnCreateNoteListener,
@@ -94,6 +99,12 @@ public class DMActivity extends AppCompatActivity
                     mFragmentManager.popBackStack();
                     break;
                 case "note_detail":
+                    mFragmentManager.popBackStack();
+                    break;
+                case "new_npc":
+                    mFragmentManager.popBackStack();
+                    break;
+                case "npc_detail":
                     mFragmentManager.popBackStack();
                     break;
                 default:
@@ -201,7 +212,25 @@ public class DMActivity extends AppCompatActivity
 
     @Override
     public void onAddNPC() {
+        Fragment newNPCFragment = NewNPCFragment.newInstance();
+        mFragmentManager.beginTransaction()
+                .addToBackStack(null)
+                .replace(R.id.dm_fragment_container, newNPCFragment, "new_npc")
+                .commit();
+    }
 
+    @Override
+    public void onCreateNPC(String name, int level, int money, Size size, Job job) {
+        Module module = ModuleHolder.getInstance().getModule();
+
+        DatabaseReference currentModuleReference = FirebaseDatabase.getInstance().getReference("campaigns/" + mCampaignId + "/modules/" + module.getId());
+        DatabaseReference newNpc = currentModuleReference.child("npcs").push();
+        String id = newNpc.getKey();
+        NonPlayerCharacter newLocalNonPlayerCharacter = new NonPlayerCharacter(name, id, level, size, job, money);
+        newNpc.setValue(newLocalNonPlayerCharacter);
+        ModuleHolder.getInstance().addNPC(id, newLocalNonPlayerCharacter);
+
+        mFragmentManager.popBackStack();
     }
 
     @Override

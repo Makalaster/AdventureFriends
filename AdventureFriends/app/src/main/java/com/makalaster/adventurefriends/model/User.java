@@ -1,11 +1,9 @@
 package com.makalaster.adventurefriends.model;
 
 import com.makalaster.adventurefriends.model.campaign.Campaign;
-import com.makalaster.adventurefriends.model.character.Character;
+import com.makalaster.adventurefriends.model.character.PlayerCharacter;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 /**
  * Created by Makalaster on 5/17/17.
@@ -16,7 +14,7 @@ public class User {
     private String mName;
     private String mEmail;
     private HashMap<String, Campaign> mCampaigns;
-    private HashMap<String, Character> mCharacters;
+    private HashMap<String, PlayerCharacter> mCharacters;
 
     public User(String id, String name, String email) {
         mId = id;
@@ -34,7 +32,7 @@ public class User {
         return mCampaigns;
     }
 
-    public HashMap<String, Character> getCharacters() {
+    public HashMap<String, PlayerCharacter> getCharacters() {
         return mCharacters;
     }
 
@@ -58,12 +56,12 @@ public class User {
         mCampaigns.put(id, campaign);
     }
 
-    public void setCharacters(HashMap<String, Character> characters) {
+    public void setCharacters(HashMap<String, PlayerCharacter> characters) {
         mCharacters = characters;
     }
 
-    public void addCharacter(String id, Character character) {
-        mCharacters.put(id, character);
+    public void addCharacter(String id, PlayerCharacter playerCharacter) {
+        mCharacters.put(id, playerCharacter);
     }
 
     public String getName() {

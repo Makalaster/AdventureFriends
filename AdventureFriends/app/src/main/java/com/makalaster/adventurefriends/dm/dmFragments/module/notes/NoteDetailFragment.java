@@ -1,4 +1,4 @@
-package com.makalaster.adventurefriends.dm.dmFragments.module;
+package com.makalaster.adventurefriends.dm.dmFragments.module.notes;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.makalaster.adventurefriends.R;
+import com.makalaster.adventurefriends.dm.dmFragments.module.ModuleHolder;
 import com.makalaster.adventurefriends.model.Note;
 
 /**
@@ -27,7 +28,9 @@ public class NoteDetailFragment extends Fragment {
     private static final String ARG_NOTE_ID = "note_id";
 
     private String mNoteId;
-
+    private TextView mTitleText, mBodyText;
+    private EditText mEditTitle, mEditBody;
+    private Button mSaveButton, mCancelButton;
     private OnNoteSavedListener mListener;
 
     public NoteDetailFragment() {
@@ -63,10 +66,6 @@ public class NoteDetailFragment extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_note_detail, container, false);
     }
-
-    private TextView mTitleText, mBodyText;
-    private EditText mEditTitle, mEditBody;
-    private Button mSaveButton, mCancelButton;
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {

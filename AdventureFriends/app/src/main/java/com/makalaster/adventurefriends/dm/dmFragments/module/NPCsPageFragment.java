@@ -17,7 +17,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.makalaster.adventurefriends.R;
 import com.makalaster.adventurefriends.dm.CampaignHolder;
 import com.makalaster.adventurefriends.dm.dmFragments.module.moduleItemRecyclerView.ItemHolder;
-import com.makalaster.adventurefriends.model.character.NPC;
+import com.makalaster.adventurefriends.model.character.NonPlayerCharacter;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -46,7 +46,6 @@ public class NPCsPageFragment extends Fragment {
      * @param moduleId Parameter 1.
      * @return A new instance of fragment NPCsPageFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static NPCsPageFragment newInstance(String moduleId) {
         NPCsPageFragment fragment = new NPCsPageFragment();
         Bundle args = new Bundle();
@@ -88,9 +87,9 @@ public class NPCsPageFragment extends Fragment {
 
         RecyclerView npcRecycler = (RecyclerView) view.findViewById(R.id.npc_recycler_view);
         npcRecycler.setLayoutManager(new LinearLayoutManager(view.getContext(), LinearLayoutManager.VERTICAL, false));
-        npcRecycler.setAdapter(new FirebaseRecyclerAdapter<NPC, ItemHolder>(NPC.class, R.layout.layout_module_item, ItemHolder.class, npcs) {
+        npcRecycler.setAdapter(new FirebaseRecyclerAdapter<NonPlayerCharacter, ItemHolder>(NonPlayerCharacter.class, R.layout.layout_module_item, ItemHolder.class, npcs) {
             @Override
-            protected void populateViewHolder(ItemHolder viewHolder, final NPC model, int position) {
+            protected void populateViewHolder(ItemHolder viewHolder, final NonPlayerCharacter model, int position) {
                 viewHolder.mName.setText(model.getName());
                 viewHolder.mItem.setOnClickListener(new View.OnClickListener() {
                     @Override

@@ -6,6 +6,7 @@ package com.makalaster.adventurefriends.model.character.components.item;
 
 public class Defense extends Item {
     private int mDefense;
+    private boolean mIsEquipped;
 
     public Defense(long id, String name, String description, String type, int tier, int value, int defense) {
         super(id, name, description, type, tier, value);
@@ -15,5 +16,13 @@ public class Defense extends Item {
 
     public int getDefense() {
         return mDefense;
+    }
+
+    public boolean isEquipped() {
+        return mIsEquipped;
+    }
+
+    public void setEquipped(boolean equipped) {
+        mIsEquipped = equipped;
     }
 }
