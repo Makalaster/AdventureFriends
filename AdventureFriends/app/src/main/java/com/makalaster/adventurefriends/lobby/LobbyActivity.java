@@ -209,6 +209,8 @@ public class LobbyActivity extends AppCompatActivity
                 CampaignHolder.getInstance().loadCampaign(campaignId);
                 startActivity(dmIntent);
                 finish();
+            } else {
+
             }
         }
     }
