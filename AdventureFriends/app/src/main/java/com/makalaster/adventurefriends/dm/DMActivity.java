@@ -28,6 +28,7 @@ import com.makalaster.adventurefriends.dm.dmFragments.module.notes.NewNoteFragme
 import com.makalaster.adventurefriends.dm.dmFragments.module.notes.NoteDetailFragment;
 import com.makalaster.adventurefriends.dm.dmFragments.module.NotesPageFragment;
 import com.makalaster.adventurefriends.dm.dmFragments.module.OverviewPageFragment;
+import com.makalaster.adventurefriends.dm.dmFragments.module.npcs.NPCDetailFragment;
 import com.makalaster.adventurefriends.dm.dmFragments.module.npcs.NewNPCFragment;
 import com.makalaster.adventurefriends.lobby.LobbyActivity;
 import com.makalaster.adventurefriends.model.Note;
@@ -235,7 +236,11 @@ public class DMActivity extends AppCompatActivity
 
     @Override
     public void onSelectNPC(String id) {
-
+        Fragment npcDetailFragment = NPCDetailFragment.newInstance(id);
+        mFragmentManager.beginTransaction()
+                .addToBackStack(null)
+                .replace(R.id.dm_fragment_container, npcDetailFragment, "npc_detail")
+                .commit();
     }
 
     @Override

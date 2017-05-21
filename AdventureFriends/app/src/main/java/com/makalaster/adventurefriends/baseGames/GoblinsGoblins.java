@@ -36,6 +36,7 @@ public class GoblinsGoblins extends SQLiteOpenHelper {
         public static final String COLUMN_RANGE = "range";
         public static final String COLUMN_JOB_ID = "job_id";
         public static final String COLUMN_EFFECTS = "effects";
+        public static final String COLUMN_CHECK = "check";
     }
 
     private static final String SQL_CREATE_TABLE_ABILITIES =
@@ -48,7 +49,8 @@ public class GoblinsGoblins extends SQLiteOpenHelper {
                     AbilitiesTable.COLUMN_DAMAGE + " INTEGER," +
                     AbilitiesTable.COLUMN_RANGE + " INTEGER," +
                     AbilitiesTable.COLUMN_JOB_ID + " INTEGER," +
-                    AbilitiesTable.COLUMN_EFFECTS + " TEXT)";
+                    AbilitiesTable.COLUMN_EFFECTS + " TEXT," +
+                    AbilitiesTable.COLUMN_CHECK + " TEXT)";
 
     private static final String SQL_DELETE_ENTRIES_ABILITIES =
             "DROP TABLE IF EXISTS " + AbilitiesTable.TABLE_NAME;
@@ -276,8 +278,9 @@ public class GoblinsGoblins extends SQLiteOpenHelper {
         int range = cursor.getInt(cursor.getColumnIndex(AbilitiesTable.COLUMN_RANGE));
         int jobId = cursor.getInt(cursor.getColumnIndex(AbilitiesTable.COLUMN_JOB_ID));
         String effects = cursor.getString(cursor.getColumnIndex(AbilitiesTable.COLUMN_EFFECTS));
+        String check = cursor.getString(cursor.getColumnIndex(AbilitiesTable.COLUMN_CHECK));
 
-        return new Ability(id, name, quote, description, effects, level, damage, range, jobId);
+        return new Ability(id, name, quote, description, effects, level, damage, range, jobId, check);
     }
 
     public List<Item> getAllItems() {
