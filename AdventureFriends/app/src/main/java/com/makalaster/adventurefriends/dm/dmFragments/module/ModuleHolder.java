@@ -22,7 +22,9 @@ public class ModuleHolder {
     private HashMap<String, NonPlayerCharacter> mNPCs;
 
     private ModuleHolder() {
-
+        mModule = new Module();
+        mNotes = new HashMap<>();
+        mNPCs = new HashMap<>();
     }
 
     public static ModuleHolder getInstance() {
@@ -64,6 +66,9 @@ public class ModuleHolder {
     }
 
     public void addNote(String noteId, Note note) {
+        if (mNotes == null) {
+            mNotes = new HashMap<>();
+        }
         mNotes.put(noteId, note);
     }
 
@@ -72,6 +77,9 @@ public class ModuleHolder {
     }
 
     public void addNPC(String NPCId, NonPlayerCharacter nonPlayerCharacter) {
+        if (mNPCs == null) {
+            mNPCs = new HashMap<>();
+        }
         mNPCs.put(NPCId, nonPlayerCharacter);
     }
 }
