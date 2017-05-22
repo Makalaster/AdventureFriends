@@ -79,7 +79,6 @@ public class DMActivity extends AppCompatActivity
     private void loadModuleList(String id) {
         ModuleListFragment moduleListFragment = ModuleListFragment.newInstance(id);
         mFragmentManager.beginTransaction()
-                //.addToBackStack(null)
                 .replace(R.id.dm_fragment_container, moduleListFragment, "module_list")
                 .commit();
     }
@@ -117,6 +116,7 @@ public class DMActivity extends AppCompatActivity
     }
 
     private void confirmAndExit() {
+        //TODO make confirmation
         Intent returnToLobby = new Intent(this, LobbyActivity.class);
         startActivity(returnToLobby);
         finish();

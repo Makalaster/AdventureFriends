@@ -5,11 +5,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.makalaster.adventurefriends.model.Note;
 import com.makalaster.adventurefriends.model.campaign.Campaign;
 import com.makalaster.adventurefriends.model.campaign.Module;
+import com.makalaster.adventurefriends.model.character.PlayerCharacter;
 
-import java.util.Map;
+import java.util.HashMap;
 
 /**
  * Created by Makalaster on 5/19/17.
@@ -17,7 +17,8 @@ import java.util.Map;
 
 public class CampaignHolder {
     private Campaign mCampaign;
-    private Map<String, Module> mModules;
+    private HashMap<String, Module> mModules;
+    private HashMap<String, PlayerCharacter> mPlayers;
 
     private static CampaignHolder sInstance;
 
@@ -39,6 +40,7 @@ public class CampaignHolder {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 mCampaign = dataSnapshot.getValue(Campaign.class);
                 mModules = mCampaign.getModules();
+                mPlayers = mCampaign.getPlayers();
             }
 
             @Override
@@ -51,6 +53,7 @@ public class CampaignHolder {
     public void clearCampaign() {
         mCampaign = null;
         mModules = null;
+        mPlayers = null;
     }
 
     public Module getModuleById(String moduleId) {
@@ -62,6 +65,20 @@ public class CampaignHolder {
     }
 
     public void addModule(String newId, Module newModule) {
+        if (mModules == null) {
+            mModules = new HashMap<>();
+        }
         mModules.put(newId, newModule);
+    }
+
+    public HashMap<String, PlayerCharacter> getPlayers() {
+        return mPlayers;
+    }
+
+    public void addPlayer(String id, PlayerCharacter player) {
+        if (mPlayers == null) {
+            mPlayers = new HashMap<>();
+        }
+        mPlayers.put(id, player);
     }
 }

@@ -1,12 +1,8 @@
 package com.makalaster.adventurefriends.model.campaign;
 
-import com.makalaster.adventurefriends.model.player.Player;
+import com.makalaster.adventurefriends.model.character.PlayerCharacter;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Makalaster on 5/16/17.
@@ -14,8 +10,8 @@ import java.util.Map;
 
 public class Campaign {
     private String mCampaignId, mCampaignName, mBaseGame, mDmId, mCharacterName, mDescription;
-    private Map<String, Player> mPlayers;
-    private Map<String, Module> mModules;
+    private HashMap<String, PlayerCharacter> mPlayers;
+    private HashMap<String, Module> mModules;
 
     public Campaign() {
         //Empty constructor required by FirebaseRecyclerAdapter
@@ -56,7 +52,7 @@ public class Campaign {
         mBaseGame = baseGame;
     }
 
-    public Map<String, Player> getPlayers() {
+    public HashMap<String, PlayerCharacter> getPlayers() {
         return mPlayers;
     }
 
@@ -64,15 +60,15 @@ public class Campaign {
         mDmId = dmId;
     }
 
-    public void setPlayers(HashMap<String, Player> players) {
+    public void setPlayers(HashMap<String, PlayerCharacter> players) {
         mPlayers = players;
     }
 
-    public void addPlayer(String id, Player player) {
+    public void addPlayer(String id, PlayerCharacter player) {
         mPlayers.put(id, player);
     }
 
-    public void setModules(Map<String, Module> modules) {
+    public void setModules(HashMap<String, Module> modules) {
         mModules = modules;
     }
 
@@ -80,7 +76,7 @@ public class Campaign {
         mModules.put(id, module);
     }
 
-    public Map<String, Module> getModules() {
+    public HashMap<String, Module> getModules() {
         return mModules;
     }
 

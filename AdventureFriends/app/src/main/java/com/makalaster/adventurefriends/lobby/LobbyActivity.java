@@ -34,6 +34,10 @@ import com.makalaster.adventurefriends.lobby.lobbyFragments.CampaignDetailFragme
 import com.makalaster.adventurefriends.lobby.lobbyFragments.CampaignListFragment;
 import com.makalaster.adventurefriends.lobby.lobbyFragments.NewCampaignFragment;
 import com.makalaster.adventurefriends.model.campaign.Campaign;
+import com.makalaster.adventurefriends.model.character.PlayerCharacter;
+import com.makalaster.adventurefriends.player.PlayerActivity;
+
+import java.util.ArrayList;
 
 public class LobbyActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
@@ -174,7 +178,24 @@ public class LobbyActivity extends AppCompatActivity
 
     @Override
     public void onJoinCampaign(String campaignId) {
-        Toast.makeText(this, "Joining campaign " + campaignId, Toast.LENGTH_SHORT).show();
+        CampaignHolder holder = CampaignHolder.getInstance();
+        holder.loadCampaign(campaignId);
+        ArrayList<PlayerCharacter> players = new ArrayList<>();
+        players.addAll(holder.getPlayers().values());
+
+        boolean userAlreadyInCampaign = false;
+        for (PlayerCharacter player : players) {
+            if (player.getOwnerId().equals(mAuth.getCurrentUser().getUid())) {
+                userAlreadyInCampaign = true;
+            }
+        }
+
+        Intent playerIntent = new Intent(this, PlayerActivity.class);
+        playerIntent.putExtra(ModuleListFragment.ARG_CAMPAIGN_ID, campaignId);
+        playerIntent.putExtra("user_exists", userAlreadyInCampaign);
+        CampaignHolder.getInstance().loadCampaign(campaignId);
+        startActivity(playerIntent);
+        finish();
     }
 
     @Override
@@ -210,7 +231,12 @@ public class LobbyActivity extends AppCompatActivity
                 startActivity(dmIntent);
                 finish();
             } else {
-
+                Intent playerIntent = new Intent(this, PlayerActivity.class);
+                playerIntent.putExtra(ModuleListFragment.ARG_CAMPAIGN_ID, campaignId);
+                playerIntent.putExtra("new_character", false);
+                CampaignHolder.getInstance().loadCampaign(campaignId);
+                startActivity(playerIntent);
+                finish();
             }
         }
     }

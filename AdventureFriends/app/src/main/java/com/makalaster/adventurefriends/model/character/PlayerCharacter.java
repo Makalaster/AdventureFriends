@@ -15,12 +15,15 @@ public class PlayerCharacter extends NonPlayerCharacter {
     private static final int STARTING_LEVEL = 1;
 
     private int mCurrentXP, mXPtoNext;
+    private String mOwnerId;
 
     public PlayerCharacter() {
     }
 
-    public PlayerCharacter(String name, String id, Size size, Job job) {
+    public PlayerCharacter(String name, String id, Size size, Job job, String ownerId) {
         super(name, id, STARTING_LEVEL, size, job, STARTING_MONEY);
+
+        mOwnerId = ownerId;
     }
 
     public int getCurrentXP() {
@@ -37,6 +40,22 @@ public class PlayerCharacter extends NonPlayerCharacter {
 
     public void setXPtoNext(int XPtoNext) {
         mXPtoNext = XPtoNext;
+    }
+
+    public static int getStartingMoney() {
+        return STARTING_MONEY;
+    }
+
+    public static int getStartingLevel() {
+        return STARTING_LEVEL;
+    }
+
+    public String getOwnerId() {
+        return mOwnerId;
+    }
+
+    public void setOwnerId(String ownerId) {
+        mOwnerId = ownerId;
     }
 
     public void loot(NonPlayerCharacter nonPlayerCharacter) {
