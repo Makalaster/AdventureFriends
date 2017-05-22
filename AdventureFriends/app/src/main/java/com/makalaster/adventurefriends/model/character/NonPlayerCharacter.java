@@ -10,7 +10,6 @@ import com.makalaster.adventurefriends.model.character.components.item.Item;
 import com.makalaster.adventurefriends.model.character.components.item.Weapon;
 
 import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by Makalaster on 5/18/17.

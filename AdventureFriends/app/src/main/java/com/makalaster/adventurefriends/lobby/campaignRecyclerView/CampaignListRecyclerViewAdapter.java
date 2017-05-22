@@ -40,7 +40,7 @@ public class CampaignListRecyclerViewAdapter extends RecyclerView.Adapter<Campai
         holder.mCampaignListItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mOnCampaignSelectedListener.onCampaignSelected(currentCampaign.getCampaignId());
+                mOnCampaignSelectedListener.onCampaignSelected(currentCampaign.getCampaignId(), currentCampaign.getDmId());
             }
         });
     }

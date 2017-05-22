@@ -36,25 +36,11 @@ public class PlayerCharacterHolder {
         return sInstance;
     }
 
-    public void loadCharacter(String id) {
-        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        DatabaseReference character = FirebaseDatabase.getInstance().getReference("users/" + uid + "/characters/" + id);
-        character.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.getValue() != null) {
-                    mPlayerCharacter = dataSnapshot.getValue(PlayerCharacter.class);
-                    mAbilities = mPlayerCharacter.getAbilities();
-                    mInventory = mPlayerCharacter.getInventory();
-                    mNotes = mPlayerCharacter.getNotes();
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
+    public void loadCharacter(PlayerCharacter playerCharacter) {
+        mPlayerCharacter = playerCharacter;
+        mAbilities = playerCharacter.getAbilities();
+        mInventory = playerCharacter.getInventory();
+        mNotes = playerCharacter.getNotes();
     }
 
     public void clearCharacter() {

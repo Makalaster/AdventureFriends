@@ -39,6 +39,7 @@ import com.makalaster.adventurefriends.lobby.lobbyFragments.NewCampaignFragment;
 import com.makalaster.adventurefriends.model.campaign.Campaign;
 import com.makalaster.adventurefriends.model.character.PlayerCharacter;
 import com.makalaster.adventurefriends.player.PlayerActivity;
+import com.makalaster.adventurefriends.player.PlayerCharacterHolder;
 
 import java.util.ArrayList;
 
@@ -164,7 +165,7 @@ public class LobbyActivity extends AppCompatActivity
     }
 
     @Override
-    public void onCampaignSelected(String campaignId) {
+    public void onCampaignSelected(String campaignId, String dmId) {
         CampaignHolder.getInstance().loadCampaign(campaignId);
 
         Fragment campaignDetailFragment = CampaignDetailFragment.newInstance(campaignId);
@@ -200,7 +201,6 @@ public class LobbyActivity extends AppCompatActivity
         Intent playerIntent = new Intent(this, PlayerActivity.class);
         playerIntent.putExtra(ModuleListFragment.ARG_CAMPAIGN_ID, campaignId);
         playerIntent.putExtra("user_exists", userAlreadyInCampaign);
-        CampaignHolder.getInstance().loadCampaign(campaignId);
         startActivity(playerIntent);
         finish();
     }
@@ -247,7 +247,6 @@ public class LobbyActivity extends AppCompatActivity
             } else {
                 Intent playerIntent = new Intent(this, PlayerActivity.class);
                 playerIntent.putExtra(ModuleListFragment.ARG_CAMPAIGN_ID, campaignId);
-                playerIntent.putExtra("new_character", false);
                 CampaignHolder.getInstance().loadCampaign(campaignId);
                 startActivity(playerIntent);
                 finish();

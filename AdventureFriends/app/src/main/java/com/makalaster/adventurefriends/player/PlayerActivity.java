@@ -3,12 +3,9 @@ package com.makalaster.adventurefriends.player;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.view.View;
-import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -18,8 +15,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.makalaster.adventurefriends.R;
 import com.makalaster.adventurefriends.dm.CampaignHolder;
 import com.makalaster.adventurefriends.dm.dmFragments.ModuleListFragment;
@@ -33,7 +33,8 @@ import com.makalaster.adventurefriends.player.pages.EquipmentPageFragment;
 import com.makalaster.adventurefriends.player.pages.InventoryPageFragment;
 import com.makalaster.adventurefriends.player.pages.MapPageFragment;
 import com.makalaster.adventurefriends.player.pages.NotesPageFragment;
-import com.makalaster.adventurefriends.player.pages.StatsPageFragment;
+
+import java.util.ArrayList;
 
 public class PlayerActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
@@ -42,7 +43,6 @@ public class PlayerActivity extends AppCompatActivity
         InventoryPageFragment.OnFragmentInteractionListener,
         MapPageFragment.OnFragmentInteractionListener,
         NotesPageFragment.OnFragmentInteractionListener,
-        StatsPageFragment.OnFragmentInteractionListener,
         NewCharacterFragment.OnPlayerCharacterCreatedListener {
 
     private FragmentManager mFragmentManager;
@@ -71,14 +71,45 @@ public class PlayerActivity extends AppCompatActivity
         boolean userAlreadyInCampaign = args.getBoolean("user_exists", true);
 
         if (userAlreadyInCampaign) {
-            displayPager();
+            loadPlayer();
         } else {
             displayNewCharacter();
         }
     }
 
+    public void loadPlayer() {
+        CampaignHolder holder = CampaignHolder.getInstance();
+        holder.loadCampaign(mCurrentCampaignId);
+        ArrayList<PlayerCharacter> players = new ArrayList<>();
+        players.addAll(holder.getPlayers().values());
+
+        String characterId = "";
+        for (PlayerCharacter player : players) {
+            if (player.getOwnerId().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+                characterId = player.getId();
+            }
+        }
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        DatabaseReference character = FirebaseDatabase.getInstance().getReference("users/" + uid + "/characters/" + characterId);
+        character.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getValue() != null) {
+                    PlayerCharacter playerCharacter = dataSnapshot.getValue(PlayerCharacter.class);
+                    PlayerCharacterHolder.getInstance().loadCharacter(playerCharacter);
+                    displayPager();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
     public void displayPager() {
-        Fragment pagerFragment = PlayerPagerFragment.newInstance("", "");
+        Fragment pagerFragment = PlayerPagerFragment.newInstance();
         mFragmentManager.beginTransaction()
                 .replace(R.id.player_fragment_container, pagerFragment, "pager")
                 .commit();

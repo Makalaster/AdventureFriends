@@ -25,7 +25,7 @@ public class PlayerPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return StatsPageFragment.newInstance("", "");
+                return StatsPageFragment.newInstance();
             case 1:
                 return AbilitiesPageFragment.newInstance("", "");
             case 2:

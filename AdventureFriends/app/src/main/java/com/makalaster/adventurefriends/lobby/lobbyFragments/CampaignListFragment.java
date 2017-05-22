@@ -215,7 +215,7 @@ public class CampaignListFragment extends Fragment implements View.OnClickListen
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnCampaignSelectedListener {
-        void onCampaignSelected(String campaignId);
+        void onCampaignSelected(String campaignId, String dmId);
         void onNewCampaign();
         void onJoinCampaign(String campaignId);
     }

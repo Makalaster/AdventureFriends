@@ -40,9 +40,7 @@ public class CampaignHolder {
         campaign.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.getValue() == null) {
-
-                } else {
+                if (dataSnapshot.getValue() != null) {
                     mCampaign = dataSnapshot.getValue(Campaign.class);
                     mModules = mCampaign.getModules();
                     mPlayers = mCampaign.getPlayers();
