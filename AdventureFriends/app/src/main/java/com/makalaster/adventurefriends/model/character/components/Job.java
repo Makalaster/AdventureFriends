@@ -61,4 +61,20 @@ public class Job {
         }
         return essence;
     }
+
+    public void setId(long id) {
+        mId = id;
+    }
+
+    public void setName(String name) {
+        mName = name;
+    }
+
+    public void setDescription(String description) {
+        mDescription = description;
+    }
+
+    public void setBonus(String bonus) {
+        mBonus = bonus;
+    }
 }

@@ -1,9 +1,11 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-              android:orientation="vertical"
-             tools:context="com.makalaster.adventurefriends.player.NewCharacterFragment">
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="12dp"
+    tools:context="com.makalaster.adventurefriends.player.NewCharacterFragment">
 
     <!-- TODO extract strings -->
     <LinearLayout
@@ -16,7 +18,7 @@
             android:text="Name:"/>
 
         <EditText
-            android:id="@+id/npc_name_edit_text"
+            android:id="@+id/character_name_edit_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Name"/>
@@ -58,7 +60,7 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/create_npc_button"
+        android:id="@+id/create_character_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="create"/>

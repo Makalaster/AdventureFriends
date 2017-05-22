@@ -36,7 +36,7 @@ public class CampaignListRecyclerViewAdapter extends RecyclerView.Adapter<Campai
         final Campaign currentCampaign = mCampaigns.get(position);
 
         holder.mCampaignName.setText(currentCampaign.getCampaignName());
-        holder.mCharacterName.setText(currentCampaign.getBaseGame());
+        holder.mCharacterName.setText(currentCampaign.getCharacterName());
         holder.mCampaignListItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

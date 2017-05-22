@@ -1,5 +1,7 @@
 package com.makalaster.adventurefriends.dm;
 
+import android.widget.Toast;
+
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -38,9 +40,13 @@ public class CampaignHolder {
         campaign.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                mCampaign = dataSnapshot.getValue(Campaign.class);
-                mModules = mCampaign.getModules();
-                mPlayers = mCampaign.getPlayers();
+                if (dataSnapshot.getValue() == null) {
+
+                } else {
+                    mCampaign = dataSnapshot.getValue(Campaign.class);
+                    mModules = mCampaign.getModules();
+                    mPlayers = mCampaign.getPlayers();
+                }
             }
 
             @Override
@@ -72,6 +78,9 @@ public class CampaignHolder {
     }
 
     public HashMap<String, PlayerCharacter> getPlayers() {
+        if (mPlayers == null) {
+            mPlayers = new HashMap<>();
+        }
         return mPlayers;
     }
 

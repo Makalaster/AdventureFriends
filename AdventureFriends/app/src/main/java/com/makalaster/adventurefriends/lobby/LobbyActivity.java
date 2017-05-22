@@ -23,8 +23,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.makalaster.adventurefriends.LoginActivity;
 import com.makalaster.adventurefriends.R;
 import com.makalaster.adventurefriends.dm.CampaignHolder;
@@ -48,6 +51,7 @@ public class LobbyActivity extends AppCompatActivity
     public static final String USER_NAME = "name";
     public static final String USER_EMAIL = "email";
 
+    private boolean mExists;
     private FirebaseAuth mAuth;
     private FragmentManager mFragmentManager;
 
@@ -98,6 +102,7 @@ public class LobbyActivity extends AppCompatActivity
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
+            CampaignHolder.getInstance().clearCampaign();
         }
     }
 
@@ -160,10 +165,12 @@ public class LobbyActivity extends AppCompatActivity
 
     @Override
     public void onCampaignSelected(String campaignId) {
+        CampaignHolder.getInstance().loadCampaign(campaignId);
+
         Fragment campaignDetailFragment = CampaignDetailFragment.newInstance(campaignId);
         mFragmentManager.beginTransaction()
                 .addToBackStack(null)
-                .replace(R.id.lobby_fragment_container, campaignDetailFragment)
+                .replace(R.id.lobby_fragment_container, campaignDetailFragment, "detail_fragment")
                 .commit();
     }
 
@@ -209,10 +216,17 @@ public class LobbyActivity extends AppCompatActivity
                 dmId = user.getUid();
             }
 
+            DatabaseReference userReference = FirebaseDatabase.getInstance().getReference("users/" + user.getUid() + "/campaigns");
+
             DatabaseReference campaignReference = FirebaseDatabase.getInstance().getReference("campaigns");
             DatabaseReference newCampaign = campaignReference.push();
             String id = newCampaign.getKey();
-            newCampaign.setValue(new Campaign(id, title, baseGame, dmId, description));
+
+            Campaign newLocalCampaign = new Campaign(id, title, baseGame, dmId, description);
+            CampaignHolder.getInstance().loadCampaign(id);
+            newCampaign.setValue(newLocalCampaign);
+
+            userReference.child(id).setValue(newLocalCampaign);
 
             Intent dmIntent = new Intent(this, DMActivity.class);
             dmIntent.putExtra(ModuleListFragment.ARG_CAMPAIGN_ID, id);
@@ -227,7 +241,7 @@ public class LobbyActivity extends AppCompatActivity
             if (mAuth.getCurrentUser().getUid().equals(dmId)) {
                 Intent dmIntent = new Intent(this, DMActivity.class);
                 dmIntent.putExtra(ModuleListFragment.ARG_CAMPAIGN_ID, campaignId);
-                CampaignHolder.getInstance().loadCampaign(campaignId);
+
                 startActivity(dmIntent);
                 finish();
             } else {

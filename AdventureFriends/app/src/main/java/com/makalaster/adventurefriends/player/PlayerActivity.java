@@ -17,9 +17,17 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.makalaster.adventurefriends.R;
+import com.makalaster.adventurefriends.dm.CampaignHolder;
 import com.makalaster.adventurefriends.dm.dmFragments.ModuleListFragment;
 import com.makalaster.adventurefriends.lobby.LobbyActivity;
+import com.makalaster.adventurefriends.model.campaign.Campaign;
+import com.makalaster.adventurefriends.model.character.PlayerCharacter;
+import com.makalaster.adventurefriends.model.character.components.Job;
+import com.makalaster.adventurefriends.model.character.components.Size;
 import com.makalaster.adventurefriends.player.pages.AbilitiesPageFragment;
 import com.makalaster.adventurefriends.player.pages.EquipmentPageFragment;
 import com.makalaster.adventurefriends.player.pages.InventoryPageFragment;
@@ -34,9 +42,11 @@ public class PlayerActivity extends AppCompatActivity
         InventoryPageFragment.OnFragmentInteractionListener,
         MapPageFragment.OnFragmentInteractionListener,
         NotesPageFragment.OnFragmentInteractionListener,
-        StatsPageFragment.OnFragmentInteractionListener {
+        StatsPageFragment.OnFragmentInteractionListener,
+        NewCharacterFragment.OnPlayerCharacterCreatedListener {
 
     private FragmentManager mFragmentManager;
+    private String mCurrentCampaignId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +76,7 @@ public class PlayerActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         Bundle args = getIntent().getExtras();
-        String campaignId = args.getString(ModuleListFragment.ARG_CAMPAIGN_ID);
+        mCurrentCampaignId = args.getString(ModuleListFragment.ARG_CAMPAIGN_ID);
         boolean userAlreadyInCampaign = args.getBoolean("user_exists", true);
 
         if (userAlreadyInCampaign) {
@@ -79,12 +89,16 @@ public class PlayerActivity extends AppCompatActivity
     public void displayPager() {
         Fragment pagerFragment = PlayerPagerFragment.newInstance("", "");
         mFragmentManager.beginTransaction()
-                .replace(R.id.player_fragment_container, pagerFragment)
+                .replace(R.id.player_fragment_container, pagerFragment, "pager")
                 .commit();
     }
 
     public void displayNewCharacter() {
-
+        Fragment newPlayerFragment = NewCharacterFragment.newInstance();
+        mFragmentManager.beginTransaction()
+                .addToBackStack(null)
+                .replace(R.id.player_fragment_container, newPlayerFragment, "new_player")
+                .commit();
     }
 
     @Override
@@ -155,5 +169,28 @@ public class PlayerActivity extends AppCompatActivity
     @Override
     public void onFragmentInteraction(Uri uri) {
 
+    }
+
+    @Override
+    public void onCharacterCreated(String name, Size size, Job job) {
+        Campaign currentCampaign = CampaignHolder.getInstance().getCampaign();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        DatabaseReference player = database.getReference("users/" + userId);
+        DatabaseReference playerCharacters = player.child("characters");
+        DatabaseReference newCharacter = playerCharacters.push();
+        String key = newCharacter.getKey();
+        PlayerCharacter newLocalCharacter = new PlayerCharacter(name, key, size, job, userId);
+        newCharacter.setValue(newLocalCharacter);
+
+        DatabaseReference playerCampaigns = player.child("campaigns");
+        playerCampaigns.child(mCurrentCampaignId).setValue(currentCampaign);
+
+        DatabaseReference campaignCharacters = database.getReference("campaigns/" + mCurrentCampaignId + "/players");
+        campaignCharacters.child(userId).setValue(newLocalCharacter);
+
+        mFragmentManager.popBackStack();
+        displayPager();
     }
 }

@@ -15,14 +15,19 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.makalaster.adventurefriends.R;
 import com.makalaster.adventurefriends.lobby.campaignRecyclerView.CampaignListRecyclerViewAdapter;
 import com.makalaster.adventurefriends.lobby.campaignRecyclerView.CampaignViewHolder;
 import com.makalaster.adventurefriends.model.campaign.Campaign;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -63,29 +68,32 @@ public class CampaignListFragment extends Fragment implements View.OnClickListen
         return inflater.inflate(R.layout.fragment_campaign_list, container, false);
     }
 
+    private RecyclerView mCampaignRecycler;
+
     @Override
     public void onViewCreated(final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        DatabaseReference campaignList = FirebaseDatabase.getInstance().getReference("campaigns");
+        mCampaignRecycler = (RecyclerView) view.findViewById(R.id.campaign_list_recycler_view);
+        mCampaignRecycler.setLayoutManager(new LinearLayoutManager(view.getContext(), LinearLayoutManager.VERTICAL, false));
 
-        RecyclerView campaignRecycler = (RecyclerView) view.findViewById(R.id.campaign_list_recycler_view);
-        campaignRecycler.setLayoutManager(new LinearLayoutManager(view.getContext(), LinearLayoutManager.VERTICAL, false));
-        campaignRecycler.setAdapter(new FirebaseRecyclerAdapter<Campaign, CampaignViewHolder>(
-                Campaign.class, R.layout.layout_campaign_list_item, CampaignViewHolder.class, campaignList) {
-                    @Override
-                    protected void populateViewHolder(CampaignViewHolder viewHolder, final Campaign model, int position) {
-                        viewHolder.mCampaignName.setText(model.getCampaignName());
-                        viewHolder.mCharacterName.setText(model.getCharacterName());
-                        viewHolder.mCampaignListItem.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                mListener.onCampaignSelected(model.getCampaignId());
-                            }
-                        });
-                    }
+        final ArrayList<Campaign> campaignList = new ArrayList<>();
+        DatabaseReference userCampaignList = FirebaseDatabase.getInstance().getReference("users/" + FirebaseAuth.getInstance().getCurrentUser().getUid() + "/campaigns");
+        userCampaignList.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Iterable<DataSnapshot> children = dataSnapshot.getChildren();
+                for (DataSnapshot child : children) {
+                    campaignList.add(child.getValue(Campaign.class));
                 }
-        );
+                setAdapter(campaignList);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
         FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.new_campaign_fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -94,6 +102,10 @@ public class CampaignListFragment extends Fragment implements View.OnClickListen
                 onButtonPressed();
             }
         });
+    }
+
+    private void setAdapter(ArrayList<Campaign> campaignList) {
+        mCampaignRecycler.setAdapter(new CampaignListRecyclerViewAdapter(campaignList, mListener));
     }
 
     public void onButtonPressed() {
@@ -124,10 +136,7 @@ public class CampaignListFragment extends Fragment implements View.OnClickListen
                         mCampaignIdEditText.setError("Please enter a valid campaign ID");
                         mCampaignIdEditText.requestFocus();
                     } else {
-                        if (mListener != null) {
-                            mListener.onJoinCampaign(campaignId);
-                            dialog.dismiss();
-                        }
+                        checkIfCampaignExists(campaignId, dialog);
                     }
                 } else {
                     if (mListener != null) {
@@ -135,6 +144,27 @@ public class CampaignListFragment extends Fragment implements View.OnClickListen
                         dialog.dismiss();
                     }
                 }
+            }
+        });
+    }
+
+    private void checkIfCampaignExists(final String campaignId, final AlertDialog dialog) {
+        DatabaseReference campaign = FirebaseDatabase.getInstance().getReference("campaigns/" + campaignId);
+        campaign.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getValue() != null) {
+                    dialog.dismiss();
+                    mListener.onJoinCampaign(campaignId);
+                } else {
+                    mCampaignIdEditText.setError("Please enter a valid campaign ID");
+                    mCampaignIdEditText.requestFocus();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
             }
         });
     }
