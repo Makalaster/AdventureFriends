@@ -24,6 +24,8 @@ public class PlayerCharacter extends NonPlayerCharacter {
         super(name, id, STARTING_LEVEL, size, job, STARTING_MONEY);
 
         mOwnerId = ownerId;
+        mCurrentXP = 0;
+        mXPtoNext = 100;
     }
 
     public int getCurrentXP() {
