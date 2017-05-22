@@ -24,9 +24,9 @@ public class NonPlayerCharacter {
     private int mLevel, mSpeed, mBody, mMind, mEssence, mMaxPG, mCurrentPG, mMoney;
     private Size mSize;
     private Job mJob;
-    private Map<String, Item> mInventory;
-    private Map<String, Note> mNotes;
-    private Map<String, Ability> mAbilities;
+    private HashMap<String, Item> mInventory;
+    private HashMap<String, Note> mNotes;
+    private HashMap<String, Ability> mAbilities;
 
     public NonPlayerCharacter() {
     }
@@ -145,11 +145,11 @@ public class NonPlayerCharacter {
         mMoney = money;
     }
 
-    public Map<String, Item> getInventory() {
+    public HashMap<String, Item> getInventory() {
         return mInventory;
     }
 
-    public void setInventory(Map<String, Item> inventory) {
+    public void setInventory(HashMap<String, Item> inventory) {
         mInventory = inventory;
     }
 
@@ -157,11 +157,11 @@ public class NonPlayerCharacter {
         mInventory.put(id, item);
     }
 
-    public Map<String, Note> getNotes() {
+    public HashMap<String, Note> getNotes() {
         return mNotes;
     }
 
-    public void setNotes(Map<String, Note> notes) {
+    public void setNotes(HashMap<String, Note> notes) {
         mNotes = notes;
     }
 
@@ -169,11 +169,11 @@ public class NonPlayerCharacter {
         mNotes.put(id, note);
     }
 
-    public Map<String, Ability> getAbilities() {
+    public HashMap<String, Ability> getAbilities() {
         return mAbilities;
     }
 
-    public void setAbilities(Map<String, Ability> abilities) {
+    public void setAbilities(HashMap<String, Ability> abilities) {
         mAbilities = abilities;
     }
 
