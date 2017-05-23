@@ -194,17 +194,19 @@ public class NonPlayerCharacter {
 
     public void equip(Weapon weapon) {
         if (mEquipment.get(WEAPON) != null) {
-            ((Weapon)mEquipment.get(WEAPON)).setEquipped(false);
-            mEquipment.remove(WEAPON);
+            if (mEquipment.get(WEAPON) instanceof Weapon) {
+                ((Weapon) mEquipment.get(WEAPON)).setEquipped(false);
+            }
+            remove(weapon);
         }
         if (!weapon.isEquipped()) {
             weapon.setEquipped(true);
-            mEquipment.put(WEAPON, weapon);
         }
+        mEquipment.put(WEAPON, weapon);
     }
 
     public void remove(Weapon weapon) {
-        mEquipment.remove(WEAPON);
+        mEquipment.put(WEAPON, null);
         if (weapon.isEquipped()) {
             weapon.setEquipped(false);
         }
@@ -212,17 +214,19 @@ public class NonPlayerCharacter {
 
     public void equip(String slot, Defense defense) {
         if (mEquipment.get(slot) != null) {
-            ((Defense) mEquipment.get(slot)).setEquipped(false);
-            mEquipment.remove(slot);
+            if (mEquipment.get(slot) instanceof Defense) {
+                ((Defense) mEquipment.get(slot)).setEquipped(false);
+            }
+            remove(slot, defense);
         }
         if (!defense.isEquipped()) {
             defense.setEquipped(true);
-            mEquipment.put(slot, defense);
         }
+        mEquipment.put(slot, defense);
     }
 
     public void remove(String slot, Defense defense) {
-        mEquipment.remove(slot);
+        mEquipment.put(slot, null);
         if (defense.isEquipped()) {
             defense.setEquipped(false);
         }

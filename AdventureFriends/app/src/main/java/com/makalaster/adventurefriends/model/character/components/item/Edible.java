@@ -20,4 +20,8 @@ public class Edible extends Item {
     public String getEffect() {
         return mEffect;
     }
+
+    public void setEffect(String effect) {
+        mEffect = effect;
+    }
 }

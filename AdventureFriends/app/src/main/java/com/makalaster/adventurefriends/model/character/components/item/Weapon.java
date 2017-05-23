@@ -34,4 +34,12 @@ public class Weapon extends Item {
     public void setEquipped(boolean equipped) {
         mIsEquipped = equipped;
     }
+
+    public void setDamage(int damage) {
+        mDamage = damage;
+    }
+
+    public void setRange(int range) {
+        mRange = range;
+    }
 }

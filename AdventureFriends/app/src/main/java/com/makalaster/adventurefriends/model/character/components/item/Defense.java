@@ -29,4 +29,8 @@ public class Defense extends Item {
     public void setEquipped(boolean equipped) {
         mIsEquipped = equipped;
     }
+
+    public void setDefense(int defense) {
+        mDefense = defense;
+    }
 }

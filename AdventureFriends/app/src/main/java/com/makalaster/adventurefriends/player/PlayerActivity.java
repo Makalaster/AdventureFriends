@@ -25,9 +25,13 @@ import com.makalaster.adventurefriends.dm.CampaignHolder;
 import com.makalaster.adventurefriends.dm.dmFragments.ModuleListFragment;
 import com.makalaster.adventurefriends.lobby.LobbyActivity;
 import com.makalaster.adventurefriends.model.campaign.Campaign;
+import com.makalaster.adventurefriends.model.character.NonPlayerCharacter;
 import com.makalaster.adventurefriends.model.character.PlayerCharacter;
 import com.makalaster.adventurefriends.model.character.components.Job;
 import com.makalaster.adventurefriends.model.character.components.Size;
+import com.makalaster.adventurefriends.model.character.components.item.Defense;
+import com.makalaster.adventurefriends.model.character.components.item.Edible;
+import com.makalaster.adventurefriends.model.character.components.item.Weapon;
 import com.makalaster.adventurefriends.player.pages.EquipmentPageFragment;
 import com.makalaster.adventurefriends.player.pages.InventoryPageFragment;
 import com.makalaster.adventurefriends.player.pages.MapPageFragment;
@@ -76,25 +80,16 @@ public class PlayerActivity extends AppCompatActivity
     }
 
     public void loadPlayer() {
-        CampaignHolder holder = CampaignHolder.getInstance();
-        holder.loadCampaign(mCurrentCampaignId);
-        ArrayList<PlayerCharacter> players = new ArrayList<>();
-        players.addAll(holder.getPlayers().values());
-
-        String characterId = "";
-        for (PlayerCharacter player : players) {
-            if (player.getOwnerId().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
-                characterId = player.getId();
-            }
-        }
-        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        DatabaseReference character = FirebaseDatabase.getInstance().getReference("users/" + uid + "/characters/" + characterId);
+        final String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        DatabaseReference character = FirebaseDatabase.getInstance()
+                .getReference("campaigns/" + mCurrentCampaignId + "/players/" + uid);
         character.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.getValue() != null) {
                     PlayerCharacter playerCharacter = dataSnapshot.getValue(PlayerCharacter.class);
                     PlayerCharacterHolder.getInstance().loadCharacter(playerCharacter);
+                    loadInventoryAndEquipment(uid);
                     displayPager();
                 }
             }
@@ -104,6 +99,75 @@ public class PlayerActivity extends AppCompatActivity
 
             }
         });
+    }
+
+    public void loadInventoryAndEquipment(String uid) {
+        final PlayerCharacter playerCharacter = PlayerCharacterHolder.getInstance().getPlayerCharacter();
+        ArrayList<String> inventory = new ArrayList<>();
+        inventory.addAll(playerCharacter.getInventory().keySet());
+        for (final String item : inventory) {
+            DatabaseReference itemReference = FirebaseDatabase.getInstance()
+                    .getReference("campaigns/" + mCurrentCampaignId + "/players/" + uid + "/inventory/" + item);
+            itemReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+
+                    switch (dataSnapshot.child("type").getValue().toString()) {
+                        case "edible":
+                            playerCharacter.addItemToInventory(item, dataSnapshot.getValue(Edible.class));
+                            break;
+                        case "defense, boots":
+                            Defense boots = dataSnapshot.getValue(Defense.class);
+                            playerCharacter.addItemToInventory(item, boots);
+                            if (boots.isEquipped()) {
+                                playerCharacter.equip(NonPlayerCharacter.BOOTS, boots);
+                            }
+                            break;
+                        case "defense, shirt":
+                            Defense shirt = dataSnapshot.getValue(Defense.class);
+                            playerCharacter.addItemToInventory(item, shirt);
+                            if (shirt.isEquipped()) {
+                                playerCharacter.equip(NonPlayerCharacter.SHIRT, shirt);
+                            }
+                            break;
+                        case "defense, hat":
+                            Defense hat = dataSnapshot.getValue(Defense.class);
+                            playerCharacter.addItemToInventory(item, hat);
+                            if (hat.isEquipped()) {
+                                playerCharacter.equip(NonPlayerCharacter.HAT, hat);
+                            }
+                            break;
+                        case "weapon, sword":
+                            Weapon sword = dataSnapshot.getValue(Weapon.class);
+                            playerCharacter.addItemToInventory(item, sword);
+                            if (sword.isEquipped()) {
+                                playerCharacter.equip(sword);
+                            }
+                            break;
+                        case "weapon, wand":
+                            Weapon wand = dataSnapshot.getValue(Weapon.class);
+                            playerCharacter.addItemToInventory(item, wand);
+                            if (wand.isEquipped()) {
+                                playerCharacter.equip(wand);
+                            }
+                            break;
+                        case "weapon, bow":
+                            Weapon bow = dataSnapshot.getValue(Weapon.class);
+                            playerCharacter.addItemToInventory(item, bow);
+                            if (bow.isEquipped()) {
+                                playerCharacter.equip(bow);
+                            }
+                            break;
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
+        }
     }
 
     public void displayPager() {
