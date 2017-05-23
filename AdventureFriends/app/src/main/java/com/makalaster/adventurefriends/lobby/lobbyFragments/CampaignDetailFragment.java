@@ -1,9 +1,12 @@
 package com.makalaster.adventurefriends.lobby.lobbyFragments;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +21,8 @@ import com.makalaster.adventurefriends.R;
 import com.makalaster.adventurefriends.dm.dmFragments.ModuleListFragment;
 import com.makalaster.adventurefriends.model.campaign.Campaign;
 
+import static android.content.Context.CLIPBOARD_SERVICE;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link CampaignDetailFragment#newInstance} factory method to
@@ -30,6 +35,7 @@ public class CampaignDetailFragment extends Fragment {
     private String mCampaignId;
     private DatabaseReference mCurrentCampaignReference;
     private Campaign mCurrentCampaign;
+    private TextView mCampaignTitle, mCampaignDescription, mCampaignBaseGame, mCampaignDm;
 
     private OnButtonPressedListener mListener;
 
@@ -63,6 +69,7 @@ public class CampaignDetailFragment extends Fragment {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     mCurrentCampaign = dataSnapshot.getValue(Campaign.class);
+                    setupRemainingViews();
                 }
 
                 @Override
@@ -84,13 +91,40 @@ public class CampaignDetailFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        ((TextView)view.findViewById(R.id.campaign_id)).setText(mCampaignId);
+        TextView campaignId = (TextView) view.findViewById(R.id.campaign_id);
+        campaignId.setText(mCampaignId);
+        registerForContextMenu(campaignId);
         view.findViewById(R.id.play_existing_campaign_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mListener.onPlayPressed(mCurrentCampaign.getDmId(), mCampaignId);
             }
         });
+
+        mCampaignTitle = (TextView) view.findViewById(R.id.campaign_title);
+        mCampaignDescription = (TextView) view.findViewById(R.id.campaign_description);
+        mCampaignBaseGame = (TextView) view.findViewById(R.id.campaign_base_game);
+        mCampaignDm = (TextView) view.findViewById(R.id.campaign_dm);
+    }
+
+    public void setupRemainingViews() {
+        mCampaignTitle.setText(mCurrentCampaign.getCampaignName());
+        mCampaignDescription.setText(mCurrentCampaign.getDescription());
+        mCampaignBaseGame.setText(mCurrentCampaign.getBaseGame());
+        mCampaignDm.setText(mCurrentCampaign.getDmId());
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        menu.add(0, v.getId(), 0, "Copy");
+
+        //cast the received View to TextView so that you can get its text
+        TextView campaignId = (TextView) v;
+
+        //place your TextView's text in clipboard
+        ClipboardManager clipboard = (ClipboardManager) getContext().getSystemService(CLIPBOARD_SERVICE);
+        ClipData copyText = ClipData.newPlainText("simple text", campaignId.getText());
+        clipboard.setPrimaryClip(copyText);
     }
 
     @Override

@@ -70,13 +70,29 @@ public class PlayerActivity extends AppCompatActivity
 
         Bundle args = getIntent().getExtras();
         mCurrentCampaignId = args.getString(ModuleListFragment.ARG_CAMPAIGN_ID);
-        boolean userAlreadyInCampaign = args.getBoolean("user_exists", true);
 
-        if (userAlreadyInCampaign) {
-            loadPlayer();
-        } else {
-            displayNewCharacter();
-        }
+        checkIfPlayerIsAlreadyInCampaign();
+    }
+
+    private void checkIfPlayerIsAlreadyInCampaign() {
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        DatabaseReference playerReference = FirebaseDatabase.getInstance()
+                .getReference("campaigns/" + mCurrentCampaignId + "/players/" + uid);
+        playerReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    loadPlayer();
+                } else {
+                    displayNewCharacter();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     public void loadPlayer() {
@@ -111,7 +127,6 @@ public class PlayerActivity extends AppCompatActivity
             itemReference.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-
                     switch (dataSnapshot.child("type").getValue().toString()) {
                         case "edible":
                             playerCharacter.addItemToInventory(item, dataSnapshot.getValue(Edible.class));
@@ -271,6 +286,7 @@ public class PlayerActivity extends AppCompatActivity
 
         DatabaseReference playerCampaigns = player.child("campaigns");
         playerCampaigns.child(mCurrentCampaignId).setValue(currentCampaign);
+        playerCampaigns.child(mCurrentCampaignId).child("characterName").setValue(name);
 
         DatabaseReference campaignCharacters = database.getReference("campaigns/" + mCurrentCampaignId + "/players");
         campaignCharacters.child(userId).setValue(newLocalCharacter);

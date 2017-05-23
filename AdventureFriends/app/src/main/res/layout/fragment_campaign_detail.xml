@@ -8,7 +8,27 @@
     tools:context="com.makalaster.adventurefriends.lobby.lobbyFragments.CampaignDetailFragment">
 
     <TextView
+        android:id="@+id/campaign_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/campaign_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/campaign_base_game"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <TextView
         android:id="@+id/campaign_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/campaign_dm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 

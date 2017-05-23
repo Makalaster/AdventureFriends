@@ -78,7 +78,8 @@ public class CampaignListFragment extends Fragment implements View.OnClickListen
         mCampaignRecycler.setLayoutManager(new LinearLayoutManager(view.getContext(), LinearLayoutManager.VERTICAL, false));
 
         final ArrayList<Campaign> campaignList = new ArrayList<>();
-        DatabaseReference userCampaignList = FirebaseDatabase.getInstance().getReference("users/" + FirebaseAuth.getInstance().getCurrentUser().getUid() + "/campaigns");
+        DatabaseReference userCampaignList = FirebaseDatabase.getInstance()
+                .getReference("users/" + FirebaseAuth.getInstance().getCurrentUser().getUid() + "/campaigns");
         userCampaignList.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -86,7 +87,7 @@ public class CampaignListFragment extends Fragment implements View.OnClickListen
                 for (DataSnapshot child : children) {
                     campaignList.add(child.getValue(Campaign.class));
                 }
-                setAdapter(campaignList);
+                mCampaignRecycler.setAdapter(new CampaignListRecyclerViewAdapter(campaignList, mListener));
             }
 
             @Override
@@ -102,10 +103,6 @@ public class CampaignListFragment extends Fragment implements View.OnClickListen
                 onButtonPressed();
             }
         });
-    }
-
-    private void setAdapter(ArrayList<Campaign> campaignList) {
-        mCampaignRecycler.setAdapter(new CampaignListRecyclerViewAdapter(campaignList, mListener));
     }
 
     public void onButtonPressed() {

@@ -188,19 +188,9 @@ public class LobbyActivity extends AppCompatActivity
     public void onJoinCampaign(String campaignId) {
         CampaignHolder holder = CampaignHolder.getInstance();
         holder.loadCampaign(campaignId);
-        ArrayList<PlayerCharacter> players = new ArrayList<>();
-        players.addAll(holder.getPlayers().values());
-
-        boolean userAlreadyInCampaign = false;
-        for (PlayerCharacter player : players) {
-            if (player.getOwnerId().equals(mAuth.getCurrentUser().getUid())) {
-                userAlreadyInCampaign = true;
-            }
-        }
 
         Intent playerIntent = new Intent(this, PlayerActivity.class);
         playerIntent.putExtra(ModuleListFragment.ARG_CAMPAIGN_ID, campaignId);
-        playerIntent.putExtra("user_exists", userAlreadyInCampaign);
         startActivity(playerIntent);
         finish();
     }
