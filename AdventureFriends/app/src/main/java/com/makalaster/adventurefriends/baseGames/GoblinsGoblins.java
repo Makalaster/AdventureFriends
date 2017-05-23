@@ -336,6 +336,32 @@ public class GoblinsGoblins extends SQLiteOpenHelper {
         return weapons;
     }
 
+    public Weapon getWeaponByName(String weaponName) {
+        Weapon weapon = null;
+
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor weaponCursor = db.query(ItemsTable.TABLE_NAME, null,
+                ItemsTable.COLUMN_NAME + " = ?",
+                new String[]{weaponName},
+                null, null, null);
+
+        if (weaponCursor.moveToFirst()) {
+            long id = weaponCursor.getLong(weaponCursor.getColumnIndex(ItemsTable.COLUMN_ID));
+            String name = weaponCursor.getString(weaponCursor.getColumnIndex(ItemsTable.COLUMN_NAME));
+            String description = weaponCursor.getString(weaponCursor.getColumnIndex(ItemsTable.COLUMN_DESCRIPTION));
+            String type = weaponCursor.getString(weaponCursor.getColumnIndex(ItemsTable.COLUMN_TYPE));
+            int tier = weaponCursor.getInt(weaponCursor.getColumnIndex(ItemsTable.COLUMN_TIER));
+            int value = weaponCursor.getInt(weaponCursor.getColumnIndex(ItemsTable.COLUMN_VALUE));
+            String effect = weaponCursor.getString(weaponCursor.getColumnIndex(ItemsTable.COLUMN_EFFECT));
+            int range = weaponCursor.getInt(weaponCursor.getColumnIndex(ItemsTable.COLUMN_RANGE));
+
+            weapon = new Weapon(id, name, description, type, tier, value, Integer.parseInt(effect.substring(4)), range);
+        }
+        weaponCursor.close();
+
+        return weapon;
+    }
+
     public List<Defense> getAllDefense() {
         List<Defense> defense = new ArrayList<>();
 
@@ -358,6 +384,31 @@ public class GoblinsGoblins extends SQLiteOpenHelper {
 
                 defenseCursor.moveToNext();
             }
+        }
+        defenseCursor.close();
+
+        return defense;
+    }
+
+    public Defense getDefenseByName(String defenseName) {
+        Defense defense = null;
+
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor defenseCursor = db.query(ItemsTable.TABLE_NAME, null,
+                ItemsTable.COLUMN_NAME + " = ?",
+                new String[]{defenseName},
+                null, null, null);
+
+        if (defenseCursor.moveToFirst()) {
+            long id = defenseCursor.getLong(defenseCursor.getColumnIndex(ItemsTable.COLUMN_ID));
+            String name = defenseCursor.getString(defenseCursor.getColumnIndex(ItemsTable.COLUMN_NAME));
+            String description = defenseCursor.getString(defenseCursor.getColumnIndex(ItemsTable.COLUMN_DESCRIPTION));
+            String type = defenseCursor.getString(defenseCursor.getColumnIndex(ItemsTable.COLUMN_TYPE));
+            int tier = defenseCursor.getInt(defenseCursor.getColumnIndex(ItemsTable.COLUMN_TIER));
+            int value = defenseCursor.getInt(defenseCursor.getColumnIndex(ItemsTable.COLUMN_VALUE));
+            String effect = defenseCursor.getString(defenseCursor.getColumnIndex(ItemsTable.COLUMN_EFFECT));
+
+            defense = new Defense(id, name, description, type, tier, value, Integer.parseInt(effect.substring(4)));
         }
         defenseCursor.close();
 
@@ -390,5 +441,29 @@ public class GoblinsGoblins extends SQLiteOpenHelper {
         edibleCursor.close();
 
         return edibles;
+    }
+
+    public Edible getEdibleByName(String edibleName) {
+        Edible edible = null;
+
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor edibleCursor = db.query(ItemsTable.TABLE_NAME, null,
+                ItemsTable.COLUMN_NAME + " = ?",
+                new String[]{edibleName},
+                null, null, null);
+
+        if (edibleCursor.moveToFirst()) {
+            long id = edibleCursor.getLong(edibleCursor.getColumnIndex(ItemsTable.COLUMN_ID));
+            String name = edibleCursor.getString(edibleCursor.getColumnIndex(ItemsTable.COLUMN_NAME));
+            String description = edibleCursor.getString(edibleCursor.getColumnIndex(ItemsTable.COLUMN_DESCRIPTION));
+            String type = edibleCursor.getString(edibleCursor.getColumnIndex(ItemsTable.COLUMN_TYPE));
+            int tier = edibleCursor.getInt(edibleCursor.getColumnIndex(ItemsTable.COLUMN_TIER));
+            int value = edibleCursor.getInt(edibleCursor.getColumnIndex(ItemsTable.COLUMN_VALUE));
+            String effect = edibleCursor.getString(edibleCursor.getColumnIndex(ItemsTable.COLUMN_EFFECT));
+            edible = new Edible(id, name, description, type, tier, value, effect);
+        }
+        edibleCursor.close();
+
+        return edible;
     }
 }

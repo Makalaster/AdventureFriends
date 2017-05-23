@@ -2,7 +2,10 @@ package com.makalaster.adventurefriends.model.character;
 
 import com.makalaster.adventurefriends.model.character.components.Job;
 import com.makalaster.adventurefriends.model.character.components.Size;
+import com.makalaster.adventurefriends.model.character.components.item.Defense;
+import com.makalaster.adventurefriends.model.character.components.item.Edible;
 import com.makalaster.adventurefriends.model.character.components.item.Item;
+import com.makalaster.adventurefriends.model.character.components.item.Weapon;
 
 import java.util.Map;
 
@@ -26,6 +29,31 @@ public class PlayerCharacter extends NonPlayerCharacter {
         mOwnerId = ownerId;
         mCurrentXP = 0;
         mXPtoNext = 100;
+
+        switch (job.getName()) {
+            case "Tank":
+                addItemToInventory("sword", new Weapon(10, "Grass Sword", "Flimsy sword made of dried grass", "weapon, sword", 1, 1, 2, 1));
+                equip((Weapon) getInventory().get("sword"));
+                addItemToInventory("bacon", new Edible(21, "Bacon", "A delicious piece of cured fried piggy meat. Temporarily increases the consumer's body", "edible", 1, 3, "body 1"));
+                break;
+            case "Doctor":
+                addItemToInventory("bow", new Weapon(13, "Grass Bow", "Flimsy bow made of grass", "weapon, bow", 1, 1, 1, 4));
+                equip((Weapon) getInventory().get("bow"));
+                addItemToInventory("fungus", new Edible(20, "Fungus", "A gross piece of woodland fungus. Temporarily increases the consumer's mind", "edible", 1, 3, "mind 1"));
+                break;
+            case "Cannon":
+                addItemToInventory("wand", new Weapon(16, "Grass Wand", "A flimsy wand made of grass", "weapon, wand", 1, 1, 2, 4));
+                equip((Weapon) getInventory().get("wand"));
+                addItemToInventory("potion", new Edible(19, "Potion", "A viscous liquid that temporarily increases the consumer's essence", "edible", 1, 3, "essence 1"));
+                break;
+        }
+        addItemToInventory("boots", new Defense(1, "Grass boots", "Light boots made of grass", "defense, boots", 1, 2, 2));
+        equip((Defense) getInventory().get("boots"));
+        addItemToInventory("shirt", new Defense(7, "Grass shirt", "Light shirt made of grass", "defense, shirt", 1, 3, 3));
+        equip((Defense) getInventory().get("shirt"));
+        addItemToInventory("hat", new Defense(4, "Grass hat", "Light hat made of grass", "defense, hat", 1, 1, 1));
+        equip((Defense) getInventory().get("hat"));
+        addItemToInventory("adhesive_bandage", new Edible(22, "Adhesive Bandage", "A non-branded strip of bandage that sticks to the consumer and provides a small amount of health.", "edible", 1, 1, "PG 1"));
     }
 
     public int getCurrentXP() {

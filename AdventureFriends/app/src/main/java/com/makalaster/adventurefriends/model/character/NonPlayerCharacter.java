@@ -189,22 +189,37 @@ public class NonPlayerCharacter {
     }
 
     public void equip(Weapon weapon) {
+        if (!weapon.isEquipped())
+            weapon.setEquipped(true);
+    }
 
+    public void remove(Weapon weapon) {
+        if (weapon.isEquipped())
+            weapon.setEquipped(false);
     }
 
     public void equip(Defense defense) {
+        if (!defense.isEquipped())
+            defense.setEquipped(true);
+    }
 
+    public void remove(Defense defense) {
+        if (defense.isEquipped()) {
+            defense.setEquipped(false);
+        }
     }
 
     public void drop(Item item) {
-
+        if (mInventory.containsValue(item)) {
+            mInventory.remove(item.getName());
+        }
     }
 
     public void consume(Edible edible) {
 
     }
 
-    public void give(Item item) {
+    public void give(NonPlayerCharacter npc, Item item) {
 
     }
 
