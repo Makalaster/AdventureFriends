@@ -9,6 +9,10 @@ public class Ability {
     private String mName, mQuote, mDescription, mEffects, mCheck;
     private int mLevel, mDamage, mRange, mJobId;
 
+    public Ability() {
+
+    }
+
     public Ability(long id, String name, String quote, String description, String effects, int level, int damage, int range, int jobId, String check) {
         mId = id;
         mName = name;

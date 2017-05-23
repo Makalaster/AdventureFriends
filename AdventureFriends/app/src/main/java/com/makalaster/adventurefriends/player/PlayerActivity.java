@@ -38,7 +38,6 @@ import java.util.ArrayList;
 
 public class PlayerActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
-        AbilitiesPageFragment.OnFragmentInteractionListener,
         EquipmentPageFragment.OnFragmentInteractionListener,
         InventoryPageFragment.OnFragmentInteractionListener,
         MapPageFragment.OnFragmentInteractionListener,
