@@ -18,12 +18,14 @@ import java.util.HashMap;
 public class NonPlayerCharacter {
     private static final int BASE_SPEED = 4;
     private static final int BASE_HEALTH = 10;
+    public static final String WEAPON = "weapon", HAT = "hat", SHIRT = "shirt", BOOTS = "boots";
 
     private String mName, mId;
     private int mLevel, mSpeed, mBody, mMind, mEssence, mMaxPG, mCurrentPG, mMoney;
     private Size mSize;
     private Job mJob;
     private HashMap<String, Item> mInventory;
+    private HashMap<String, Item> mEquipment;
     private HashMap<String, Note> mNotes;
     private HashMap<String, Ability> mAbilities;
 
@@ -44,6 +46,8 @@ public class NonPlayerCharacter {
         mCurrentPG = mMaxPG;
         mMoney = money;
         mInventory = new HashMap<>();
+        mEquipment = new HashMap<>();
+        fillEquipment();
         mNotes = new HashMap<>();
         mAbilities = new HashMap<>();
     }
@@ -189,21 +193,36 @@ public class NonPlayerCharacter {
     }
 
     public void equip(Weapon weapon) {
-        if (!weapon.isEquipped())
+        if (mEquipment.get(WEAPON) != null) {
+            ((Weapon)mEquipment.get(WEAPON)).setEquipped(false);
+            mEquipment.remove(WEAPON);
+        }
+        if (!weapon.isEquipped()) {
             weapon.setEquipped(true);
+            mEquipment.put(WEAPON, weapon);
+        }
     }
 
     public void remove(Weapon weapon) {
-        if (weapon.isEquipped())
+        mEquipment.remove(WEAPON);
+        if (weapon.isEquipped()) {
             weapon.setEquipped(false);
+        }
     }
 
-    public void equip(Defense defense) {
-        if (!defense.isEquipped())
+    public void equip(String slot, Defense defense) {
+        if (mEquipment.get(slot) != null) {
+            ((Defense) mEquipment.get(slot)).setEquipped(false);
+            mEquipment.remove(slot);
+        }
+        if (!defense.isEquipped()) {
             defense.setEquipped(true);
+            mEquipment.put(slot, defense);
+        }
     }
 
-    public void remove(Defense defense) {
+    public void remove(String slot, Defense defense) {
+        mEquipment.remove(slot);
         if (defense.isEquipped()) {
             defense.setEquipped(false);
         }
@@ -225,5 +244,20 @@ public class NonPlayerCharacter {
 
     public void move() {
 
+    }
+
+    public HashMap<String, Item> getEquipment() {
+        return mEquipment;
+    }
+
+    public void setEquipment(HashMap<String, Item> equipment) {
+        mEquipment = equipment;
+    }
+
+    private void fillEquipment() {
+        mEquipment.put(WEAPON, null);
+        mEquipment.put(HAT, null);
+        mEquipment.put(SHIRT, null);
+        mEquipment.put(BOOTS, null);
     }
 }

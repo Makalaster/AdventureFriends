@@ -268,6 +268,24 @@ public class GoblinsGoblins extends SQLiteOpenHelper {
         return abilities;
     }
 
+    public Ability getAbilityByName(String name) {
+        Ability ability = null;
+
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor abilityCursor = db.query(AbilitiesTable.TABLE_NAME, null,
+                AbilitiesTable.COLUMN_NAME + " = ?",
+                new String[]{name},
+                null, null, null);
+
+        if (abilityCursor.moveToFirst()) {
+            ability = buildAbility(abilityCursor);
+        }
+
+        abilityCursor.close();
+
+        return ability;
+    }
+
     private Ability buildAbility(Cursor cursor) {
         long id = cursor.getLong(cursor.getColumnIndex(AbilitiesTable.COLUMN_ID));
         String name = cursor.getString(cursor.getColumnIndex(AbilitiesTable.COLUMN_NAME));

@@ -44,4 +44,28 @@ public class Item {
     public int getValue() {
         return mValue;
     }
+
+    public void setId(long id) {
+        mId = id;
+    }
+
+    public void setName(String name) {
+        mName = name;
+    }
+
+    public void setDescription(String description) {
+        mDescription = description;
+    }
+
+    public void setType(String type) {
+        mType = type;
+    }
+
+    public void setTier(int tier) {
+        mTier = tier;
+    }
+
+    public void setValue(int value) {
+        mValue = value;
+    }
 }

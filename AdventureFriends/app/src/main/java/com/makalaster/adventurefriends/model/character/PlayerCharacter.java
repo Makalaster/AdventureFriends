@@ -1,10 +1,11 @@
 package com.makalaster.adventurefriends.model.character;
 
-import com.makalaster.adventurefriends.model.character.components.Ability;
+import android.content.Context;
+
+import com.makalaster.adventurefriends.baseGames.GoblinsGoblins;
 import com.makalaster.adventurefriends.model.character.components.Job;
 import com.makalaster.adventurefriends.model.character.components.Size;
 import com.makalaster.adventurefriends.model.character.components.item.Defense;
-import com.makalaster.adventurefriends.model.character.components.item.Edible;
 import com.makalaster.adventurefriends.model.character.components.item.Item;
 import com.makalaster.adventurefriends.model.character.components.item.Weapon;
 
@@ -24,42 +25,44 @@ public class PlayerCharacter extends NonPlayerCharacter {
     public PlayerCharacter() {
     }
 
-    public PlayerCharacter(String name, String id, Size size, Job job, String ownerId) {
+    public PlayerCharacter(String name, String id, Size size, Job job, String ownerId, Context context) {
         super(name, id, STARTING_LEVEL, size, job, STARTING_MONEY);
 
         mOwnerId = ownerId;
         mCurrentXP = 0;
         mXPtoNext = 100;
 
-        addAbility("scratch", new Ability(1, "Scratch", "That's what claws are for!", "Take a swipe at your target.", null, 0, 3, 1, 0, "body"));
+        GoblinsGoblins goblinsGoblins = GoblinsGoblins.getInstance(context.getApplicationContext());
+
+        addAbility("scratch", goblinsGoblins.getAbilityByName("Scratch"));
 
         switch (job.getName()) {
             case "Tank":
-                addItemToInventory("sword", new Weapon(10, "Grass Sword", "Flimsy sword made of dried grass", "weapon, sword", 1, 1, 2, 1));
-                equip((Weapon) getInventory().get("sword"));
-                addItemToInventory("bacon", new Edible(21, "Bacon", "A delicious piece of cured fried piggy meat. Temporarily increases the consumer's body", "edible", 1, 3, "body 1"));
-                addAbility("punch", new Ability(5, "Punch", "KNUCKLE SAMMICH", "Hold out your hand. Now curl your fingers in towards your palm, keeping your thumb on the outside. This is a fist. Now use it to bludgeon your target!", null, 0, 2, 1, 1, "body"));
+                addItemToInventory(NonPlayerCharacter.WEAPON, goblinsGoblins.getWeaponByName("Grass Sword"));
+                equip((Weapon) getInventory().get(NonPlayerCharacter.WEAPON));
+                addItemToInventory("bacon", goblinsGoblins.getEdibleByName("Bacon"));
+                addAbility("punch", goblinsGoblins.getAbilityByName("Punch"));
                 break;
             case "Doctor":
-                addItemToInventory("bow", new Weapon(13, "Grass Bow", "Flimsy bow made of grass", "weapon, bow", 1, 1, 1, 4));
+                addItemToInventory("bow", goblinsGoblins.getWeaponByName("Grass Bow"));
                 equip((Weapon) getInventory().get("bow"));
-                addItemToInventory("fungus", new Edible(20, "Fungus", "A gross piece of woodland fungus. Temporarily increases the consumer's mind", "edible", 1, 3, "mind 1"));
-                addAbility("diagnose", new Ability(9, "Diagnose", "Yes, I see...", "Reveal a single opponent's stats.", "Reveal stats", 0, 0, 5, 2, "mind"));
+                addItemToInventory("fungus", goblinsGoblins.getEdibleByName("Fungus"));
+                addAbility("diagnose", goblinsGoblins.getAbilityByName("Diagnose"));
                 break;
             case "Cannon":
-                addItemToInventory("wand", new Weapon(16, "Grass Wand", "A flimsy wand made of grass", "weapon, wand", 1, 1, 2, 4));
+                addItemToInventory("wand", goblinsGoblins.getWeaponByName("Grass Wand"));
                 equip((Weapon) getInventory().get("wand"));
-                addItemToInventory("potion", new Edible(19, "Potion", "A viscous liquid that temporarily increases the consumer's essence", "edible", 1, 3, "essence 1"));
-                addAbility("chill", new Ability(13, "Chill", "Yo, chill.", "Freeze a target", "Slow", 0, 2, 4, 3, "essence"));
+                addItemToInventory("potion", goblinsGoblins.getEdibleByName("Potion"));
+                addAbility("chill", goblinsGoblins.getAbilityByName("Chill"));
                 break;
         }
-        addItemToInventory("boots", new Defense(1, "Grass boots", "Light boots made of grass", "defense, boots", 1, 2, 2));
-        equip((Defense) getInventory().get("boots"));
-        addItemToInventory("shirt", new Defense(7, "Grass shirt", "Light shirt made of grass", "defense, shirt", 1, 3, 3));
-        equip((Defense) getInventory().get("shirt"));
-        addItemToInventory("hat", new Defense(4, "Grass hat", "Light hat made of grass", "defense, hat", 1, 1, 1));
-        equip((Defense) getInventory().get("hat"));
-        addItemToInventory("adhesive_bandage", new Edible(22, "Adhesive Bandage", "A non-branded strip of bandage that sticks to the consumer and provides a small amount of health.", "edible", 1, 1, "PG 1"));
+        addItemToInventory("boots", goblinsGoblins.getDefenseByName("Grass Boots"));
+        equip(NonPlayerCharacter.BOOTS, (Defense) getInventory().get("boots"));
+        addItemToInventory("shirt", goblinsGoblins.getDefenseByName("Grass Shirt"));
+        equip(NonPlayerCharacter.SHIRT, (Defense) getInventory().get("shirt"));
+        addItemToInventory("hat", goblinsGoblins.getDefenseByName("Grass Hat"));
+        equip(NonPlayerCharacter.HAT, (Defense) getInventory().get("hat"));
+        addItemToInventory("adhesive_bandage", goblinsGoblins.getEdibleByName("Adhesive Bandage"));
     }
 
     public int getCurrentXP() {
@@ -68,6 +71,10 @@ public class PlayerCharacter extends NonPlayerCharacter {
 
     public void setCurrentXP(int currentXP) {
         mCurrentXP = currentXP;
+    }
+
+    public void increaseXP(int increaseBy) {
+        mCurrentXP += increaseBy;
     }
 
     public int getXPtoNext() {
@@ -84,6 +91,11 @@ public class PlayerCharacter extends NonPlayerCharacter {
 
     public static int getStartingLevel() {
         return STARTING_LEVEL;
+    }
+
+    public void addMoney(int money) {
+        int currentMoney = getMoney();
+        setMoney(currentMoney + money);
     }
 
     public String getOwnerId() {

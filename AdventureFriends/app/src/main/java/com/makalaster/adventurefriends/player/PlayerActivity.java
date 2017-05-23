@@ -28,7 +28,6 @@ import com.makalaster.adventurefriends.model.campaign.Campaign;
 import com.makalaster.adventurefriends.model.character.PlayerCharacter;
 import com.makalaster.adventurefriends.model.character.components.Job;
 import com.makalaster.adventurefriends.model.character.components.Size;
-import com.makalaster.adventurefriends.player.pages.AbilitiesPageFragment;
 import com.makalaster.adventurefriends.player.pages.EquipmentPageFragment;
 import com.makalaster.adventurefriends.player.pages.InventoryPageFragment;
 import com.makalaster.adventurefriends.player.pages.MapPageFragment;
@@ -38,7 +37,7 @@ import java.util.ArrayList;
 
 public class PlayerActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
-        EquipmentPageFragment.OnFragmentInteractionListener,
+        EquipmentPageFragment.EquipmentInteractionListener,
         InventoryPageFragment.OnFragmentInteractionListener,
         MapPageFragment.OnFragmentInteractionListener,
         NotesPageFragment.OnFragmentInteractionListener,
@@ -188,7 +187,7 @@ public class PlayerActivity extends AppCompatActivity
     }
 
     @Override
-    public void onFragmentInteraction(Uri uri) {
+    public void onEquipmentSelected(Uri uri) {
 
     }
 
@@ -202,8 +201,9 @@ public class PlayerActivity extends AppCompatActivity
         DatabaseReference playerCharacters = player.child("characters");
         DatabaseReference newCharacter = playerCharacters.push();
         String key = newCharacter.getKey();
-        PlayerCharacter newLocalCharacter = new PlayerCharacter(name, key, size, job, userId);
+        PlayerCharacter newLocalCharacter = new PlayerCharacter(name, key, size, job, userId, this);
         newCharacter.setValue(newLocalCharacter);
+        PlayerCharacterHolder.getInstance().loadCharacter(newLocalCharacter);
 
         DatabaseReference playerCampaigns = player.child("campaigns");
         playerCampaigns.child(mCurrentCampaignId).setValue(currentCampaign);
@@ -213,5 +213,10 @@ public class PlayerActivity extends AppCompatActivity
 
         mFragmentManager.popBackStack();
         displayPager();
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
     }
 }

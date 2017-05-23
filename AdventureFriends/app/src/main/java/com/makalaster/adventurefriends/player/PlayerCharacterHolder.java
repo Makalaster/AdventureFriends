@@ -21,6 +21,7 @@ public class PlayerCharacterHolder {
     private PlayerCharacter mPlayerCharacter;
     private HashMap<String, Ability> mAbilities;
     private HashMap<String, Item> mInventory;
+    private HashMap<String, Item> mEquipment;
     private HashMap<String, Note> mNotes;
 
     private static PlayerCharacterHolder sInstance;
@@ -40,6 +41,7 @@ public class PlayerCharacterHolder {
         mPlayerCharacter = playerCharacter;
         mAbilities = playerCharacter.getAbilities();
         mInventory = playerCharacter.getInventory();
+        mEquipment = playerCharacter.getEquipment();
         mNotes = playerCharacter.getNotes();
     }
 
@@ -47,6 +49,7 @@ public class PlayerCharacterHolder {
         mPlayerCharacter = null;
         mNotes = null;
         mInventory = null;
+        mEquipment = null;
         mAbilities = null;
     }
 
@@ -59,6 +62,9 @@ public class PlayerCharacterHolder {
     }
 
     public HashMap<String, Ability> getAbilities() {
+        if (mAbilities == null) {
+            mAbilities = new HashMap<>();
+        }
         return mAbilities;
     }
 
@@ -74,6 +80,9 @@ public class PlayerCharacterHolder {
     }
 
     public HashMap<String, Item> getInventory() {
+        if (mInventory == null) {
+            mInventory = new HashMap<>();
+        }
         return mInventory;
     }
 
@@ -89,6 +98,9 @@ public class PlayerCharacterHolder {
     }
 
     public HashMap<String, Note> getNotes() {
+        if (mNotes == null) {
+            mNotes = new HashMap<>();
+        }
         return mNotes;
     }
 
@@ -101,5 +113,16 @@ public class PlayerCharacterHolder {
             mNotes = new HashMap<>();
         }
         mNotes.put(id, note);
+    }
+
+    public HashMap<String, Item> getEquipment() {
+        if (mEquipment == null) {
+            mEquipment = new HashMap<>();
+        }
+        return mEquipment;
+    }
+
+    public void setEquipment(HashMap<String, Item> equipment) {
+        mEquipment = equipment;
     }
 }

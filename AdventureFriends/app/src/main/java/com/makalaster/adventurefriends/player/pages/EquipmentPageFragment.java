@@ -3,32 +3,42 @@ package com.makalaster.adventurefriends.player.pages;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.makalaster.adventurefriends.R;
+import com.makalaster.adventurefriends.model.character.NonPlayerCharacter;
+import com.makalaster.adventurefriends.model.character.PlayerCharacter;
+import com.makalaster.adventurefriends.model.character.components.item.Defense;
+import com.makalaster.adventurefriends.model.character.components.item.Item;
+import com.makalaster.adventurefriends.model.character.components.item.Weapon;
+import com.makalaster.adventurefriends.player.PlayerCharacterHolder;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link EquipmentPageFragment.OnFragmentInteractionListener} interface
+ * {@link EquipmentInteractionListener} interface
  * to handle interaction events.
  * Use the {@link EquipmentPageFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
 public class EquipmentPageFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String TAG = "EquipmentPageFragment";
+    private PlayerCharacterHolder mPlayerCharacterHolder;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    private OnFragmentInteractionListener mListener;
+    private EquipmentInteractionListener mListener;
 
     public EquipmentPageFragment() {
         // Required empty public constructor
@@ -38,27 +48,22 @@ public class EquipmentPageFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
+
      * @return A new instance of fragment EquipmentPageFragment.
      */
-    // TODO: Rename and change types and number of parameters
-    public static EquipmentPageFragment newInstance(String param1, String param2) {
+    public static EquipmentPageFragment newInstance() {
         EquipmentPageFragment fragment = new EquipmentPageFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+
         fragment.setArguments(args);
         return fragment;
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+
+        mPlayerCharacterHolder = PlayerCharacterHolder.getInstance();
     }
 
     @Override
@@ -68,21 +73,45 @@ public class EquipmentPageFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_equipment_page, container, false);
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        HashMap<String, Item> equipment = mPlayerCharacterHolder.getEquipment();
+        Defense hat = (Defense) equipment.get(NonPlayerCharacter.HAT);
+        Defense shirt = (Defense) equipment.get(NonPlayerCharacter.SHIRT);
+        Defense boots = (Defense) equipment.get(NonPlayerCharacter.BOOTS);
+        Weapon weapon = (Weapon) equipment.get(NonPlayerCharacter.WEAPON);
+
+        ((TextView) view.findViewById(R.id.hat_name_and_description))
+                .setText(hat.getName() + ", " + hat.getDescription());
+        ((TextView) view.findViewById(R.id.hat_effect))
+                .setText(String.format(Locale.ENGLISH, "Defense: %d", hat.getDefense()));
+        ((TextView) view.findViewById(R.id.shirt_effect))
+                .setText(String.format(Locale.ENGLISH, "Defense: %d", shirt.getDefense()));
+        ((TextView) view.findViewById(R.id.shirt_name_and_description))
+                .setText(shirt.getName() + ", " + shirt.getDescription());
+        ((TextView) view.findViewById(R.id.boots_effect))
+                .setText(String.format(Locale.ENGLISH, "Defense: %d", boots.getDefense()));
+        ((TextView) view.findViewById(R.id.boots_name_and_description))
+                .setText(boots.getName() + ", " + boots.getDescription());
+        ((TextView) view.findViewById(R.id.weapon_effect))
+                .setText(String.format(Locale.ENGLISH, "Damage: %d", weapon.getDamage()));
+        ((TextView) view.findViewById(R.id.weapon_range))
+                .setText(String.valueOf(weapon.getRange()));
+        ((TextView) view.findViewById(R.id.weapon_name_and_description))
+                .setText(weapon.getName() + ", " + weapon.getDescription());
+
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
+        if (context instanceof EquipmentInteractionListener) {
+            mListener = (EquipmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+                    + " must implement EquipmentInteractionListener");
         }
     }
 
@@ -102,8 +131,7 @@ public class EquipmentPageFragment extends Fragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+    public interface EquipmentInteractionListener {
+        void onEquipmentSelected(Uri uri);
     }
 }
