@@ -42,7 +42,7 @@ import java.util.ArrayList;
 public class PlayerActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         EquipmentPageFragment.EquipmentInteractionListener,
-        InventoryPageFragment.OnFragmentInteractionListener,
+        InventoryPageFragment.OnInventoryItemSelectedListener,
         MapPageFragment.OnFragmentInteractionListener,
         NotesPageFragment.OnFragmentInteractionListener,
         NewCharacterFragment.OnPlayerCharacterCreatedListener {
@@ -293,6 +293,11 @@ public class PlayerActivity extends AppCompatActivity
 
         mFragmentManager.popBackStack();
         displayPager();
+    }
+
+    @Override
+    public void onInventoryItemSelected(Uri uri) {
+
     }
 
     @Override

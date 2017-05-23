@@ -315,7 +315,8 @@ public class GoblinsGoblins extends SQLiteOpenHelper {
                 String type = itemCursor.getString(itemCursor.getColumnIndex(ItemsTable.COLUMN_TYPE));
                 int tier = itemCursor.getInt(itemCursor.getColumnIndex(ItemsTable.COLUMN_TIER));
                 int value = itemCursor.getInt(itemCursor.getColumnIndex(ItemsTable.COLUMN_VALUE));
-                items.add(new Item(id, name, description, type, tier, value));
+                String effect = itemCursor.getString(itemCursor.getColumnIndex(ItemsTable.COLUMN_EFFECT));
+                items.add(new Item(id, name, description, type, tier, value, effect));
 
                 itemCursor.moveToNext();
             }
@@ -344,7 +345,7 @@ public class GoblinsGoblins extends SQLiteOpenHelper {
                 int value = weaponCursor.getInt(weaponCursor.getColumnIndex(ItemsTable.COLUMN_VALUE));
                 String effect = weaponCursor.getString(weaponCursor.getColumnIndex(ItemsTable.COLUMN_EFFECT));
                 int range = weaponCursor.getInt(weaponCursor.getColumnIndex(ItemsTable.COLUMN_RANGE));
-                weapons.add(new Weapon(id, name, description, type, tier, value, Integer.parseInt(effect.substring(4)), range));
+                weapons.add(new Weapon(id, name, description, type, tier, value, Integer.parseInt(effect.substring(4)), range, effect));
 
                 weaponCursor.moveToNext();
             }
@@ -373,7 +374,7 @@ public class GoblinsGoblins extends SQLiteOpenHelper {
             String effect = weaponCursor.getString(weaponCursor.getColumnIndex(ItemsTable.COLUMN_EFFECT));
             int range = weaponCursor.getInt(weaponCursor.getColumnIndex(ItemsTable.COLUMN_RANGE));
 
-            weapon = new Weapon(id, name, description, type, tier, value, Integer.parseInt(effect.substring(4)), range);
+            weapon = new Weapon(id, name, description, type, tier, value, Integer.parseInt(effect.substring(4)), range, effect);
         }
         weaponCursor.close();
 
@@ -398,7 +399,7 @@ public class GoblinsGoblins extends SQLiteOpenHelper {
                 int tier = defenseCursor.getInt(defenseCursor.getColumnIndex(ItemsTable.COLUMN_TIER));
                 int value = defenseCursor.getInt(defenseCursor.getColumnIndex(ItemsTable.COLUMN_VALUE));
                 String effect = defenseCursor.getString(defenseCursor.getColumnIndex(ItemsTable.COLUMN_EFFECT));
-                defense.add(new Defense(id, name, description, type, tier, value, Integer.parseInt(effect.substring(4))));
+                defense.add(new Defense(id, name, description, type, tier, value, Integer.parseInt(effect.substring(4)), effect));
 
                 defenseCursor.moveToNext();
             }
@@ -426,7 +427,7 @@ public class GoblinsGoblins extends SQLiteOpenHelper {
             int value = defenseCursor.getInt(defenseCursor.getColumnIndex(ItemsTable.COLUMN_VALUE));
             String effect = defenseCursor.getString(defenseCursor.getColumnIndex(ItemsTable.COLUMN_EFFECT));
 
-            defense = new Defense(id, name, description, type, tier, value, Integer.parseInt(effect.substring(4)));
+            defense = new Defense(id, name, description, type, tier, value, Integer.parseInt(effect.substring(4)), effect);
         }
         defenseCursor.close();
 

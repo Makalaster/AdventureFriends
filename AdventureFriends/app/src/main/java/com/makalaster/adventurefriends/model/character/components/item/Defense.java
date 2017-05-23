@@ -12,8 +12,8 @@ public class Defense extends Item {
 
     }
 
-    public Defense(long id, String name, String description, String type, int tier, int value, int defense) {
-        super(id, name, description, type, tier, value);
+    public Defense(long id, String name, String description, String type, int tier, int value, int defense, String effect) {
+        super(id, name, description, type, tier, value, effect);
 
         mDefense = defense;
     }

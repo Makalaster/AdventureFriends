@@ -12,16 +12,8 @@ public class Edible extends Item {
     }
 
     public Edible(long id, String name, String description, String type, int tier, int value, String effect) {
-        super(id, name, description, type, tier, value);
+        super(id, name, description, type, tier, value, effect);
 
-        mEffect = effect;
-    }
-
-    public String getEffect() {
-        return mEffect;
-    }
-
-    public void setEffect(String effect) {
         mEffect = effect;
     }
 }

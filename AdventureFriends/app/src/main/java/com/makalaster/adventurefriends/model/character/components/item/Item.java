@@ -6,19 +6,20 @@ package com.makalaster.adventurefriends.model.character.components.item;
 
 public class Item {
     private long mId;
-    private String mName, mDescription, mType;
+    private String mName, mDescription, mType, mEffect;
     private int mTier, mValue;
 
     public Item() {
     }
 
-    public Item(long id, String name, String description, String type, int tier, int value) {
+    public Item(long id, String name, String description, String type, int tier, int value, String effect) {
         mId = id;
         mName = name;
         mDescription = description;
         mType = type;
         mTier = tier;
         mValue = value;
+        mEffect = effect;
     }
 
     public long getId() {
@@ -67,5 +68,13 @@ public class Item {
 
     public void setValue(int value) {
         mValue = value;
+    }
+
+    public String getEffect() {
+        return mEffect;
+    }
+
+    public void setEffect(String effect) {
+        mEffect = effect;
     }
 }

@@ -31,7 +31,7 @@ public class PlayerPagerAdapter extends FragmentPagerAdapter {
             case 2:
                 return EquipmentPageFragment.newInstance();
             case 3:
-                return InventoryPageFragment.newInstance("", "");
+                return InventoryPageFragment.newInstance();
             case 4:
                 return NotesPageFragment.newInstance("", "");
             case 5:

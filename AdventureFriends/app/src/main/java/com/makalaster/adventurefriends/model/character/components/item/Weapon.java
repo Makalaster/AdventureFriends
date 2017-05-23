@@ -12,8 +12,8 @@ public class Weapon extends Item {
 
     }
 
-    public Weapon(long id, String name, String description, String type, int tier, int value, int damage, int range) {
-        super(id, name, description, type, tier, value);
+    public Weapon(long id, String name, String description, String type, int tier, int value, int damage, int range, String effect) {
+        super(id, name, description, type, tier, value, effect);
 
         mDamage = damage;
         mRange = range;
