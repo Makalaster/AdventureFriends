@@ -11,6 +11,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -54,6 +55,8 @@ public class PlayerActivity extends AppCompatActivity
         NoteDetailFragment.OnNoteSavedListener,
         NewNoteFragment.OnCreateNoteListener {
 
+    private static final String TAG = "PlayerActivity";
+
     private FragmentManager mFragmentManager;
     private String mCurrentCampaignId;
 
@@ -79,6 +82,58 @@ public class PlayerActivity extends AppCompatActivity
         mCurrentCampaignId = args.getString(ModuleListFragment.ARG_CAMPAIGN_ID);
 
         checkIfPlayerIsAlreadyInCampaign();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        Log.d(TAG, "onResume: ");
+
+        if (CampaignHolder.getInstance().getCampaign() == null) {
+            reloadCampaign(mCurrentCampaignId);
+        }
+    }
+
+    private void reloadCampaign(String currentCampaignId) {
+        DatabaseReference campaignReference = FirebaseDatabase.getInstance()
+                .getReference("campaigns/" + currentCampaignId);
+        CampaignHolder.getInstance().setCampaignId(mCurrentCampaignId);
+        campaignReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                CampaignHolder.getInstance().setCampaign(dataSnapshot.getValue(Campaign.class));
+                if (PlayerCharacterHolder.getInstance().getPlayerCharacter() == null) {
+                    reloadPlayer();
+                } else {
+                    displayPager();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void reloadPlayer() {
+        final String playerId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        DatabaseReference playerReference = FirebaseDatabase.getInstance()
+                .getReference("campaigns/" + mCurrentCampaignId + "/players/" + playerId);
+        playerReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                PlayerCharacterHolder.getInstance().loadCharacter(dataSnapshot.getValue(PlayerCharacter.class));
+                loadInventoryAndEquipment(playerId);
+                displayPager();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private void checkIfPlayerIsAlreadyInCampaign() {

@@ -45,7 +45,7 @@ public class DMActivity extends AppCompatActivity
         NPCsPageFragment.OnAddNPCListener,
         NewNPCFragment.CreateNPCListener,
         NotesPageFragment.NoteListener,
-        MapPageFragment.OnFragmentInteractionListener,
+        MapPageFragment.OnMapInteractionListener,
         NewNoteFragment.OnCreateNoteListener,
         NoteDetailFragment.OnNoteSavedListener {
 

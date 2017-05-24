@@ -77,6 +77,7 @@ public class EquipmentPageFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        //TODO fix crashing bug on app resume
         HashMap<String, Item> equipment = mPlayerCharacterHolder.getEquipment();
         Defense hat = (Defense) equipment.get(NonPlayerCharacter.HAT);
         Defense shirt = (Defense) equipment.get(NonPlayerCharacter.SHIRT);
@@ -102,6 +103,12 @@ public class EquipmentPageFragment extends Fragment {
         ((TextView) view.findViewById(R.id.weapon_name_and_description))
                 .setText(weapon.getName() + ", " + weapon.getDescription());
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume: ");
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.makalaster.adventurefriends.dm.dmFragments.module;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,20 +14,18 @@ import com.makalaster.adventurefriends.R;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link MapPageFragment.OnFragmentInteractionListener} interface
+ * {@link OnMapInteractionListener} interface
  * to handle interaction events.
  * Use the {@link MapPageFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
 public class MapPageFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_MODULE_ID = "module_id";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
+    private String mModuleId;
 
-    private OnFragmentInteractionListener mListener;
+    private OnMapInteractionListener mListener;
 
     public MapPageFragment() {
         // Required empty public constructor
@@ -36,14 +35,13 @@ public class MapPageFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
+     * @param moduleId Parameter 1.
      * @return A new instance of fragment MapPageFragment.
      */
-    // TODO: Rename and change types and number of parameters
-    public static MapPageFragment newInstance(String param1) {
+    public static MapPageFragment newInstance(String moduleId) {
         MapPageFragment fragment = new MapPageFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
+        args.putString(ARG_MODULE_ID, moduleId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -52,7 +50,7 @@ public class MapPageFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
+            mModuleId = getArguments().getString(ARG_MODULE_ID);
         }
     }
 
@@ -63,18 +61,18 @@ public class MapPageFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_map_page, container, false);
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
+        if (context instanceof OnMapInteractionListener) {
+            mListener = (OnMapInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnLoadModuleListener");
@@ -97,7 +95,7 @@ public class MapPageFragment extends Fragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnFragmentInteractionListener {
+    public interface OnMapInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }

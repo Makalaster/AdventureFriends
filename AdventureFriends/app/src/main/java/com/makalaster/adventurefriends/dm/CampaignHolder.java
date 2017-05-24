@@ -19,6 +19,7 @@ import java.util.HashMap;
 
 public class CampaignHolder {
     private Campaign mCampaign;
+    private String mCampaignId;
     private HashMap<String, Module> mModules;
     private HashMap<String, PlayerCharacter> mPlayers;
 
@@ -42,6 +43,7 @@ public class CampaignHolder {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.getValue() != null) {
                     mCampaign = dataSnapshot.getValue(Campaign.class);
+                    mCampaignId = mCampaign.getCampaignId();
                     mModules = mCampaign.getModules();
                     mPlayers = mCampaign.getPlayers();
                 }
@@ -58,6 +60,21 @@ public class CampaignHolder {
         mCampaign = null;
         mModules = null;
         mPlayers = null;
+        mCampaignId = null;
+    }
+
+    public void setCampaign(Campaign campaign) {
+        mCampaign = campaign;
+        mModules = mCampaign.getModules();
+        mPlayers = mCampaign.getPlayers();
+    }
+
+    public String getCampaignId() {
+        return mCampaignId;
+    }
+
+    public void setCampaignId(String campaignId) {
+        mCampaignId = campaignId;
     }
 
     public Module getModuleById(String moduleId) {
