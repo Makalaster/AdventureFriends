@@ -90,6 +90,7 @@ public class PlayerActivity extends AppCompatActivity
 
         Log.d(TAG, "onResume: ");
 
+        //TODO make this successfully reload a campaign, don't crash on new player
         if (CampaignHolder.getInstance().getCampaign() == null) {
             reloadCampaign(mCurrentCampaignId);
         }
@@ -103,11 +104,11 @@ public class PlayerActivity extends AppCompatActivity
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 CampaignHolder.getInstance().setCampaign(dataSnapshot.getValue(Campaign.class));
-                if (PlayerCharacterHolder.getInstance().getPlayerCharacter() == null) {
+                /*if (PlayerCharacterHolder.getInstance().getPlayerCharacter() == null) {
                     reloadPlayer();
                 } else {
                     displayPager();
-                }
+                }*/
             }
 
             @Override
@@ -143,7 +144,7 @@ public class PlayerActivity extends AppCompatActivity
         playerReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
+                if (dataSnapshot.getValue() != null) {
                     loadPlayer();
                 } else {
                     displayNewCharacter();

@@ -76,6 +76,7 @@ public class DMActivity extends AppCompatActivity
         loadModuleList(mCampaignId);
     }
 
+    //TODO load correct module on rotate
     private void loadModuleList(String id) {
         ModuleListFragment moduleListFragment = ModuleListFragment.newInstance(id);
         mFragmentManager.beginTransaction()
@@ -276,7 +277,7 @@ public class DMActivity extends AppCompatActivity
     }
 
     @Override
-    public void onFragmentInteraction(Uri uri) {
+    public void onMapSaved(Uri uri) {
 
     }
 

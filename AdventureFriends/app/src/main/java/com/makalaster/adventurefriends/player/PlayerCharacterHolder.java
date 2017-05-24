@@ -39,10 +39,12 @@ public class PlayerCharacterHolder {
 
     public void loadCharacter(PlayerCharacter playerCharacter) {
         mPlayerCharacter = playerCharacter;
-        mAbilities = playerCharacter.getAbilities();
-        mInventory = playerCharacter.getInventory();
-        mEquipment = playerCharacter.getEquipment();
-        mNotes = playerCharacter.getNotes();
+        if (playerCharacter != null) {
+            mAbilities = playerCharacter.getAbilities();
+            mInventory = playerCharacter.getInventory();
+            mEquipment = playerCharacter.getEquipment();
+            mNotes = playerCharacter.getNotes();
+        }
     }
 
     public void clearCharacter() {

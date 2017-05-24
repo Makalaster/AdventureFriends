@@ -4,12 +4,21 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.makalaster.adventurefriends.R;
+import com.makalaster.adventurefriends.baseGames.GoblinsGoblins;
+import com.makalaster.adventurefriends.model.character.NonPlayerCharacter;
+import com.makalaster.adventurefriends.model.character.PlayerCharacter;
+import com.makalaster.adventurefriends.model.map.Map;
+import com.makalaster.adventurefriends.model.map.MapView;
+import com.makalaster.adventurefriends.model.map.OnTileClickedListener;
+import com.makalaster.adventurefriends.model.map.Tile;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -19,11 +28,12 @@ import com.makalaster.adventurefriends.R;
  * Use the {@link MapPageFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MapPageFragment extends Fragment {
+public class MapPageFragment extends Fragment implements OnTileClickedListener {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_MODULE_ID = "module_id";
 
     private String mModuleId;
+    private Map mMap;
 
     private OnMapInteractionListener mListener;
 
@@ -65,7 +75,35 @@ public class MapPageFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        final MapView mapView = (MapView) view.findViewById(R.id.dm_map);
+        mapView.setTileClickedListener(this);
+        mMap = new Map();
+        /*map.addNonPlayer(
+                new NonPlayerCharacter("Jimmy", "1234", 5,
+                        GoblinsGoblins.getInstance(view.getContext()).getSizeById(1),
+                        GoblinsGoblins.getInstance(view.getContext()).getJobById(1),
+                        5), 2, 2);
+        map.addPlayer(
+                new PlayerCharacter("Other Jimmy", "5678",
+                        GoblinsGoblins.getInstance(view.getContext()).getSizeById(3),
+                        GoblinsGoblins.getInstance(view.getContext()).getJobById(3),
+                        "abcd", view.getContext()), 6, 8
+        );*/
+        mapView.setMap(mMap);
 
+        FloatingActionButton updateMapFab = (FloatingActionButton) view.findViewById(R.id.update_map_fab);
+        updateMapFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!mapView.isEditMode()) {
+                    mapView.setEditMode(true);
+                    Toast.makeText(v.getContext(), "Editing", Toast.LENGTH_SHORT).show();
+                } else {
+                    mapView.setEditMode(false);
+                    Toast.makeText(v.getContext(), "Map saved", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     @Override
@@ -85,6 +123,24 @@ public class MapPageFragment extends Fragment {
         mListener = null;
     }
 
+    @Override
+    public void onDmTileClicked(Tile tile) {
+        if (tile.containsNonPlayer()) {
+            mMap.removeNonPlayer(tile.getX(), tile.getY());
+        } else {
+            mMap.addNonPlayer(
+                    new NonPlayerCharacter("Jimmy", "1234", 5,
+                            GoblinsGoblins.getInstance(getContext()).getSizeById(1),
+                            GoblinsGoblins.getInstance(getContext()).getJobById(1),
+                            5), tile.getX(), tile.getY());
+        }
+    }
+
+    @Override
+    public void onPlayerTileClicked(Tile tile) {
+
+    }
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -96,7 +152,6 @@ public class MapPageFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnMapInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+        void onMapSaved(Uri uri);
     }
 }
