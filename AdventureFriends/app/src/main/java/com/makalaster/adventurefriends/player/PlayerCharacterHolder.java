@@ -104,6 +104,10 @@ public class PlayerCharacterHolder {
         return mNotes;
     }
 
+    public Note getNoteById(String id) {
+        return mNotes.get(id);
+    }
+
     public void setNotes(HashMap<String, Note> notes) {
         mNotes = notes;
     }

@@ -9,8 +9,8 @@ import android.view.View;
  * Created by Makalaster on 5/18/17.
  */
 
-public class Map extends View {
-    public Map(Context context) {
+public class MapView extends View {
+    public MapView(Context context) {
         super(context);
     }
 

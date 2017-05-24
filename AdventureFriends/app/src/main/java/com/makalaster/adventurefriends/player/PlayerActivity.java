@@ -23,8 +23,12 @@ import com.google.firebase.database.ValueEventListener;
 import com.makalaster.adventurefriends.R;
 import com.makalaster.adventurefriends.dm.CampaignHolder;
 import com.makalaster.adventurefriends.dm.dmFragments.ModuleListFragment;
+import com.makalaster.adventurefriends.dm.dmFragments.module.ModuleHolder;
+import com.makalaster.adventurefriends.dm.dmFragments.module.notes.NewNoteFragment;
 import com.makalaster.adventurefriends.lobby.LobbyActivity;
+import com.makalaster.adventurefriends.model.Note;
 import com.makalaster.adventurefriends.model.campaign.Campaign;
+import com.makalaster.adventurefriends.model.campaign.Module;
 import com.makalaster.adventurefriends.model.character.NonPlayerCharacter;
 import com.makalaster.adventurefriends.model.character.PlayerCharacter;
 import com.makalaster.adventurefriends.model.character.components.Job;
@@ -35,6 +39,7 @@ import com.makalaster.adventurefriends.model.character.components.item.Weapon;
 import com.makalaster.adventurefriends.player.pages.EquipmentPageFragment;
 import com.makalaster.adventurefriends.player.pages.InventoryPageFragment;
 import com.makalaster.adventurefriends.player.pages.MapPageFragment;
+import com.makalaster.adventurefriends.player.pages.NoteDetailFragment;
 import com.makalaster.adventurefriends.player.pages.NotesPageFragment;
 
 import java.util.ArrayList;
@@ -44,8 +49,10 @@ public class PlayerActivity extends AppCompatActivity
         EquipmentPageFragment.EquipmentInteractionListener,
         InventoryPageFragment.OnInventoryItemSelectedListener,
         MapPageFragment.OnFragmentInteractionListener,
-        NotesPageFragment.OnFragmentInteractionListener,
-        NewCharacterFragment.OnPlayerCharacterCreatedListener {
+        NotesPageFragment.NoteListener,
+        NewCharacterFragment.OnPlayerCharacterCreatedListener,
+        NoteDetailFragment.OnNoteSavedListener,
+        NewNoteFragment.OnCreateNoteListener {
 
     private FragmentManager mFragmentManager;
     private String mCurrentCampaignId;
@@ -206,13 +213,25 @@ public class PlayerActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
-            confirmAndExit();
+            switch (mFragmentManager.findFragmentById(R.id.player_fragment_container).getTag()) {
+                case "new_note":
+                    mFragmentManager.popBackStack();
+                    break;
+                case "note_detail":
+                    mFragmentManager.popBackStack();
+                    break;
+                default:
+                    super.onBackPressed();
+                    confirmAndExit();
+            }
         }
     }
 
     private void confirmAndExit() {
         //TODO make confirmation
+        CampaignHolder.getInstance().clearCampaign();
+        PlayerCharacterHolder.getInstance().clearCharacter();
+
         Intent returnToLobby = new Intent(this, LobbyActivity.class);
         startActivity(returnToLobby);
         finish();
@@ -301,7 +320,55 @@ public class PlayerActivity extends AppCompatActivity
     }
 
     @Override
+    public void onAddNote() {
+        Fragment newNoteFragment = NewNoteFragment.newInstance();
+        mFragmentManager.beginTransaction()
+                .addToBackStack(null)
+                .replace(R.id.player_fragment_container, newNoteFragment, "new_note")
+                .commit();
+    }
+
+    @Override
+    public void onNoteSelected(String noteId) {
+        Fragment noteDetailFragment = NoteDetailFragment.newInstance(noteId);
+        mFragmentManager.beginTransaction()
+                .addToBackStack(null)
+                .replace(R.id.player_fragment_container, noteDetailFragment, "note_detail")
+                .commit();
+    }
+
+    @Override
     public void onFragmentInteraction(Uri uri) {
 
+    }
+
+    @Override
+    public void onSaveNote(String noteId, String newTitle, String newBody) {
+        PlayerCharacterHolder playerCharacterHolder = PlayerCharacterHolder.getInstance();
+        String playerId = playerCharacterHolder.getPlayerCharacter().getOwnerId();
+        String campaignId = CampaignHolder.getInstance().getCampaign().getCampaignId();
+
+        Note note = playerCharacterHolder.getNoteById(noteId);
+        note.setTitle(newTitle);
+        note.setBody(newBody);
+
+        DatabaseReference noteToUpdate = FirebaseDatabase.getInstance().getReference(
+                "campaigns/" + campaignId + "/players/" + playerId + "/notes/" + noteId);
+        noteToUpdate.setValue(note);
+    }
+
+    @Override
+    public void onCreateNote(String title, String body) {
+        String campaignId = CampaignHolder.getInstance().getCampaign().getCampaignId();
+        PlayerCharacterHolder playerCharacterHolder = PlayerCharacterHolder.getInstance();
+
+        DatabaseReference currentPlayerReference = FirebaseDatabase.getInstance().getReference("campaigns/" + campaignId + "/players/" + playerCharacterHolder.getPlayerCharacter().getOwnerId());
+        DatabaseReference newNote = currentPlayerReference.child("notes").push();
+        String id = newNote.getKey();
+        Note newLocalNote = new Note(id, title, body);
+        newNote.setValue(newLocalNote);
+        playerCharacterHolder.addNote(id, newLocalNote);
+
+        mFragmentManager.popBackStack();
     }
 }
