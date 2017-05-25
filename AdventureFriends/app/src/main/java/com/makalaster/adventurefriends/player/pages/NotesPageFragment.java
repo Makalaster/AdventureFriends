@@ -1,7 +1,6 @@
 package com.makalaster.adventurefriends.player.pages;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -22,6 +21,8 @@ import com.makalaster.adventurefriends.dm.dmFragments.module.moduleItemRecyclerV
 import com.makalaster.adventurefriends.model.Note;
 
 /**
+ * Display a list of a player's notes.
+ *
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
  * {@link NoteListener} interface

@@ -5,8 +5,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,18 +13,17 @@ import android.widget.TextView;
 
 import com.makalaster.adventurefriends.R;
 import com.makalaster.adventurefriends.model.character.NonPlayerCharacter;
-import com.makalaster.adventurefriends.model.character.PlayerCharacter;
 import com.makalaster.adventurefriends.model.character.components.item.Defense;
 import com.makalaster.adventurefriends.model.character.components.item.Item;
 import com.makalaster.adventurefriends.model.character.components.item.Weapon;
 import com.makalaster.adventurefriends.player.PlayerCharacterHolder;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
 
 /**
+ * Displays all of the player's equipment in the designated equipment slots.
+ *
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
  * {@link EquipmentInteractionListener} interface
@@ -128,6 +125,7 @@ public class EquipmentPageFragment extends Fragment {
         mListener = null;
     }
 
+    //TODO implement equipment interaction to add and remove equipment
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated

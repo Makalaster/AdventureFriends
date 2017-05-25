@@ -1,7 +1,5 @@
 package com.makalaster.adventurefriends.player.pages;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -19,6 +17,8 @@ import com.makalaster.adventurefriends.player.pages.recyclers.AbilityRecyclerAda
 import java.util.ArrayList;
 
 /**
+ * Fragment to display all of a player's abilities.
+ *
  * A simple {@link Fragment} subclass.
  * Use the {@link AbilitiesPageFragment#newInstance} factory method to
  * create an instance of this fragment.

@@ -17,6 +17,8 @@ import com.makalaster.adventurefriends.model.map.Tile;
 import com.makalaster.adventurefriends.player.PlayerCharacterHolder;
 
 /**
+ * Display the current map, as launched by the DM.
+ *
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
  * {@link OnMapInteractionListener} interface
@@ -26,7 +28,6 @@ import com.makalaster.adventurefriends.player.PlayerCharacterHolder;
  */
 public class MapPageFragment extends Fragment implements OnTileClickedListener {
     private OnMapInteractionListener mListener;
-    private Map mMap;
 
     public MapPageFragment() {
         // Required empty public constructor
@@ -59,9 +60,9 @@ public class MapPageFragment extends Fragment implements OnTileClickedListener {
 
         MapView mapView = (MapView) view.findViewById(R.id.player_map);
         mapView.setTileClickedListener(this);
-        mMap = new Map();
+        Map map = new Map();
 
-        mapView.setMap(mMap);
+        mapView.setMap(map);
     }
 
     @Override
@@ -86,6 +87,11 @@ public class MapPageFragment extends Fragment implements OnTileClickedListener {
 
     }
 
+    //TODO set limits on movement based on player's speed, as well as map obstacles.
+    /**
+     * Move the player around on the map.
+     * @param tile
+     */
     @Override
     public void onPlayerTileClicked(Tile tile) {
         PlayerCharacter me = PlayerCharacterHolder.getInstance().getPlayerCharacter();

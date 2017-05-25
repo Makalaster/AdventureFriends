@@ -10,11 +10,10 @@ import com.makalaster.adventurefriends.R;
 import com.makalaster.adventurefriends.model.character.components.Ability;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 
 /**
- * Created by Makalaster on 5/22/17.
+ * Holds a list of a player's abilities. Shows all relevant details about an ability.
  */
 
 public class AbilityRecyclerAdapter extends RecyclerView.Adapter<AbilityHolder> {

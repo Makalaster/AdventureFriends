@@ -12,7 +12,7 @@ import com.makalaster.adventurefriends.player.pages.NotesPageFragment;
 import com.makalaster.adventurefriends.player.pages.StatsPageFragment;
 
 /**
- * Created by Makalaster on 5/21/17.
+ * Adapter to hold all of the pages for a player's details.
  */
 
 public class PlayerPagerAdapter extends FragmentPagerAdapter {

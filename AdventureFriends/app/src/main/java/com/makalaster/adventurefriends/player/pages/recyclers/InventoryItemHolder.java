@@ -7,7 +7,7 @@ import android.widget.TextView;
 import com.makalaster.adventurefriends.R;
 
 /**
- * Created by Makalaster on 5/23/17.
+ * Holds the views for an inventory item.
  */
 
 public class InventoryItemHolder extends RecyclerView.ViewHolder {

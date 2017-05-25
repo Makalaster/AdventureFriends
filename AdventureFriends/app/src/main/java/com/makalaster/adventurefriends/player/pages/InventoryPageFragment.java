@@ -23,6 +23,8 @@ import com.makalaster.adventurefriends.player.pages.recyclers.InventoryItemHolde
 import java.util.Locale;
 
 /**
+ * Display all of a player's inventory items, including equipped items.
+ *
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
  * {@link OnInventoryItemSelectedListener} interface
@@ -44,7 +46,6 @@ public class InventoryPageFragment extends Fragment {
      *
      * @return A new instance of fragment InventoryPageFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static InventoryPageFragment newInstance() {
         InventoryPageFragment fragment = new InventoryPageFragment();
         Bundle args = new Bundle();
@@ -107,6 +108,7 @@ public class InventoryPageFragment extends Fragment {
         mListener = null;
     }
 
+    //TODO implement interaction with inventory items, including equipping, dropping, giving, and consuming.
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated

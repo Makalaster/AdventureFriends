@@ -15,8 +15,10 @@ import com.makalaster.adventurefriends.player.PlayerCharacterHolder;
 import java.util.Locale;
 
 /**
+ * Display a player's character stats.
+ *
  * A simple {@link Fragment} subclass.
-
+ *
  * Use the {@link StatsPageFragment#newInstance} factory method to
  * create an instance of this fragment.
  */

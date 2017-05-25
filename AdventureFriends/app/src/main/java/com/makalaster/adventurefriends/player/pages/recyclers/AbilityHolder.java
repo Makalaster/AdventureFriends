@@ -7,7 +7,7 @@ import android.widget.TextView;
 import com.makalaster.adventurefriends.R;
 
 /**
- * Created by Makalaster on 5/22/17.
+ * Holds the views for an ability.
  */
 
 public class AbilityHolder extends RecyclerView.ViewHolder {

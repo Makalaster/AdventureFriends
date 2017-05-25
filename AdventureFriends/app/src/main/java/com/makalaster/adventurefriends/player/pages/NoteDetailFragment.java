@@ -1,9 +1,5 @@
 package com.makalaster.adventurefriends.player.pages;
 
-/**
- * Created by Makalaster on 5/23/17.
- */
-
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -20,6 +16,8 @@ import com.makalaster.adventurefriends.model.Note;
 import com.makalaster.adventurefriends.player.PlayerCharacterHolder;
 
 /**
+ * The contents of a player's note.
+ *
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
  * {@link OnNoteSavedListener} interface
@@ -97,6 +95,9 @@ public class NoteDetailFragment extends Fragment {
         });
     }
 
+    /**
+     * Switch to edit mode to edit an existing note.
+     */
     private void switchToEdit() {
         mEditTitle.setText(mTitleText.getText());
         mEditTitle.setVisibility(View.VISIBLE);
@@ -105,7 +106,7 @@ public class NoteDetailFragment extends Fragment {
         mEditBody.setVisibility(View.VISIBLE);
         mBodyText.setVisibility(View.INVISIBLE);
 
-        mSaveButton.setText("save");
+        mSaveButton.setText(R.string.save);
         mCancelButton.setVisibility(View.VISIBLE);
         mCancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,23 +116,29 @@ public class NoteDetailFragment extends Fragment {
         });
     }
 
+    /**
+     * Switch back to the previous note state without saving the changes.
+     */
     private void revert() {
         mTitleText.setVisibility(View.VISIBLE);
         mEditTitle.setVisibility(View.GONE);
         mBodyText.setVisibility(View.VISIBLE);
         mEditBody.setVisibility(View.GONE);
         mCancelButton.setVisibility(View.GONE);
-        mSaveButton.setText("edit");
+        mSaveButton.setText(R.string.edit);
     }
 
+    /**
+     * Save and update the note.
+     */
     private void update() {
         String newTitle = mEditTitle.getText().toString().trim();
         String newBody = mEditBody.getText().toString().trim();
         if (newTitle.isEmpty()) {
-            mEditTitle.setError("Please enter a new title or press cancel");
+            mEditTitle.setError(getString(R.string.edit_note_title_hint));
             mEditTitle.requestFocus();
         } else if (newBody.isEmpty()) {
-            mEditBody.setError("Please enter a new body or press cancel");
+            mEditBody.setError(getString(R.string.edit_note_body_hint));
             mEditBody.requestFocus();
         } else {
             mTitleText.setText(mEditTitle.getText().toString().trim());
@@ -141,7 +148,7 @@ public class NoteDetailFragment extends Fragment {
             mBodyText.setVisibility(View.VISIBLE);
             mEditBody.setVisibility(View.GONE);
             mCancelButton.setVisibility(View.GONE);
-            mSaveButton.setText("edit");
+            mSaveButton.setText(R.string.edit);
 
             mListener.onSaveNote(mNoteId, newTitle, newBody);
         }

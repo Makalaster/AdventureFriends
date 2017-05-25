@@ -22,6 +22,12 @@ import com.makalaster.adventurefriends.model.User;
 
 import java.util.Arrays;
 
+/**
+ * Activity to handle logging in through FireBase. Uses FireBaseUI to handle authentication through
+ * various services including Google, Facebook, Twitter, and email/password authentication.
+ * If a user is already logged in, they are immediately sent to the lobby activity. If not, they are
+ * presented with sign-in provider options. Once they are signed in, they are sent to the lobby activity.
+ */
 public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
     private static final int AF_SIGN_IN = 1;
@@ -78,6 +84,9 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Check to see whether a user is already present in the database. If not, the user is added.
+     */
     private void checkForUserInDatabaseAndAddIfNotPresent() {
         final DatabaseReference database = FirebaseDatabase.getInstance().getReference("users");
         final FirebaseUser currentUser = mAuth.getCurrentUser();

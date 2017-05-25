@@ -21,6 +21,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Page on which a player can create a new character.
+ *
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
  * {@link OnPlayerCharacterCreatedListener} interface
@@ -91,6 +93,10 @@ public class NewCharacterFragment extends Fragment {
         });
     }
 
+    /**
+     * Get all of the sizes that can be applied to a character. Used to populate the sizes spinner.
+     * @return A list of all available sizes.
+     */
     private ArrayList<String> getSizes() {
         ArrayList<String> sizeNames = new ArrayList<>();
         List<Size> sizes = mGoblinsGoblins.getAllSizes();
@@ -101,6 +107,10 @@ public class NewCharacterFragment extends Fragment {
         return sizeNames;
     }
 
+    /**
+     * Get all of the jobs that can be applied to a character. Used to populate the jobs spinner.
+     * @return A list of all available jobs.
+     */
     private ArrayList<String> getJobs() {
         ArrayList<String> jobNames = new ArrayList<>();
         List<Job> jobs = mGoblinsGoblins.getAllJobs();
@@ -111,6 +121,9 @@ public class NewCharacterFragment extends Fragment {
         return jobNames;
     }
 
+    /**
+     * Create a new character based on the user's input, after validation.
+     */
     private void createCharacter() {
         String name = mName.getText().toString().trim();
         Size size = null;

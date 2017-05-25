@@ -143,6 +143,7 @@ public class MapPageFragment extends Fragment implements OnTileClickedListener {
         }
     }
 
+    //TODO implement controlling non-player characters
     @Override
     public void onPlayerTileClicked(Tile tile) {
 

@@ -95,6 +95,10 @@ public class PlayerActivity extends AppCompatActivity
         }
     }
 
+    /**
+     * Intended to reload a campaign on resuming the application.
+     * @param currentCampaignId The ID of the current campaign.
+     */
     private void reloadCampaign(String currentCampaignId) {
         DatabaseReference campaignReference = FirebaseDatabase.getInstance()
                 .getReference("campaigns/" + currentCampaignId);
@@ -117,6 +121,9 @@ public class PlayerActivity extends AppCompatActivity
         });
     }
 
+    /**
+     * Intended to reload the player on resuming the app. Currently causes more issues than it fixes.
+     */
     private void reloadPlayer() {
         final String playerId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         DatabaseReference playerReference = FirebaseDatabase.getInstance()
@@ -136,6 +143,10 @@ public class PlayerActivity extends AppCompatActivity
         });
     }
 
+    /**
+     * Check whether a player is already in a campaign on joining. If the player is present, the
+     * player is loaded. Otherwise, the new player window is displayed.
+     */
     private void checkIfPlayerIsAlreadyInCampaign() {
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         DatabaseReference playerReference = FirebaseDatabase.getInstance()
@@ -157,6 +168,10 @@ public class PlayerActivity extends AppCompatActivity
         });
     }
 
+    /**
+     * Load the current player into the PlayerCharacterHolder. Does not display the viewpager until
+     * the load is complete.
+     */
     public void loadPlayer() {
         final String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         DatabaseReference character = FirebaseDatabase.getInstance()
@@ -179,6 +194,11 @@ public class PlayerActivity extends AppCompatActivity
         });
     }
 
+    /**
+     * Manually load the user's inventory and equipment. Because these items are subclasses of Item,
+     * FireBase gets confused when loading them automatically, and it can cause issues.
+     * @param uid The current user's FireBase ID.
+     */
     public void loadInventoryAndEquipment(String uid) {
         final PlayerCharacter playerCharacter = PlayerCharacterHolder.getInstance().getPlayerCharacter();
         ArrayList<String> inventory = new ArrayList<>();
@@ -247,6 +267,9 @@ public class PlayerActivity extends AppCompatActivity
         }
     }
 
+    /**
+     * Display the character details viewpager fragment.
+     */
     public void displayPager() {
         Fragment pagerFragment = PlayerPagerFragment.newInstance();
         mFragmentManager.beginTransaction()
@@ -254,6 +277,9 @@ public class PlayerActivity extends AppCompatActivity
                 .commit();
     }
 
+    /**
+     * Display the fragment to create a new character.
+     */
     public void displayNewCharacter() {
         Fragment newPlayerFragment = NewCharacterFragment.newInstance();
         mFragmentManager.beginTransaction()
@@ -262,6 +288,9 @@ public class PlayerActivity extends AppCompatActivity
                 .commit();
     }
 
+    /**
+     * Properly handle the back button being pressed.
+     */
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -282,6 +311,9 @@ public class PlayerActivity extends AppCompatActivity
         }
     }
 
+    /**
+     * Exit back to the lobby.
+     */
     private void confirmAndExit() {
         //TODO make confirmation
         CampaignHolder.getInstance().clearCampaign();
@@ -339,11 +371,21 @@ public class PlayerActivity extends AppCompatActivity
         return true;
     }
 
+    /**
+     * Will handle what happens what an piece of equipment is selected.
+     * @param uri Nothing, right now.
+     */
     @Override
     public void onEquipmentSelected(Uri uri) {
 
     }
 
+    /**
+     * Handles a new character being created.
+     * @param name The name of the new character.
+     * @param size The size of th new character.
+     * @param job The job of the new character.
+     */
     @Override
     public void onCharacterCreated(String name, Size size, Job job) {
         Campaign currentCampaign = CampaignHolder.getInstance().getCampaign();
@@ -369,11 +411,18 @@ public class PlayerActivity extends AppCompatActivity
         displayPager();
     }
 
+    /**
+     * Will handle what happens when an inventory item is selected.
+     * @param uri Nothing, right now.
+     */
     @Override
     public void onInventoryItemSelected(Uri uri) {
 
     }
 
+    /**
+     * Handles the new note FAB being pressed. Displays the fragment for creating a new note.
+     */
     @Override
     public void onAddNote() {
         Fragment newNoteFragment = NewNoteFragment.newInstance();
@@ -383,6 +432,10 @@ public class PlayerActivity extends AppCompatActivity
                 .commit();
     }
 
+    /**
+     * Handles a note being selected. Displays the fragment for showing note details.
+     * @param noteId The ID of the selected note.
+     */
     @Override
     public void onNoteSelected(String noteId) {
         Fragment noteDetailFragment = NoteDetailFragment.newInstance(noteId);
@@ -392,6 +445,11 @@ public class PlayerActivity extends AppCompatActivity
                 .commit();
     }
 
+    /**
+     * Handles what happens when a player object is moved on the map. Updates the location in FireBase.
+     * @param oldLocation The character's old location.
+     * @param newLocation The character's new location.
+     */
     @Override
     public void onPlayerMoved(Tile oldLocation, Tile newLocation) {
         String campaignId = CampaignHolder.getInstance().getCampaignId();
@@ -408,6 +466,12 @@ public class PlayerActivity extends AppCompatActivity
         newLocationReference.child("containsPlayer").setValue(true);
     }
 
+    /**
+     * Handles a note being saved after it has been changed. Updates in the player holder and FireBase.
+     * @param noteId The ID of the saved note.
+     * @param newTitle The new title for the note.
+     * @param newBody The new body of the note.
+     */
     @Override
     public void onSaveNote(String noteId, String newTitle, String newBody) {
         PlayerCharacterHolder playerCharacterHolder = PlayerCharacterHolder.getInstance();
@@ -423,6 +487,11 @@ public class PlayerActivity extends AppCompatActivity
         noteToUpdate.setValue(note);
     }
 
+    /**
+     * Handles a new note being created. Adds the note to FireBase and the player holder.
+     * @param title The title of the new note.
+     * @param body The body of the new note.
+     */
     @Override
     public void onCreateNote(String title, String body) {
         String campaignId = CampaignHolder.getInstance().getCampaign().getCampaignId();

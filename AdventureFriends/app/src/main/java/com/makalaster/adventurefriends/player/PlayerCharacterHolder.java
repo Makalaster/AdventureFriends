@@ -1,11 +1,5 @@
 package com.makalaster.adventurefriends.player;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.makalaster.adventurefriends.model.Note;
 import com.makalaster.adventurefriends.model.character.PlayerCharacter;
 import com.makalaster.adventurefriends.model.character.components.Ability;
@@ -14,7 +8,7 @@ import com.makalaster.adventurefriends.model.character.components.item.Item;
 import java.util.HashMap;
 
 /**
- * Created by Makalaster on 5/21/17.
+ * Used to hold the current player's character. Works as offline caching to reduce calls to FireBase.
  */
 
 public class PlayerCharacterHolder {
