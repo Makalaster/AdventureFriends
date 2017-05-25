@@ -6,7 +6,7 @@ import com.makalaster.adventurefriends.model.character.PlayerCharacter;
 import java.util.ArrayList;
 
 /**
- * Created by Makalaster on 5/23/17.
+ * Represents a map object. Currently maps are 8 tiles by 10 tiles.
  */
 
 public class Map {
@@ -15,14 +15,16 @@ public class Map {
     private boolean isLaunched;
 
     private ArrayList<ArrayList<Tile>> mTiles;
-    //private Tile[][] mTiles;
 
     public Map() {
         mTiles = new ArrayList<>(TILE_WIDTH);
         fillTiles();
     }
 
-    public void fillTiles() {
+    /**
+     * Fill the tiles of a new map, to make sure none of the spaces are null.
+     */
+    private void fillTiles() {
         for (int i = 0; i < TILE_WIDTH; i++) {
             mTiles.add(i, new ArrayList<Tile>(TILE_HEIGHT));
             for (int j = 0; j < TILE_HEIGHT; j++) {
@@ -39,12 +41,21 @@ public class Map {
         mTiles = tiles;
     }
 
+    /**
+     * Reset all the tiles of the map.
+     */
     public void clearTiles() {
         mTiles = null;
         mTiles = new ArrayList<>(TILE_WIDTH);
         fillTiles();
     }
 
+    /**
+     * Add a non-player character to a tile on the map.
+     * @param nonPlayerCharacter The non player character to be added.
+     * @param x The X coordinate of the non-player character's location.
+     * @param y The Y coordinate of the non-player character's location.
+     */
     public void addNonPlayer(NonPlayerCharacter nonPlayerCharacter, int x, int y) {
         Tile currentTile = getTile(x, y);
 
@@ -52,6 +63,11 @@ public class Map {
         currentTile.setNonPlayer(nonPlayerCharacter);
     }
 
+    /**
+     * Remove a non-player character from a tile on the map.
+     * @param x The X coordinate of the non-player character's location.
+     * @param y The Y coordinate of the non-player character's location.
+     */
     public void removeNonPlayer(int x, int y) {
         Tile currentTile = getTile(x, y);
 
@@ -61,6 +77,12 @@ public class Map {
         }
     }
 
+    /**
+     * Add a player character to a tile on the map.
+     * @param playerCharacter The player character to be added.
+     * @param x The X coordinate of the player character's location.
+     * @param y The Y coordinate of the player character's location.
+     */
     public void addPlayer(PlayerCharacter playerCharacter, int x, int y) {
         Tile currentTile = getTile(x, y);
 
@@ -68,6 +90,11 @@ public class Map {
         currentTile.setPlayer(playerCharacter);
     }
 
+    /**
+     * Remove a player character from a tile on the map.
+     * @param x The X coordinate of the player character's location.
+     * @param y The Y coordinate of the player character's location.
+     */
     public void removePlayer(int x, int y) {
         Tile currentTile = getTile(x, y);
 

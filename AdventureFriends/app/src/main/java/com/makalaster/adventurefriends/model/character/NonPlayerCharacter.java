@@ -12,7 +12,8 @@ import com.makalaster.adventurefriends.model.character.components.item.Weapon;
 import java.util.HashMap;
 
 /**
- * Created by Makalaster on 5/18/17.
+ * Represents a non-player character. These are controlled by the DM. This class is extended by
+ * the PlayerCharacter class.
  */
 
 public class NonPlayerCharacter {
@@ -184,14 +185,27 @@ public class NonPlayerCharacter {
         mAbilities.put(id, ability);
     }
 
+    /**
+     * Attack another character with a weapon. Currently not implemented.
+     * @param target The target to be attacked.
+     */
     public void attackWithWeapon(NonPlayerCharacter target) {
 
     }
 
+    /**
+     * Attack another character with an ability. Currently not implemented.
+     * @param ability The ability to use for the attack.
+     * @param target The target to be attacked.
+     */
     public void attackWithAbility(Ability ability, NonPlayerCharacter target) {
 
     }
 
+    /**
+     * Equip a weapon. This is a unique item slot that can only be occupied by a single weapon at a time.
+     * @param weapon The weapon to equip.
+     */
     public void equip(Weapon weapon) {
         if (mEquipment.get(WEAPON) != null) {
             if (mEquipment.get(WEAPON) instanceof Weapon) {
@@ -205,13 +219,23 @@ public class NonPlayerCharacter {
         mEquipment.put(WEAPON, weapon);
     }
 
-    public void remove(Weapon weapon) {
+    /**
+     * Remove an equipped weapon.
+     * @param weapon The weapon to remove.
+     */
+    private void remove(Weapon weapon) {
         mEquipment.put(WEAPON, null);
         if (weapon.isEquipped()) {
             weapon.setEquipped(false);
         }
     }
 
+    /**
+     * Equip a defense item to a defense slot. There are three available slots, each one can only hold
+     * a single defense item.
+     * @param slot The slot that will hold the defense item.
+     * @param defense The defense item to be equipped.
+     */
     public void equip(String slot, Defense defense) {
         if (mEquipment.get(slot) != null) {
             if (mEquipment.get(slot) instanceof Defense) {
@@ -225,27 +249,48 @@ public class NonPlayerCharacter {
         mEquipment.put(slot, defense);
     }
 
-    public void remove(String slot, Defense defense) {
+    /**
+     * Remove a defense item from a specified slot.
+     * @param slot The slot from which the item will be removed.
+     * @param defense The item to be removed.
+     */
+    private void remove(String slot, Defense defense) {
         mEquipment.put(slot, null);
         if (defense.isEquipped()) {
             defense.setEquipped(false);
         }
     }
 
+    /**
+     * Completely remove an item from the character's inventory.
+     * @param item The item to be removed.
+     */
     public void drop(Item item) {
         if (mInventory.containsValue(item)) {
             mInventory.remove(item.getName());
         }
     }
 
+    /**
+     * Consume an edible item to gain its benefits. Not currently implemented.
+     * @param edible The edible item to be consumed.
+     */
     public void consume(Edible edible) {
 
     }
 
+    /**
+     * Give an inventory item to another character. Not currently implemented.
+     * @param npc The character to which the item will be given.
+     * @param item The item which will be given.
+     */
     public void give(NonPlayerCharacter npc, Item item) {
 
     }
 
+    /**
+     * Move a character to another location. Not currently implemented.
+     */
     public void move() {
 
     }
@@ -258,6 +303,9 @@ public class NonPlayerCharacter {
         mEquipment = equipment;
     }
 
+    /**
+     * Create the necessary slots in the Equipment hashmap.
+     */
     private void fillEquipment() {
         mEquipment.put(WEAPON, null);
         mEquipment.put(HAT, null);

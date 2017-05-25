@@ -13,7 +13,7 @@ import com.makalaster.adventurefriends.model.map.Tile;
 import java.util.Map;
 
 /**
- * Created by Makalaster on 5/17/17.
+ * Represents a player character, which is directly controlled by a player.
  */
 
 public class PlayerCharacter extends NonPlayerCharacter {
@@ -96,6 +96,10 @@ public class PlayerCharacter extends NonPlayerCharacter {
         return STARTING_LEVEL;
     }
 
+    /**
+     * Increase the character's money by a certain amount.
+     * @param money The amount of money to add.
+     */
     public void addMoney(int money) {
         int currentMoney = getMoney();
         setMoney(currentMoney + money);
@@ -109,11 +113,18 @@ public class PlayerCharacter extends NonPlayerCharacter {
         mOwnerId = ownerId;
     }
 
+    /**
+     * Take items from a defeated character.
+     * @param nonPlayerCharacter The character from which items will be taken.
+     */
     public void loot(NonPlayerCharacter nonPlayerCharacter) {
         int money = nonPlayerCharacter.getMoney();
         Map<String, Item> items = nonPlayerCharacter.getInventory();
     }
 
+    /**
+     * Increase the character's level when enough experience points have been gained.
+     */
     public void levelUp() {
         int level = getLevel();
         setLevel(level + 1);

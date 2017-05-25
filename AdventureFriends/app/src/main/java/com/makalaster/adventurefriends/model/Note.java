@@ -1,7 +1,7 @@
 package com.makalaster.adventurefriends.model;
 
 /**
- * Created by Makalaster on 5/18/17.
+ * Represents a note object. Can be part of a module or a player character.
  */
 
 public class Note {

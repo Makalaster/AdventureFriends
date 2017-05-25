@@ -4,7 +4,7 @@ import com.makalaster.adventurefriends.model.character.NonPlayerCharacter;
 import com.makalaster.adventurefriends.model.character.PlayerCharacter;
 
 /**
- * Created by Makalaster on 5/23/17.
+ * Represents a space on a map.
  */
 
 public class Tile {

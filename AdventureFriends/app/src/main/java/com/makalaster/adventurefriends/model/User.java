@@ -6,7 +6,7 @@ import com.makalaster.adventurefriends.model.character.PlayerCharacter;
 import java.util.HashMap;
 
 /**
- * Created by Makalaster on 5/17/17.
+ * Represents a user object. Users can be players or DMs, depending on whether they join or create a campaign.
  */
 
 public class User {

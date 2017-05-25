@@ -19,7 +19,7 @@ import com.makalaster.adventurefriends.dm.CampaignHolder;
 import java.util.ArrayList;
 
 /**
- * Created by Makalaster on 5/18/17.
+ * A custom view representing a game board for a tabletop role-playing game.
  */
 
 public class MapView extends View {
@@ -40,11 +40,20 @@ public class MapView extends View {
         setupMapListener();
     }
 
+    /**
+     * Add a map to the view to be displayed.
+     * @param map The map to be displayed in the view.
+     */
     public void setMap(Map map) {
         mMap = map;
         invalidate();
     }
 
+    /**
+     * Draw the map. Includes a grid of all of the spaces.
+     * Fill the spaces with empty tiles by default.
+     * @param canvas The canvas on which objects are drawn.
+     */
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
@@ -71,6 +80,14 @@ public class MapView extends View {
         }
     }
 
+    /**
+     * Draw a tile on the canvas. Empty tiles are drawn as gray squares. Player tiles are blue squares.
+     * Non player tiles are red squares.
+     * @param tile The tile to be drawn.
+     * @param canvas The canvas on which tiles are drawn.
+     * @param x The X coordinate of the tile.
+     * @param y The Y coordinate of the tile.
+     */
     private void renderTile(Tile tile, Canvas canvas, int x, int y) {
         float r = 1 + (mWidth / Map.TILE_WIDTH) * x;
         float l = r + (mWidth / Map.TILE_WIDTH) - 1;
@@ -88,6 +105,9 @@ public class MapView extends View {
         }
     }
 
+    /**
+     * Set up painters used by the canvas.
+     */
     private void init() {
         mPlayerPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mPlayerPaint.setColor(Color.BLUE);
@@ -105,10 +125,20 @@ public class MapView extends View {
         mLinePaint.setColor(Color.BLACK);
     }
 
+    /**
+     * Set the listener that handles what happens when a tile is clicked.
+     * @param onTileClickedListener The click handler listener.
+     */
     public void setTileClickedListener(OnTileClickedListener onTileClickedListener) {
         mListener = onTileClickedListener;
     }
 
+    /**
+     * Handles what happens on a touch event. If the map is being edited, the DM is placing objects
+     * on the map. Otherwise player or non-player characters are being moved.
+     * @param event The event that is handled.
+     * @return a boolean representing whether the touch event is consumed.
+     */
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         int x, y;
@@ -134,6 +164,7 @@ public class MapView extends View {
         return true;
     }
 
+
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
@@ -141,6 +172,7 @@ public class MapView extends View {
         mWidth = w;
         mHeight = h;
     }
+
 
     public boolean isEditMode() {
         return mEditMode;
@@ -150,6 +182,10 @@ public class MapView extends View {
         mEditMode = editMode;
     }
 
+    /**
+     * Set up a FireBase listener for changes to the map. Any changes made by player activity are
+     * reflected across sessions for all players.
+     */
     public void setupMapListener() {
         String currentCampaignId = CampaignHolder.getInstance().getCampaignId();
 

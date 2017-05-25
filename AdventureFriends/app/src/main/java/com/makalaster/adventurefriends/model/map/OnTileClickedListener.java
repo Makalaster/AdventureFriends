@@ -1,7 +1,7 @@
 package com.makalaster.adventurefriends.model.map;
 
 /**
- * Created by Makalaster on 5/24/17.
+ * An interface to handle what happens when a DM or player clicks on a tile.
  */
 
 public interface OnTileClickedListener {
