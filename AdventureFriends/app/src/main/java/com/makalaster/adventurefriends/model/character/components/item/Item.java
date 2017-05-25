@@ -1,7 +1,8 @@
 package com.makalaster.adventurefriends.model.character.components.item;
 
 /**
- * Created by Makalaster on 5/20/17.
+ * Represents any item that can be added to a player or NPC's inventory.
+ * Includes Weapon, Edible, and Defense objects
  */
 
 public class Item {

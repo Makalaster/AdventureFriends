@@ -1,7 +1,7 @@
 package com.makalaster.adventurefriends.model.character.components;
 
 /**
- * Created by Makalaster on 5/20/17.
+ * Represents an ability that can be used by a player or non-player character.
  */
 
 public class Ability {

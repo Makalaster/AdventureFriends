@@ -1,7 +1,7 @@
 package com.makalaster.adventurefriends.model.character.components;
 
 /**
- * Created by Makalaster on 5/20/17.
+ * Represents a size that a player or non-player character can have.
  */
 
 public class Size {
@@ -33,6 +33,10 @@ public class Size {
         return mBonus;
     }
 
+    /**
+     * Get the integer value of the "body" attribute bonus for this size.
+     * @return The integer body value.
+     */
     public int getBodyBonus() {
         int body = 0;
         String[] bonus = mBonus.split(" ");
@@ -42,6 +46,10 @@ public class Size {
         return body;
     }
 
+    /**
+     * Get the integer value of the "mind" attribute bonus for this size.
+     * @return The integer mind value.
+     */
     public int getMindBonus() {
         int mind = 0;
         String[] bonus = mBonus.split(" ");
@@ -51,6 +59,10 @@ public class Size {
         return mind;
     }
 
+    /**
+     * Get the integer value of the "essence" attribute bonus for this size.
+     * @return The integer essence value.
+     */
     public int getEssenceBonus() {
         int essence = 0;
         String[] bonus = mBonus.split(" ");

@@ -1,7 +1,7 @@
 package com.makalaster.adventurefriends.model.character.components;
 
 /**
- * Created by Makalaster on 5/20/17.
+ * Represents a job that a player or non-player character can have.
  */
 
 public class Job {
@@ -35,6 +35,10 @@ public class Job {
         return mBonus;
     }
 
+    /**
+     * Get the integer value of the "body" attribute bonus for this job.
+     * @return The integer body value.
+     */
     public int getBodyBonus() {
         int body = 0;
         String[] bonus = mBonus.split(" ");
@@ -44,6 +48,10 @@ public class Job {
         return body;
     }
 
+    /**
+     * Get the integer value of the "mind" attribute bonus for this job.
+     * @return The integer mind value.
+     */
     public int getMindBonus() {
         int mind = 0;
         String[] bonus = mBonus.split(" ");
@@ -53,6 +61,10 @@ public class Job {
         return mind;
     }
 
+    /**
+     * Get the integer value of the "essence" attribute bonus for this job.
+     * @return The integer essence value.
+     */
     public int getEssenceBonus() {
         int essence = 0;
         String[] bonus = mBonus.split(" ");

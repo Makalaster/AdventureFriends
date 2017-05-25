@@ -7,11 +7,13 @@ import com.makalaster.adventurefriends.model.map.Map;
 import java.util.HashMap;
 
 /**
- * Created by Makalaster on 5/18/17.
+ * Represents a module in a campaign
  */
 
 public class Module {
+    // Constants for the types of modules available.
     public static final int MODULE_BATTLE = 1, MODULE_STORY = 2, MODULE_NON_BATTLE = 3;
+
     private int mType;
     private String mId, mTitle, mSummary;
     private Map mMap;
@@ -19,7 +21,7 @@ public class Module {
     private HashMap<String, NonPlayerCharacter> mNPCs;
 
     public Module() {
-        //Empty constructor required by Firebase
+        //Empty constructor required by FireBase
     }
 
     public Module(String id, String title, String summary, int type) {
@@ -101,6 +103,10 @@ public class Module {
         return MODULE_NON_BATTLE;
     }
 
+    /**
+     * Translate the type of the module into a user-friendly string.
+     * @return The type of the module as a string.
+     */
     public String getTypeAsString() {
         String type;
         switch (mType) {

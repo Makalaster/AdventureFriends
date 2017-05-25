@@ -1,7 +1,7 @@
 package com.makalaster.adventurefriends.model.character.components.item;
 
 /**
- * Created by Makalaster on 5/20/17.
+ * Represents a weapon item. Can be used by players or NPCs.
  */
 
 public class Weapon extends Item {

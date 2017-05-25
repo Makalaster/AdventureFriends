@@ -1,7 +1,7 @@
 package com.makalaster.adventurefriends.model.character.components.item;
 
 /**
- * Created by Makalaster on 5/20/17.
+ * Represents a defensive item. Can be used by a player or NPC.
  */
 
 public class Defense extends Item {

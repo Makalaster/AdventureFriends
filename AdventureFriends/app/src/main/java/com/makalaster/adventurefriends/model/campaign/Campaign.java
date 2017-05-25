@@ -6,7 +6,7 @@ import com.makalaster.adventurefriends.model.map.Map;
 import java.util.HashMap;
 
 /**
- * Created by Makalaster on 5/16/17.
+ * Represents a campaign object.
  */
 
 public class Campaign {
@@ -16,7 +16,7 @@ public class Campaign {
     private Map mCurrentMap;
 
     public Campaign() {
-        //Empty constructor required by FirebaseRecyclerAdapter
+        //Empty constructor required by FireBase
     }
 
     public Campaign(String campaignId, String campaignName, String baseGame, String dmId, String description) {
@@ -26,7 +26,7 @@ public class Campaign {
         mPlayers = new HashMap<>();
         mModules = new HashMap<>();
         mDmId = dmId;
-        mCharacterName = "DM";
+        mCharacterName = "DM"; //Default value for a new campaign. Will be changed for each player as they join a campaign.
         mDescription = description;
 
         mCurrentMap = null;
