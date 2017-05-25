@@ -8,7 +8,7 @@ import android.widget.TextView;
 import com.makalaster.adventurefriends.R;
 
 /**
- * Created by Makalaster on 5/16/17.
+ * Hold the views of a campaign list item.
  */
 
 public class CampaignViewHolder extends RecyclerView.ViewHolder {

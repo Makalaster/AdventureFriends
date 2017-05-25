@@ -2,9 +2,9 @@ package com.makalaster.adventurefriends.dm;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -13,7 +13,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.makalaster.adventurefriends.R;
@@ -23,10 +22,10 @@ import com.makalaster.adventurefriends.dm.dmFragments.module.MapPageFragment;
 import com.makalaster.adventurefriends.dm.dmFragments.module.ModuleHolder;
 import com.makalaster.adventurefriends.dm.dmFragments.module.ModulePagerFragment;
 import com.makalaster.adventurefriends.dm.dmFragments.module.NPCsPageFragment;
-import com.makalaster.adventurefriends.dm.dmFragments.module.notes.NewNoteFragment;
-import com.makalaster.adventurefriends.dm.dmFragments.module.notes.NoteDetailFragment;
 import com.makalaster.adventurefriends.dm.dmFragments.module.NotesPageFragment;
 import com.makalaster.adventurefriends.dm.dmFragments.module.OverviewPageFragment;
+import com.makalaster.adventurefriends.dm.dmFragments.module.notes.NewNoteFragment;
+import com.makalaster.adventurefriends.dm.dmFragments.module.notes.NoteDetailFragment;
 import com.makalaster.adventurefriends.dm.dmFragments.module.npcs.NPCDetailFragment;
 import com.makalaster.adventurefriends.dm.dmFragments.module.npcs.NewNPCFragment;
 import com.makalaster.adventurefriends.lobby.LobbyActivity;
@@ -36,6 +35,11 @@ import com.makalaster.adventurefriends.model.character.NonPlayerCharacter;
 import com.makalaster.adventurefriends.model.character.components.Job;
 import com.makalaster.adventurefriends.model.character.components.Size;
 import com.makalaster.adventurefriends.model.map.Map;
+
+/**
+ * Activity that a user will launch when a user creates a new campaign or launches a campaign for
+ * which they are the DM.
+ */
 
 public class DMActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
@@ -49,7 +53,6 @@ public class DMActivity extends AppCompatActivity
         NewNoteFragment.OnCreateNoteListener,
         NoteDetailFragment.OnNoteSavedListener {
 
-    private FirebaseAuth mAuth;
     private FragmentManager mFragmentManager;
     private String mCampaignId;
 
@@ -65,7 +68,7 @@ public class DMActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
+        drawer.addDrawerListener(toggle);
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -77,6 +80,10 @@ public class DMActivity extends AppCompatActivity
     }
 
     //TODO load correct module on rotate
+    /**
+     * Load the list of modules for a campaign.
+     * @param id The ID of the current campaign.
+     */
     private void loadModuleList(String id) {
         ModuleListFragment moduleListFragment = ModuleListFragment.newInstance(id);
         mFragmentManager.beginTransaction()
@@ -84,6 +91,10 @@ public class DMActivity extends AppCompatActivity
                 .commit();
     }
 
+    /**
+     * Appropriately handle presses of the back button. Should not close activity while
+     * fragments are displayed.
+     */
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -116,6 +127,9 @@ public class DMActivity extends AppCompatActivity
         }
     }
 
+    /**
+     * Return to the lobby activity and finish this activity.
+     */
     private void confirmAndExit() {
         //TODO make confirmation
         Intent returnToLobby = new Intent(this, LobbyActivity.class);
@@ -170,6 +184,10 @@ public class DMActivity extends AppCompatActivity
         return true;
     }
 
+    /**
+     * Handles what happens when new module FAB is pressed.
+     * Loads fragment to create a new module.
+     */
     @Override
     public void onAddNewModule() {
         Fragment newModuleFragment = NewModuleFragment.newInstance();
@@ -179,6 +197,10 @@ public class DMActivity extends AppCompatActivity
                 .commit();
     }
 
+    /**
+     * Handles a module being selected. Loads fragment containing module detail viewpager.
+     * @param moduleId The ID of the module to be loaded.
+     */
     @Override
     public void onModuleSelected(String moduleId) {
         ModuleHolder.getInstance().loadModule(mCampaignId, moduleId);
@@ -189,6 +211,13 @@ public class DMActivity extends AppCompatActivity
                 .commit();
     }
 
+    /**
+     * Handles the creation of a new module. Pops the new module fragment off the back stack.
+     * Pushes a new node into the FireBase database, then uses that as the new module ID.
+     * @param title The title of the new module.
+     * @param summary The summary of the new module.
+     * @param type The type of the new module.
+     */
     @Override
     public void onNewModuleCreated(String title, String summary, int type) {
         DatabaseReference currentCampaignReference = FirebaseDatabase.getInstance().getReference("campaigns/" + mCampaignId);
@@ -202,15 +231,24 @@ public class DMActivity extends AppCompatActivity
         loadModuleList(mCampaignId);
     }
 
+    /**
+     * Handles a module being launched. Sets the current map to the module's map.
+     * @param moduleId The ID of the module being launched.
+     */
     @Override
     public void onLaunchModule(String moduleId) {
         CampaignHolder campaignHolder = CampaignHolder.getInstance();
         campaignHolder.setCurrentMap(ModuleHolder.getInstance().getMap());
 
-        DatabaseReference currentMapReference = FirebaseDatabase.getInstance().getReference("campaigns/" + mCampaignId + "/currentMap");
+        DatabaseReference currentMapReference = FirebaseDatabase.getInstance()
+                .getReference("campaigns/" + mCampaignId + "/currentMap");
         currentMapReference.setValue(ModuleHolder.getInstance().getMap());
     }
 
+    /**
+     * Handles a module being completed. Clears the current map.
+     * @param moduleId The ID of the module being completed.
+     */
     @Override
     public void onCompleteModule(String moduleId) {
         CampaignHolder campaignHolder = CampaignHolder.getInstance();
@@ -224,6 +262,24 @@ public class DMActivity extends AppCompatActivity
         currentMapReference.setValue(clearedMap);
     }
 
+    /**
+     * Handles the map being saved by the DM in a module.
+     * @param map The new state of the map for the module.
+     */
+    @Override
+    public void onMapSaved(Map map) {
+        Module module = ModuleHolder.getInstance().getModule();
+        module.setMap(map);
+
+        DatabaseReference mapReference = FirebaseDatabase.getInstance()
+                .getReference("campaigns/" + mCampaignId + "/modules/" + module.getId() + "/map");
+
+        mapReference.setValue(map);
+    }
+
+    /**
+     * Handles presses of the new NPC fab. Launches the new NPC fragment.
+     */
     @Override
     public void onAddNPC() {
         Fragment newNPCFragment = NewNPCFragment.newInstance();
@@ -233,6 +289,14 @@ public class DMActivity extends AppCompatActivity
                 .commit();
     }
 
+    /**
+     * Handles a new NPC being created. Pops the new NPC fragment off the back stack.
+     * @param name The name of the new NPC.
+     * @param level The level of the new NPC.
+     * @param money The amount of money help by the new NPC.
+     * @param size The size of the new NPC.
+     * @param job The job of the new NPC.
+     */
     @Override
     public void onCreateNPC(String name, int level, int money, Size size, Job job) {
         Module module = ModuleHolder.getInstance().getModule();
@@ -247,6 +311,10 @@ public class DMActivity extends AppCompatActivity
         mFragmentManager.popBackStack();
     }
 
+    /**
+     * Handles the selection of an NPC. Launches the NPC detail fragment.
+     * @param id the ID of the selected NPC.
+     */
     @Override
     public void onSelectNPC(String id) {
         Fragment npcDetailFragment = NPCDetailFragment.newInstance(id);
@@ -256,6 +324,9 @@ public class DMActivity extends AppCompatActivity
                 .commit();
     }
 
+    /**
+     * Handles pressing the new note FAB. Launches the new note fragment.
+     */
     @Override
     public void onAddNote() {
         Fragment newNoteFragment = NewNoteFragment.newInstance();
@@ -265,6 +336,10 @@ public class DMActivity extends AppCompatActivity
                 .commit();
     }
 
+    /**
+     * Handles selecting a note. Launches the note detail fragment.
+     * @param noteId
+     */
     @Override
     public void onSelectNote(String noteId) {
         Fragment noteDetailFragment = NoteDetailFragment.newInstance(noteId);
@@ -274,6 +349,11 @@ public class DMActivity extends AppCompatActivity
                 .commit();
     }
 
+    /**
+     * Handles creating a new note. Pops the new note fragment off the back stack.
+     * @param title The title of the new note.
+     * @param body The body of the new note.
+     */
     @Override
     public void onCreateNote(String title, String body) {
         Module module = ModuleHolder.getInstance().getModule();
@@ -288,17 +368,12 @@ public class DMActivity extends AppCompatActivity
         mFragmentManager.popBackStack();
     }
 
-    @Override
-    public void onMapSaved(Map map) {
-        Module module = ModuleHolder.getInstance().getModule();
-        module.setMap(map);
-
-        DatabaseReference mapReference = FirebaseDatabase.getInstance()
-                .getReference("campaigns/" + mCampaignId + "/modules/" + module.getId() + "/map");
-
-        mapReference.setValue(map);
-    }
-
+    /**
+     * Handles updates to an existing note.
+     * @param noteId The ID of the note being updated.
+     * @param newTitle The updated title of the note.
+     * @param newBody The updated body of the note.
+     */
     @Override
     public void onSaveNote(String noteId, String newTitle, String newBody) {
         ModuleHolder moduleHolder = ModuleHolder.getInstance();

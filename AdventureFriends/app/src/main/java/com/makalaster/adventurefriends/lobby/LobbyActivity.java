@@ -23,11 +23,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.makalaster.adventurefriends.LoginActivity;
 import com.makalaster.adventurefriends.R;
 import com.makalaster.adventurefriends.dm.CampaignHolder;
@@ -37,22 +34,18 @@ import com.makalaster.adventurefriends.lobby.lobbyFragments.CampaignDetailFragme
 import com.makalaster.adventurefriends.lobby.lobbyFragments.CampaignListFragment;
 import com.makalaster.adventurefriends.lobby.lobbyFragments.NewCampaignFragment;
 import com.makalaster.adventurefriends.model.campaign.Campaign;
-import com.makalaster.adventurefriends.model.character.PlayerCharacter;
 import com.makalaster.adventurefriends.player.PlayerActivity;
-import com.makalaster.adventurefriends.player.PlayerCharacterHolder;
 
-import java.util.ArrayList;
+/**
+ * Activity to create and display a user's campaigns.
+ */
 
 public class LobbyActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
                     CampaignListFragment.OnCampaignSelectedListener,
                     NewCampaignFragment.OnCreateNewCampaignListener,
                     CampaignDetailFragment.OnButtonPressedListener {
-    private static final String TAG = "LobbyActivity";
-    public static final String USER_NAME = "name";
-    public static final String USER_EMAIL = "email";
 
-    private boolean mExists;
     private FirebaseAuth mAuth;
     private FragmentManager mFragmentManager;
 
@@ -90,12 +83,18 @@ public class LobbyActivity extends AppCompatActivity
         loadCampaignFragment();
     }
 
+    /**
+     * Load the fragment containing a list of the user's campaigns.
+     */
     private void loadCampaignFragment() {
         FragmentTransaction transaction = mFragmentManager.beginTransaction();
         CampaignListFragment campaignListFragment = CampaignListFragment.newInstance();
         transaction.add(R.id.lobby_fragment_container, campaignListFragment).commit();
     }
 
+    /**
+     * Appropriately handle the back button being pressed. Should not return to the login activity.
+     */
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -164,6 +163,11 @@ public class LobbyActivity extends AppCompatActivity
         return true;
     }
 
+    /**
+     * Handles selecting a campaign. Launches the campaign detail fragment.
+     * @param campaignId The ID of the campaign to be viewed.
+     * @param dmId The ID of the DM for the campaign.
+     */
     @Override
     public void onCampaignSelected(String campaignId, String dmId) {
         CampaignHolder.getInstance().loadCampaign(campaignId);
@@ -175,6 +179,9 @@ public class LobbyActivity extends AppCompatActivity
                 .commit();
     }
 
+    /**
+     * Handles the choice of creating a new campaign. Launches the new campaign fragment.
+     */
     @Override
     public void onNewCampaign() {
         Fragment newCampaignFragment = NewCampaignFragment.newInstance();
@@ -184,6 +191,10 @@ public class LobbyActivity extends AppCompatActivity
                 .commit();
     }
 
+    /**
+     * Handles the choice of joining an existing campaign. Launches the player activity.
+     * @param campaignId The ID of the campaign to join.
+     */
     @Override
     public void onJoinCampaign(String campaignId) {
         CampaignHolder holder = CampaignHolder.getInstance();
@@ -195,6 +206,12 @@ public class LobbyActivity extends AppCompatActivity
         finish();
     }
 
+    /**
+     * Handles the creation of a new campaign. Launches the DM activity.
+     * @param title The title of the new campaign.
+     * @param description The description of the new campaign.
+     * @param baseGame The base game of the new campaign.
+     */
     @Override
     public void onCreateNewCampaign(String title, String description, String baseGame) {
         if (!baseGame.equals("Goblins? Goblins!")) {
@@ -206,7 +223,8 @@ public class LobbyActivity extends AppCompatActivity
                 dmId = user.getUid();
             }
 
-            DatabaseReference userReference = FirebaseDatabase.getInstance().getReference("users/" + user.getUid() + "/campaigns");
+            DatabaseReference userReference = FirebaseDatabase.getInstance()
+                    .getReference("users/" + user.getUid() + "/campaigns");
 
             DatabaseReference campaignReference = FirebaseDatabase.getInstance().getReference("campaigns");
             DatabaseReference newCampaign = campaignReference.push();
@@ -225,6 +243,12 @@ public class LobbyActivity extends AppCompatActivity
         }
     }
 
+    /**
+     * Handles pressing play in the detail view of a campaign. If the current user is the DM, the DM
+     * activity is launched. Otherwise, the player activity is launched.
+     * @param dmId The ID of the DM for the given campaign.
+     * @param campaignId The ID of the given campaign.
+     */
     @Override
     public void onPlayPressed(String dmId, String campaignId) {
         if (mAuth.getCurrentUser() != null) {

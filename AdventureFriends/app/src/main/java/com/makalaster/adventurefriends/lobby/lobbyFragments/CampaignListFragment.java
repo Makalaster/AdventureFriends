@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.RadioButton;
 
-import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -23,14 +22,15 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.makalaster.adventurefriends.R;
 import com.makalaster.adventurefriends.lobby.campaignRecyclerView.CampaignListRecyclerViewAdapter;
-import com.makalaster.adventurefriends.lobby.campaignRecyclerView.CampaignViewHolder;
 import com.makalaster.adventurefriends.model.campaign.Campaign;
 
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
 /**
+ * Display a list of the campaigns that a user is a part of.
+ * Tapping on a campaign opens its detail view.
+ * Includes a floating action button to create a new campaing or join an existing one.
+ *
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
  * {@link OnCampaignSelectedListener} interface
@@ -42,6 +42,7 @@ public class CampaignListFragment extends Fragment implements View.OnClickListen
     private OnCampaignSelectedListener mListener;
     private EditText mCampaignIdEditText;
     private RadioButton mJoinExistingCampaignRadioButton, mCreateNewCampaignRadioButton;
+    private RecyclerView mCampaignRecycler;
 
     public CampaignListFragment() {
         // Required empty public constructor
@@ -68,8 +69,6 @@ public class CampaignListFragment extends Fragment implements View.OnClickListen
         return inflater.inflate(R.layout.fragment_campaign_list, container, false);
     }
 
-    private RecyclerView mCampaignRecycler;
-
     @Override
     public void onViewCreated(final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -80,6 +79,7 @@ public class CampaignListFragment extends Fragment implements View.OnClickListen
         final ArrayList<Campaign> campaignList = new ArrayList<>();
         DatabaseReference userCampaignList = FirebaseDatabase.getInstance()
                 .getReference("users/" + FirebaseAuth.getInstance().getCurrentUser().getUid() + "/campaigns");
+        // Set up listener to get a list of campaigns that the user is a part of so they can be displayed.
         userCampaignList.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -105,6 +105,11 @@ public class CampaignListFragment extends Fragment implements View.OnClickListen
         });
     }
 
+    /**
+     * Display an alert dialog when the floating action button is pressed.
+     * The alert dialog contains to radio buttons and an EditText.
+     * The user selects whether they would like to join an existing campaign or create a new one.
+     */
     public void onButtonPressed() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         View chooserView = LayoutInflater.from(getContext()).inflate(R.layout.layout_create_or_join_dialog, null);
@@ -145,6 +150,11 @@ public class CampaignListFragment extends Fragment implements View.OnClickListen
         });
     }
 
+    /**
+     * Check whether the given campaign ID is valid for an actual campaign.
+     * @param campaignId The ID of the campaign to search for.
+     * @param dialog The currently displaying alert dialog.
+     */
     private void checkIfCampaignExists(final String campaignId, final AlertDialog dialog) {
         DatabaseReference campaign = FirebaseDatabase.getInstance().getReference("campaigns/" + campaignId);
         campaign.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -183,6 +193,11 @@ public class CampaignListFragment extends Fragment implements View.OnClickListen
         mListener = null;
     }
 
+    /**
+     * An on click listener to handle the radio buttons.
+     * This was needed because an EditText could not be included in a RadioGroup.
+     * @param v the view that was clicked.
+     */
     @Override
     public void onClick(View v) {
         switch (v.getId()) {

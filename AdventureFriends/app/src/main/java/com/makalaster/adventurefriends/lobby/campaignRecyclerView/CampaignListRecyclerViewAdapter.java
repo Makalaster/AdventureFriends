@@ -12,7 +12,8 @@ import com.makalaster.adventurefriends.model.campaign.Campaign;
 import java.util.List;
 
 /**
- * Created by Makalaster on 5/16/17.
+ * Adapter for a recycler view to display the list of campaigns for which a user is a member.
+ * Displays the name of a campaign and the user's character name in the campaign, or "DM" if they are the DM.
  */
 
 public class CampaignListRecyclerViewAdapter extends RecyclerView.Adapter<CampaignViewHolder> {

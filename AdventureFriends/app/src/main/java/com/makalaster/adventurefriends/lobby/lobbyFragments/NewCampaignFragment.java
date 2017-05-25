@@ -15,6 +15,8 @@ import android.widget.Toast;
 import com.makalaster.adventurefriends.R;
 
 /**
+ * User interface for creating a new campaign.
+ *
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
  * {@link OnCreateNewCampaignListener} interface
@@ -27,7 +29,6 @@ public class NewCampaignFragment extends Fragment {
     private OnCreateNewCampaignListener mListener;
     private EditText mNewCampaignTitle, mNewCampaignDescription;
     private Spinner mBaseCampaignSpinner;
-    private Button mCreateCampaignButton;
 
     public NewCampaignFragment() {
         // Required empty public constructor
@@ -61,9 +62,9 @@ public class NewCampaignFragment extends Fragment {
         mNewCampaignTitle = (EditText) view.findViewById(R.id.new_campaign_name_edit_text);
         mNewCampaignDescription = (EditText) view.findViewById(R.id.new_campaign_description_edit_text);
         mBaseCampaignSpinner = (Spinner) view.findViewById(R.id.base_game_spinner);
-        mCreateCampaignButton = (Button) view.findViewById(R.id.start_campaign_button);
+        Button createCampaignButton = (Button) view.findViewById(R.id.start_campaign_button);
 
-        mCreateCampaignButton.setOnClickListener(new View.OnClickListener() {
+        createCampaignButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onButtonPressed();
@@ -71,14 +72,17 @@ public class NewCampaignFragment extends Fragment {
         });
     }
 
+    /**
+     * Validate information provided by the user and create a new campaign.
+     */
     public void onButtonPressed() {
         String title = mNewCampaignTitle.getText().toString().trim();
         String description = mNewCampaignDescription.getText().toString().trim();
         if (title.isEmpty()) {
-            mNewCampaignTitle.setError("Please enter a campaign title");
+            mNewCampaignTitle.setError(getString(R.string.campaign_title_error));
             mNewCampaignTitle.requestFocus();
         } else if (mBaseCampaignSpinner.getSelectedItemPosition() == 0) {
-            Toast.makeText(getContext(), "Please choose a base game", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), R.string.campaign_spinner_error, Toast.LENGTH_SHORT).show();
             mBaseCampaignSpinner.requestFocus();
         } else {
             if (mListener != null) {
