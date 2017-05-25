@@ -25,6 +25,9 @@ public class GoblinsGoblins extends SQLiteOpenHelper {
     private static final String DB_NAME = "goblins_goblins.db";
     private static final int DB_VERSION = 1;
 
+    /**
+     * Table to hold abilities
+     */
     public static abstract class AbilitiesTable implements BaseColumns {
         public static final String TABLE_NAME = "abilities";
         public static final String COLUMN_ID = "id";
@@ -55,6 +58,9 @@ public class GoblinsGoblins extends SQLiteOpenHelper {
     private static final String SQL_DELETE_ENTRIES_ABILITIES =
             "DROP TABLE IF EXISTS " + AbilitiesTable.TABLE_NAME;
 
+    /**
+     * Table to hold items
+     */
     public static abstract class ItemsTable implements BaseColumns {
         public static final String TABLE_NAME = "items";
         public static final String COLUMN_ID = "id";
@@ -81,7 +87,9 @@ public class GoblinsGoblins extends SQLiteOpenHelper {
     private static final String SQL_DELETE_ENTRIES_ITEMS =
             "DROP TABLE IF EXISTS " + ItemsTable.TABLE_NAME;
 
-
+    /**
+     * Table to hold jobs
+     */
     public static abstract class JobsTable implements BaseColumns {
         public static final String TABLE_NAME = "jobs";
         public static final String COLUMN_ID = "id";
@@ -100,6 +108,9 @@ public class GoblinsGoblins extends SQLiteOpenHelper {
     private static final String SQL_DELETE_ENTRIES_JOBS =
             "DROP TABLE IF EXISTS " + JobsTable.TABLE_NAME;
 
+    /**
+     * Table to hold sizes
+     */
     public static abstract class SizesTable implements BaseColumns {
         public static final String TABLE_NAME = "sizes";
         public static final String COLUMN_ID = "id";
@@ -149,6 +160,10 @@ public class GoblinsGoblins extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    /**
+     * Get all possible sizes in the database.
+     * @return A list of all sizes.
+     */
     public List<Size> getAllSizes() {
         List<Size> sizes = new ArrayList<>();
 
@@ -171,6 +186,11 @@ public class GoblinsGoblins extends SQLiteOpenHelper {
         return sizes;
     }
 
+    /**
+     * Get a size by its ID.
+     * @param id The ID to search for.
+     * @return The size associated with the given ID.
+     */
     public Size getSizeById(long id) {
         Size size = null;
         SQLiteDatabase db = getReadableDatabase();
@@ -189,6 +209,10 @@ public class GoblinsGoblins extends SQLiteOpenHelper {
         return size;
     }
 
+    /**
+     * Get all possible jobs in the database.
+     * @return A list of all jobs.
+     */
     public List<Job> getAllJobs() {
         List<Job> jobs = new ArrayList<>();
 
@@ -211,6 +235,11 @@ public class GoblinsGoblins extends SQLiteOpenHelper {
         return jobs;
     }
 
+    /**
+     * Get a job by its ID.
+     * @param id The ID to search for.
+     * @return The job associated with the given ID.
+     */
     public Job getJobById(long id) {
         Job job = null;
         SQLiteDatabase db = getReadableDatabase();
@@ -229,6 +258,10 @@ public class GoblinsGoblins extends SQLiteOpenHelper {
         return job;
     }
 
+    /**
+     * Get all possible abilities in the database.
+     * @return A list of all abilities.
+     */
     public List<Ability> getAllAbilities() {
         List<Ability> abilities = new ArrayList<>();
 
@@ -247,6 +280,11 @@ public class GoblinsGoblins extends SQLiteOpenHelper {
         return abilities;
     }
 
+    /**
+     * Get all abilities associated with a specified job.
+     * @param job The ID of the job for which abilities should be gotten.
+     * @return A list of abilities associated with the given job ID.
+     */
     public List<Ability> getAbilitiesByJob(int job) {
         List<Ability> abilities = new ArrayList<>();
 
@@ -268,6 +306,11 @@ public class GoblinsGoblins extends SQLiteOpenHelper {
         return abilities;
     }
 
+    /**
+     * Retrieve an ability from the database based on a given name.
+     * @param name The name of the ability to search for.
+     * @return The ability associated with the given name.
+     */
     public Ability getAbilityByName(String name) {
         Ability ability = null;
 
@@ -286,6 +329,11 @@ public class GoblinsGoblins extends SQLiteOpenHelper {
         return ability;
     }
 
+    /**
+     * Convenience method to generate an ability from the data in a cursor.
+     * @param cursor A cursor containing a line of information about an ability.
+     * @return An ability object populated with the information from the cursor.
+     */
     private Ability buildAbility(Cursor cursor) {
         long id = cursor.getLong(cursor.getColumnIndex(AbilitiesTable.COLUMN_ID));
         String name = cursor.getString(cursor.getColumnIndex(AbilitiesTable.COLUMN_NAME));
@@ -301,6 +349,10 @@ public class GoblinsGoblins extends SQLiteOpenHelper {
         return new Ability(id, name, quote, description, effects, level, damage, range, jobId, check);
     }
 
+    /**
+     * Get a list of all possible items from the database.
+     * @return All of the items in the database.
+     */
     public List<Item> getAllItems() {
         List<Item> items = new ArrayList<>();
 
@@ -326,6 +378,10 @@ public class GoblinsGoblins extends SQLiteOpenHelper {
         return items;
     }
 
+    /**
+     * Get all possible weapon items from the database.
+     * @return A list of all weapon items in the database.
+     */
     public List<Weapon> getAllWeapons() {
         List<Weapon> weapons = new ArrayList<>();
 
@@ -355,6 +411,11 @@ public class GoblinsGoblins extends SQLiteOpenHelper {
         return weapons;
     }
 
+    /**
+     * Retrieve a weapon from the database by name.
+     * @param weaponName The name of the weapon to search for.
+     * @return The weapon associated with the given name.
+     */
     public Weapon getWeaponByName(String weaponName) {
         Weapon weapon = null;
 
@@ -381,6 +442,10 @@ public class GoblinsGoblins extends SQLiteOpenHelper {
         return weapon;
     }
 
+    /**
+     * Get all possible defense items from the database.
+     * @return A list of all defense items in the database.
+     */
     public List<Defense> getAllDefense() {
         List<Defense> defense = new ArrayList<>();
 
@@ -409,6 +474,11 @@ public class GoblinsGoblins extends SQLiteOpenHelper {
         return defense;
     }
 
+    /**
+     * Retrieve a defense from the database by name.
+     * @param defenseName The name of the defense to search for.
+     * @return The defense associated with the given name.
+     */
     public Defense getDefenseByName(String defenseName) {
         Defense defense = null;
 
@@ -434,6 +504,10 @@ public class GoblinsGoblins extends SQLiteOpenHelper {
         return defense;
     }
 
+    /**
+     * Get all possible edible items from the database.
+     * @return A list of all edible items in the database.
+     */
     public List<Edible> getAllEdibles() {
         List<Edible> edibles = new ArrayList<>();
 
@@ -462,6 +536,11 @@ public class GoblinsGoblins extends SQLiteOpenHelper {
         return edibles;
     }
 
+    /**
+     * Retrieve an edible from the database by name.
+     * @param edibleName The name of the edible to search for.
+     * @return The edible associated with the given name.
+     */
     public Edible getEdibleByName(String edibleName) {
         Edible edible = null;
 
