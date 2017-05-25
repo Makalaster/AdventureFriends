@@ -24,12 +24,10 @@ import com.google.firebase.database.ValueEventListener;
 import com.makalaster.adventurefriends.R;
 import com.makalaster.adventurefriends.dm.CampaignHolder;
 import com.makalaster.adventurefriends.dm.dmFragments.ModuleListFragment;
-import com.makalaster.adventurefriends.dm.dmFragments.module.ModuleHolder;
 import com.makalaster.adventurefriends.dm.dmFragments.module.notes.NewNoteFragment;
 import com.makalaster.adventurefriends.lobby.LobbyActivity;
 import com.makalaster.adventurefriends.model.Note;
 import com.makalaster.adventurefriends.model.campaign.Campaign;
-import com.makalaster.adventurefriends.model.campaign.Module;
 import com.makalaster.adventurefriends.model.character.NonPlayerCharacter;
 import com.makalaster.adventurefriends.model.character.PlayerCharacter;
 import com.makalaster.adventurefriends.model.character.components.Job;
@@ -37,6 +35,7 @@ import com.makalaster.adventurefriends.model.character.components.Size;
 import com.makalaster.adventurefriends.model.character.components.item.Defense;
 import com.makalaster.adventurefriends.model.character.components.item.Edible;
 import com.makalaster.adventurefriends.model.character.components.item.Weapon;
+import com.makalaster.adventurefriends.model.map.Tile;
 import com.makalaster.adventurefriends.player.pages.EquipmentPageFragment;
 import com.makalaster.adventurefriends.player.pages.InventoryPageFragment;
 import com.makalaster.adventurefriends.player.pages.MapPageFragment;
@@ -49,7 +48,7 @@ public class PlayerActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         EquipmentPageFragment.EquipmentInteractionListener,
         InventoryPageFragment.OnInventoryItemSelectedListener,
-        MapPageFragment.OnFragmentInteractionListener,
+        MapPageFragment.OnMapInteractionListener,
         NotesPageFragment.NoteListener,
         NewCharacterFragment.OnPlayerCharacterCreatedListener,
         NoteDetailFragment.OnNoteSavedListener,
@@ -394,8 +393,19 @@ public class PlayerActivity extends AppCompatActivity
     }
 
     @Override
-    public void onFragmentInteraction(Uri uri) {
+    public void onPlayerMoved(Tile oldLocation, Tile newLocation) {
+        String campaignId = CampaignHolder.getInstance().getCampaignId();
 
+        DatabaseReference currentMapReference = FirebaseDatabase.getInstance()
+                .getReference("campaigns/" + campaignId + "/currentMap/tiles");
+
+        DatabaseReference oldLocationReference = currentMapReference
+                .child(String.valueOf(oldLocation.getX())).child(String.valueOf(oldLocation.getY()));
+        oldLocationReference.child("containsPlayer").setValue(false);
+
+        DatabaseReference newLocationReference = currentMapReference
+                .child(String.valueOf(newLocation.getX())).child(String.valueOf(newLocation.getY()));
+        newLocationReference.child("containsPlayer").setValue(true);
     }
 
     @Override

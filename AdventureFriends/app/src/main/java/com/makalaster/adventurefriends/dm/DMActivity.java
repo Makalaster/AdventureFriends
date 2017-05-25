@@ -213,7 +213,15 @@ public class DMActivity extends AppCompatActivity
 
     @Override
     public void onCompleteModule(String moduleId) {
+        CampaignHolder campaignHolder = CampaignHolder.getInstance();
 
+        Map clearedMap = ModuleHolder.getInstance().getMap();
+        clearedMap.clearTiles();
+
+        campaignHolder.setCurrentMap(clearedMap);
+
+        DatabaseReference currentMapReference = FirebaseDatabase.getInstance().getReference("campaigns/" + mCampaignId + "/currentMap");
+        currentMapReference.setValue(clearedMap);
     }
 
     @Override

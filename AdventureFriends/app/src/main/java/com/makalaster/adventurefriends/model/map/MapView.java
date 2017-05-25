@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -154,13 +153,15 @@ public class MapView extends View {
     public void setupMapListener() {
         String currentCampaignId = CampaignHolder.getInstance().getCampaignId();
 
-        DatabaseReference currentMapReference = FirebaseDatabase.getInstance().getReference("campaigns/" + currentCampaignId + "/currentMap");
+        DatabaseReference currentMapReference = FirebaseDatabase.getInstance()
+                .getReference("campaigns/" + currentCampaignId + "/currentMap");
         currentMapReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Map newMap = dataSnapshot.getValue(Map.class);
                 if (newMap != null) {
                     mMap.setTiles(newMap.getTiles());
+                    invalidate();
                 }
             }
 

@@ -59,6 +59,11 @@ public class ModuleHolder {
         mModule = null;
         mNotes = null;
         mNPCs = null;
+        mMap = null;
+    }
+
+    public void clearMap() {
+        mMap.clearTiles();
     }
 
     public Module getModule() {

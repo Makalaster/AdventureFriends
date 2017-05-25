@@ -1,7 +1,5 @@
 package com.makalaster.adventurefriends.model.map;
 
-import android.util.Log;
-
 import com.makalaster.adventurefriends.model.character.NonPlayerCharacter;
 import com.makalaster.adventurefriends.model.character.PlayerCharacter;
 
@@ -14,6 +12,7 @@ import java.util.ArrayList;
 public class Map {
     private static final String TAG = "Map";
     public static final int TILE_WIDTH = 8, TILE_HEIGHT = 10;
+    private boolean isLaunched;
 
     private ArrayList<ArrayList<Tile>> mTiles;
     //private Tile[][] mTiles;
@@ -38,6 +37,12 @@ public class Map {
 
     public void setTiles(ArrayList<ArrayList<Tile>> tiles) {
         mTiles = tiles;
+    }
+
+    public void clearTiles() {
+        mTiles = null;
+        mTiles = new ArrayList<>(TILE_WIDTH);
+        fillTiles();
     }
 
     public void addNonPlayer(NonPlayerCharacter nonPlayerCharacter, int x, int y) {
@@ -74,5 +79,17 @@ public class Map {
 
     public Tile getTile(int x, int y){
         return mTiles.get(x).get(y);
+    }
+
+    public void setTile(int x, int y, Tile tile) {
+        mTiles.get(x).set(y, tile);
+    }
+
+    public boolean isLaunched() {
+        return isLaunched;
+    }
+
+    public void setLaunched(boolean launched) {
+        isLaunched = launched;
     }
 }

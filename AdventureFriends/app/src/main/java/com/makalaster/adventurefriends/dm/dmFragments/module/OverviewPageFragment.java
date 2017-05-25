@@ -80,6 +80,13 @@ public class OverviewPageFragment extends Fragment {
                 mListener.onLaunchModule(mModuleId);
             }
         });
+
+        view.findViewById(R.id.complete_module_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListener.onCompleteModule(mModuleId);
+            }
+        });
     }
 
     @Override

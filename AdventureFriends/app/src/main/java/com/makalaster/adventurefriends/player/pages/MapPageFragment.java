@@ -1,7 +1,6 @@
 package com.makalaster.adventurefriends.player.pages;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -20,13 +19,13 @@ import com.makalaster.adventurefriends.player.PlayerCharacterHolder;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link MapPageFragment.OnFragmentInteractionListener} interface
+ * {@link OnMapInteractionListener} interface
  * to handle interaction events.
  * Use the {@link MapPageFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
 public class MapPageFragment extends Fragment implements OnTileClickedListener {
-    private OnFragmentInteractionListener mListener;
+    private OnMapInteractionListener mListener;
     private Map mMap;
 
     public MapPageFragment() {
@@ -68,8 +67,8 @@ public class MapPageFragment extends Fragment implements OnTileClickedListener {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
+        if (context instanceof OnMapInteractionListener) {
+            mListener = (OnMapInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement EquipmentInteractionListener");
@@ -94,14 +93,16 @@ public class MapPageFragment extends Fragment implements OnTileClickedListener {
         if (tile.containsNonPlayer()) {
             me.attackWithWeapon(tile.getNonPlayer());
         } else {
+            Tile oldTile = new Tile();
+            if (me.getCurrentLocation() != null) {
+                oldTile = new Tile(me.getCurrentLocation().getX(), me.getCurrentLocation().getY());
+            }
             if (me.getCurrentLocation() == null) {
-                mMap.addPlayer(me, tile.getX(), tile.getY());
                 me.setCurrentLocation(tile);
             } else {
-                mMap.removePlayer(me.getCurrentLocation().getX(), me.getCurrentLocation().getY());
-                mMap.addPlayer(me, tile.getX(), tile.getY());
                 me.setCurrentLocation(tile);
             }
+            mListener.onPlayerMoved(oldTile, tile);
         }
     }
 
@@ -115,8 +116,7 @@ public class MapPageFragment extends Fragment implements OnTileClickedListener {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+    public interface OnMapInteractionListener {
+        void onPlayerMoved(Tile oldLocation, Tile newLocation);
     }
 }
