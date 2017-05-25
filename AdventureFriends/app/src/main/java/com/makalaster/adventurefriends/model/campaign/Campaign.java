@@ -1,6 +1,7 @@
 package com.makalaster.adventurefriends.model.campaign;
 
 import com.makalaster.adventurefriends.model.character.PlayerCharacter;
+import com.makalaster.adventurefriends.model.map.Map;
 
 import java.util.HashMap;
 
@@ -12,6 +13,7 @@ public class Campaign {
     private String mCampaignId, mCampaignName, mBaseGame, mDmId, mCharacterName, mDescription;
     private HashMap<String, PlayerCharacter> mPlayers;
     private HashMap<String, Module> mModules;
+    private Map mCurrentMap;
 
     public Campaign() {
         //Empty constructor required by FirebaseRecyclerAdapter
@@ -26,6 +28,8 @@ public class Campaign {
         mDmId = dmId;
         mCharacterName = "DM";
         mDescription = description;
+
+        mCurrentMap = null;
     }
 
     public String getCampaignId() {
@@ -98,5 +102,13 @@ public class Campaign {
 
     public void setDescription(String description) {
         mDescription = description;
+    }
+
+    public Map getCurrentMap() {
+        return mCurrentMap;
+    }
+
+    public void setCurrentMap(Map currentMap) {
+        mCurrentMap = currentMap;
     }
 }

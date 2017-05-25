@@ -21,6 +21,8 @@ import com.makalaster.adventurefriends.R;
 import com.makalaster.adventurefriends.dm.dmFragments.ModuleListFragment;
 import com.makalaster.adventurefriends.model.campaign.Campaign;
 
+import java.util.Locale;
+
 import static android.content.Context.CLIPBOARD_SERVICE;
 
 /**
@@ -35,7 +37,7 @@ public class CampaignDetailFragment extends Fragment {
     private String mCampaignId;
     private DatabaseReference mCurrentCampaignReference;
     private Campaign mCurrentCampaign;
-    private TextView mCampaignTitle, mCampaignDescription, mCampaignBaseGame, mCampaignDm;
+    private TextView mCampaignTitle, mCampaignDescription, mCampaignBaseGame;
 
     private OnButtonPressedListener mListener;
 
@@ -104,14 +106,12 @@ public class CampaignDetailFragment extends Fragment {
         mCampaignTitle = (TextView) view.findViewById(R.id.campaign_title);
         mCampaignDescription = (TextView) view.findViewById(R.id.campaign_description);
         mCampaignBaseGame = (TextView) view.findViewById(R.id.campaign_base_game);
-        mCampaignDm = (TextView) view.findViewById(R.id.campaign_dm);
     }
 
     public void setupRemainingViews() {
         mCampaignTitle.setText(mCurrentCampaign.getCampaignName());
         mCampaignDescription.setText(mCurrentCampaign.getDescription());
         mCampaignBaseGame.setText(mCurrentCampaign.getBaseGame());
-        mCampaignDm.setText(mCurrentCampaign.getDmId());
     }
 
     @Override

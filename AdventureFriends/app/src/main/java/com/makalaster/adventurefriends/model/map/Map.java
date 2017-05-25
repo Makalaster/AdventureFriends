@@ -5,6 +5,8 @@ import android.util.Log;
 import com.makalaster.adventurefriends.model.character.NonPlayerCharacter;
 import com.makalaster.adventurefriends.model.character.PlayerCharacter;
 
+import java.util.ArrayList;
+
 /**
  * Created by Makalaster on 5/23/17.
  */
@@ -13,26 +15,28 @@ public class Map {
     private static final String TAG = "Map";
     public static final int TILE_WIDTH = 8, TILE_HEIGHT = 10;
 
-    private Tile[][] mTiles;
+    private ArrayList<ArrayList<Tile>> mTiles;
+    //private Tile[][] mTiles;
 
     public Map() {
-        mTiles = new Tile[TILE_WIDTH][TILE_HEIGHT];
+        mTiles = new ArrayList<>(TILE_WIDTH);
         fillTiles();
     }
 
     public void fillTiles() {
         for (int i = 0; i < TILE_WIDTH; i++) {
+            mTiles.add(i, new ArrayList<Tile>(TILE_HEIGHT));
             for (int j = 0; j < TILE_HEIGHT; j++) {
-                mTiles[i][j] = new Tile(i, j);
+                mTiles.get(i).add(j, new Tile(i, j));
             }
         }
     }
 
-    public Tile[][] getTiles() {
+    public ArrayList<ArrayList<Tile>> getTiles() {
         return mTiles;
     }
 
-    public void setTiles(Tile[][] tiles) {
+    public void setTiles(ArrayList<ArrayList<Tile>> tiles) {
         mTiles = tiles;
     }
 
@@ -69,6 +73,6 @@ public class Map {
     }
 
     public Tile getTile(int x, int y){
-        return mTiles[x][y];
+        return mTiles.get(x).get(y);
     }
 }

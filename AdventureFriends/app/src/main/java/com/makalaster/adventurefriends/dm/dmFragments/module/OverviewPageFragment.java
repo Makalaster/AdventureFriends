@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.makalaster.adventurefriends.R;
@@ -72,6 +73,13 @@ public class OverviewPageFragment extends Fragment {
         ((TextView)view.findViewById(R.id.module_title)).setText(mCurrentModule.getTitle());
         ((TextView)view.findViewById(R.id.module_type)).setText(mCurrentModule.getTypeAsString());
         ((TextView)view.findViewById(R.id.module_summary)).setText(mCurrentModule.getSummary());
+
+        view.findViewById(R.id.launch_module_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListener.onLaunchModule(mModuleId);
+            }
+        });
     }
 
     @Override

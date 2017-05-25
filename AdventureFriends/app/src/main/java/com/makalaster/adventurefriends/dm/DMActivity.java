@@ -35,6 +35,7 @@ import com.makalaster.adventurefriends.model.campaign.Module;
 import com.makalaster.adventurefriends.model.character.NonPlayerCharacter;
 import com.makalaster.adventurefriends.model.character.components.Job;
 import com.makalaster.adventurefriends.model.character.components.Size;
+import com.makalaster.adventurefriends.model.map.Map;
 
 public class DMActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
@@ -203,7 +204,11 @@ public class DMActivity extends AppCompatActivity
 
     @Override
     public void onLaunchModule(String moduleId) {
+        CampaignHolder campaignHolder = CampaignHolder.getInstance();
+        campaignHolder.setCurrentMap(ModuleHolder.getInstance().getMap());
 
+        DatabaseReference currentMapReference = FirebaseDatabase.getInstance().getReference("campaigns/" + mCampaignId + "/currentMap");
+        currentMapReference.setValue(ModuleHolder.getInstance().getMap());
     }
 
     @Override
@@ -276,8 +281,14 @@ public class DMActivity extends AppCompatActivity
     }
 
     @Override
-    public void onMapSaved() {
+    public void onMapSaved(Map map) {
+        Module module = ModuleHolder.getInstance().getModule();
+        module.setMap(map);
 
+        DatabaseReference mapReference = FirebaseDatabase.getInstance()
+                .getReference("campaigns/" + mCampaignId + "/modules/" + module.getId() + "/map");
+
+        mapReference.setValue(map);
     }
 
     @Override

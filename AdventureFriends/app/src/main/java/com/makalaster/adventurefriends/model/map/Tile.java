@@ -13,6 +13,10 @@ public class Tile {
     private PlayerCharacter mPlayer;
     private NonPlayerCharacter mNonPlayer;
 
+    public Tile() {
+
+    }
+
     public Tile(int x, int y) {
         mX = x;
         mY = y;

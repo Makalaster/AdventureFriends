@@ -1,7 +1,5 @@
 package com.makalaster.adventurefriends.dm;
 
-import android.widget.Toast;
-
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -10,6 +8,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.makalaster.adventurefriends.model.campaign.Campaign;
 import com.makalaster.adventurefriends.model.campaign.Module;
 import com.makalaster.adventurefriends.model.character.PlayerCharacter;
+import com.makalaster.adventurefriends.model.map.Map;
 
 import java.util.HashMap;
 
@@ -22,6 +21,7 @@ public class CampaignHolder {
     private String mCampaignId;
     private HashMap<String, Module> mModules;
     private HashMap<String, PlayerCharacter> mPlayers;
+    private Map mCurrentMap;
 
     private static CampaignHolder sInstance;
 
@@ -46,6 +46,7 @@ public class CampaignHolder {
                     mCampaignId = mCampaign.getCampaignId();
                     mModules = mCampaign.getModules();
                     mPlayers = mCampaign.getPlayers();
+                    mCurrentMap = mCampaign.getCurrentMap();
                 }
             }
 
@@ -61,12 +62,15 @@ public class CampaignHolder {
         mModules = null;
         mPlayers = null;
         mCampaignId = null;
+        mCurrentMap = null;
     }
 
     public void setCampaign(Campaign campaign) {
         mCampaign = campaign;
         mModules = mCampaign.getModules();
         mPlayers = mCampaign.getPlayers();
+        mCampaignId = mCampaign.getCampaignId();
+        mCurrentMap = campaign.getCurrentMap();
     }
 
     public String getCampaignId() {
@@ -104,5 +108,13 @@ public class CampaignHolder {
             mPlayers = new HashMap<>();
         }
         mPlayers.put(id, player);
+    }
+
+    public Map getCurrentMap() {
+        return mCurrentMap;
+    }
+
+    public void setCurrentMap(Map currentMap) {
+        mCurrentMap = currentMap;
     }
 }

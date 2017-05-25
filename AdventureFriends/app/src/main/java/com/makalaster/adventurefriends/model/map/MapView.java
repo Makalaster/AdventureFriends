@@ -9,7 +9,15 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Toast;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.makalaster.adventurefriends.dm.CampaignHolder;
+
+import java.util.ArrayList;
 
 /**
  * Created by Makalaster on 5/18/17.
@@ -30,10 +38,12 @@ public class MapView extends View {
         mEditMode = false;
 
         init();
+        setupMapListener();
     }
 
     public void setMap(Map map) {
         mMap = map;
+        invalidate();
     }
 
     @Override
@@ -53,14 +63,13 @@ public class MapView extends View {
             canvas.drawLine(0, y, mWidth, y, mLinePaint);
         }
 
-        Tile[][] tiles = mMap.getTiles();
+        ArrayList<ArrayList<Tile>> tiles = mMap.getTiles();
 
-        for (int i = 0; i < tiles.length; i++) {
-            for (int j = 0; j < tiles[i].length; j++) {
-                renderTile(tiles[i][j], canvas, i, j);
+        for (int i = 0; i < tiles.size(); i++) {
+            for (int j = 0; j < tiles.get(i).size(); j++) {
+                renderTile(tiles.get(i).get(j), canvas, i, j);
             }
         }
-        Log.d(TAG, "onDraw: drawing!");
     }
 
     private void renderTile(Tile tile, Canvas canvas, int x, int y) {
@@ -140,5 +149,25 @@ public class MapView extends View {
 
     public void setEditMode(boolean editMode) {
         mEditMode = editMode;
+    }
+
+    public void setupMapListener() {
+        String currentCampaignId = CampaignHolder.getInstance().getCampaignId();
+
+        DatabaseReference currentMapReference = FirebaseDatabase.getInstance().getReference("campaigns/" + currentCampaignId + "/currentMap");
+        currentMapReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Map newMap = dataSnapshot.getValue(Map.class);
+                if (newMap != null) {
+                    mMap.setTiles(newMap.getTiles());
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 }

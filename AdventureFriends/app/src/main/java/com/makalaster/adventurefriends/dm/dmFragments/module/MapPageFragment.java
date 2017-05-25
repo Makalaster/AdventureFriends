@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +32,7 @@ import com.makalaster.adventurefriends.model.map.Tile;
 public class MapPageFragment extends Fragment implements OnTileClickedListener {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_MODULE_ID = "module_id";
+    private static final String TAG = "MapPageFragment";
 
     private String mModuleId;
     private Map mMap;
@@ -77,7 +79,12 @@ public class MapPageFragment extends Fragment implements OnTileClickedListener {
 
         final MapView mapView = (MapView) view.findViewById(R.id.dm_map);
         mapView.setTileClickedListener(this);
-        mMap = new Map();
+        Map map = ModuleHolder.getInstance().getMap();
+        if (map == null) {
+            mMap = new Map();
+        } else {
+            mMap = map;
+        }
 
         mapView.setMap(mMap);
 
@@ -91,7 +98,7 @@ public class MapPageFragment extends Fragment implements OnTileClickedListener {
                 } else {
                     mapView.setEditMode(false);
                     Toast.makeText(v.getContext(), "Map saved", Toast.LENGTH_SHORT).show();
-                    mListener.onMapSaved();
+                    mListener.onMapSaved(mMap);
                 }
             }
         });
@@ -124,6 +131,8 @@ public class MapPageFragment extends Fragment implements OnTileClickedListener {
                             GoblinsGoblins.getInstance(getContext()).getSizeById(1),
                             GoblinsGoblins.getInstance(getContext()).getJobById(1),
                             5), tile.getX(), tile.getY());
+
+            Log.d(TAG, "onDmTileClicked: X - " + tile.getX() + " Y - " + tile.getY());
         }
     }
 
@@ -143,6 +152,6 @@ public class MapPageFragment extends Fragment implements OnTileClickedListener {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnMapInteractionListener {
-        void onMapSaved();
+        void onMapSaved(Map map);
     }
 }

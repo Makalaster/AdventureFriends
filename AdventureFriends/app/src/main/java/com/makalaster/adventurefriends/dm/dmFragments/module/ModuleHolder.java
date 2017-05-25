@@ -8,6 +8,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.makalaster.adventurefriends.model.Note;
 import com.makalaster.adventurefriends.model.campaign.Module;
 import com.makalaster.adventurefriends.model.character.NonPlayerCharacter;
+import com.makalaster.adventurefriends.model.map.Map;
 
 import java.util.HashMap;
 
@@ -18,6 +19,7 @@ import java.util.HashMap;
 public class ModuleHolder {
     private static ModuleHolder sInstance;
     private Module mModule;
+    private Map mMap;
     private HashMap<String, Note> mNotes;
     private HashMap<String, NonPlayerCharacter> mNPCs;
 
@@ -25,6 +27,7 @@ public class ModuleHolder {
         mModule = new Module();
         mNotes = new HashMap<>();
         mNPCs = new HashMap<>();
+        mMap = new Map();
     }
 
     public static ModuleHolder getInstance() {
@@ -42,6 +45,7 @@ public class ModuleHolder {
                 mModule = dataSnapshot.getValue(Module.class);
                 mNotes = mModule.getNotes();
                 mNPCs = mModule.getNPCs();
+                mMap = mModule.getMap();
             }
 
             @Override
@@ -81,5 +85,13 @@ public class ModuleHolder {
             mNPCs = new HashMap<>();
         }
         mNPCs.put(NPCId, nonPlayerCharacter);
+    }
+
+    public Map getMap() {
+        return mMap;
+    }
+
+    public void setMap(Map map) {
+        mMap = map;
     }
 }
