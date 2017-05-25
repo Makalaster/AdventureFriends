@@ -8,6 +8,7 @@ import com.makalaster.adventurefriends.model.character.components.Size;
 import com.makalaster.adventurefriends.model.character.components.item.Defense;
 import com.makalaster.adventurefriends.model.character.components.item.Item;
 import com.makalaster.adventurefriends.model.character.components.item.Weapon;
+import com.makalaster.adventurefriends.model.map.Tile;
 
 import java.util.Map;
 
@@ -21,6 +22,7 @@ public class PlayerCharacter extends NonPlayerCharacter {
 
     private int mCurrentXP, mXPtoNext;
     private String mOwnerId;
+    private Tile mCurrentLocation;
 
     public PlayerCharacter() {
     }
@@ -28,6 +30,7 @@ public class PlayerCharacter extends NonPlayerCharacter {
     public PlayerCharacter(String name, String id, Size size, Job job, String ownerId, Context context) {
         super(name, id, STARTING_LEVEL, size, job, STARTING_MONEY);
 
+        mCurrentLocation = null;
         mOwnerId = ownerId;
         mCurrentXP = 0;
         mXPtoNext = 100;
@@ -114,5 +117,13 @@ public class PlayerCharacter extends NonPlayerCharacter {
     public void levelUp() {
         int level = getLevel();
         setLevel(level + 1);
+    }
+
+    public Tile getCurrentLocation() {
+        return mCurrentLocation;
+    }
+
+    public void setCurrentLocation(Tile currentLocation) {
+        mCurrentLocation = currentLocation;
     }
 }

@@ -78,17 +78,7 @@ public class MapPageFragment extends Fragment implements OnTileClickedListener {
         final MapView mapView = (MapView) view.findViewById(R.id.dm_map);
         mapView.setTileClickedListener(this);
         mMap = new Map();
-        /*map.addNonPlayer(
-                new NonPlayerCharacter("Jimmy", "1234", 5,
-                        GoblinsGoblins.getInstance(view.getContext()).getSizeById(1),
-                        GoblinsGoblins.getInstance(view.getContext()).getJobById(1),
-                        5), 2, 2);
-        map.addPlayer(
-                new PlayerCharacter("Other Jimmy", "5678",
-                        GoblinsGoblins.getInstance(view.getContext()).getSizeById(3),
-                        GoblinsGoblins.getInstance(view.getContext()).getJobById(3),
-                        "abcd", view.getContext()), 6, 8
-        );*/
+
         mapView.setMap(mMap);
 
         FloatingActionButton updateMapFab = (FloatingActionButton) view.findViewById(R.id.update_map_fab);
@@ -101,6 +91,7 @@ public class MapPageFragment extends Fragment implements OnTileClickedListener {
                 } else {
                     mapView.setEditMode(false);
                     Toast.makeText(v.getContext(), "Map saved", Toast.LENGTH_SHORT).show();
+                    mListener.onMapSaved();
                 }
             }
         });
@@ -152,6 +143,6 @@ public class MapPageFragment extends Fragment implements OnTileClickedListener {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnMapInteractionListener {
-        void onMapSaved(Uri uri);
+        void onMapSaved();
     }
 }

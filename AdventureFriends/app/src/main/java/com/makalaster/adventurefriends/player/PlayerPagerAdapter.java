@@ -35,7 +35,7 @@ public class PlayerPagerAdapter extends FragmentPagerAdapter {
             case 4:
                 return NotesPageFragment.newInstance();
             case 5:
-                return MapPageFragment.newInstance("", "");
+                return MapPageFragment.newInstance();
             default:
                 return null;
         }

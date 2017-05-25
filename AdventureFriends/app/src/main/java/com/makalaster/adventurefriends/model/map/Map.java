@@ -57,7 +57,15 @@ public class Map {
 
         currentTile.setContainsPlayer(true);
         currentTile.setPlayer(playerCharacter);
+    }
 
+    public void removePlayer(int x, int y) {
+        Tile currentTile = getTile(x, y);
+
+        if (currentTile.containsPlayer()) {
+            currentTile.setContainsPlayer(false);
+            currentTile.setPlayer(null);
+        }
     }
 
     public Tile getTile(int x, int y){

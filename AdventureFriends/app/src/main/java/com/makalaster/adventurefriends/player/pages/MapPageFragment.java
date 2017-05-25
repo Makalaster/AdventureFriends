@@ -3,12 +3,19 @@ package com.makalaster.adventurefriends.player.pages;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.makalaster.adventurefriends.R;
+import com.makalaster.adventurefriends.model.character.PlayerCharacter;
+import com.makalaster.adventurefriends.model.map.Map;
+import com.makalaster.adventurefriends.model.map.MapView;
+import com.makalaster.adventurefriends.model.map.OnTileClickedListener;
+import com.makalaster.adventurefriends.model.map.Tile;
+import com.makalaster.adventurefriends.player.PlayerCharacterHolder;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -18,17 +25,9 @@ import com.makalaster.adventurefriends.R;
  * Use the {@link MapPageFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MapPageFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
+public class MapPageFragment extends Fragment implements OnTileClickedListener {
     private OnFragmentInteractionListener mListener;
+    private Map mMap;
 
     public MapPageFragment() {
         // Required empty public constructor
@@ -38,27 +37,14 @@ public class MapPageFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
      * @return A new instance of fragment MapPageFragment.
      */
-    // TODO: Rename and change types and number of parameters
-    public static MapPageFragment newInstance(String param1, String param2) {
+    public static MapPageFragment newInstance() {
         MapPageFragment fragment = new MapPageFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+
         fragment.setArguments(args);
         return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
@@ -68,11 +54,15 @@ public class MapPageFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_map_page2, container, false);
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        MapView mapView = (MapView) view.findViewById(R.id.player_map);
+        mapView.setTileClickedListener(this);
+        mMap = new Map();
+
+        mapView.setMap(mMap);
     }
 
     @Override
@@ -90,6 +80,29 @@ public class MapPageFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void onDmTileClicked(Tile tile) {
+
+    }
+
+    @Override
+    public void onPlayerTileClicked(Tile tile) {
+        PlayerCharacter me = PlayerCharacterHolder.getInstance().getPlayerCharacter();
+
+        if (tile.containsNonPlayer()) {
+            me.attackWithWeapon(tile.getNonPlayer());
+        } else {
+            if (me.getCurrentLocation() == null) {
+                mMap.addPlayer(me, tile.getX(), tile.getY());
+                me.setCurrentLocation(tile);
+            } else {
+                mMap.removePlayer(me.getCurrentLocation().getX(), me.getCurrentLocation().getY());
+                mMap.addPlayer(me, tile.getX(), tile.getY());
+                me.setCurrentLocation(tile);
+            }
+        }
     }
 
     /**
