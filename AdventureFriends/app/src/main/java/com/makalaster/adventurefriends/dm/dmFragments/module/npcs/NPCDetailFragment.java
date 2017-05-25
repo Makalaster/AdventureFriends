@@ -1,6 +1,7 @@
 package com.makalaster.adventurefriends.dm.dmFragments.module.npcs;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,6 +14,8 @@ import android.widget.TextView;
 import com.makalaster.adventurefriends.R;
 import com.makalaster.adventurefriends.dm.dmFragments.module.ModuleHolder;
 import com.makalaster.adventurefriends.model.character.NonPlayerCharacter;
+
+import java.util.Locale;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -63,15 +66,30 @@ public class NPCDetailFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        Resources res = getResources();
+
         NonPlayerCharacter npc = ModuleHolder.getInstance().getNPCById(mNpcId);
         ((TextView) view.findViewById(R.id.npc_name)).setText(npc.getName());
-        ((TextView) view.findViewById(R.id.current_pg)).setText(String.valueOf(npc.getCurrentPG()));
-        ((TextView) view.findViewById(R.id.max_pg)).setText(String.valueOf(npc.getMaxPG()));
-        ((TextView) view.findViewById(R.id.body)).setText(String.valueOf(npc.getBody()));
-        ((TextView) view.findViewById(R.id.mind)).setText(String.valueOf(npc.getMind()));
-        ((TextView) view.findViewById(R.id.essence)).setText(String.valueOf(npc.getEssence()));
-        ((TextView) view.findViewById(R.id.npc_level)).setText(String.valueOf(npc.getLevel()));
-        ((TextView) view.findViewById(R.id.npc_money)).setText(String.valueOf(npc.getMoney()));
+
+        int currentPreciousGoo = npc.getCurrentPG(), maxPreciousGoo = npc.getMaxPG();
+        ((TextView) view.findViewById(R.id.health))
+                .setText(String.format(Locale.ENGLISH, "%d %s %d %s",
+                        currentPreciousGoo, res.getString(R.string.slash),
+                        maxPreciousGoo, res.getString(R.string.precious_goo)));
+
+        int body = npc.getBody(), mind = npc.getMind(), essence = npc.getEssence();
+        ((TextView) view.findViewById(R.id.stats))
+                .setText(String.format(Locale.ENGLISH, "%s %d %s %d %s %d",
+                        res.getString(R.string.body_label), body,
+                        res.getString(R.string.mind_label), mind,
+                        res.getString(R.string.essence_label), essence));
+
+        int level = npc.getLevel(), money = npc.getMoney();
+        ((TextView) view.findViewById(R.id.level_and_money))
+                .setText(String.format(Locale.ENGLISH, "%s %d %s %d %s",
+                        res.getString(R.string.level_label), level,
+                        res.getString(R.string.money_label), money,
+                        res.getString(R.string.pearls)));
     }
 
     //TODO maintain npc (equipment, abilities...)
