@@ -21,6 +21,11 @@ import com.makalaster.adventurefriends.dm.dmFragments.module.moduleItemRecyclerV
 import com.makalaster.adventurefriends.model.Note;
 
 /**
+ * Displays a list of all of the notes associated with a module.
+ * The note titles are displayed in a FireBaseRecyclerAdapter.
+ * Includes a FloatingActionButton to add a new note.
+ * Tapping a note opens its detail page.
+ *
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
  * {@link NoteListener} interface

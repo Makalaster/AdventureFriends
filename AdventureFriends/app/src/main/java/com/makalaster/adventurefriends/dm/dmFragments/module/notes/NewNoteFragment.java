@@ -12,6 +12,8 @@ import android.widget.EditText;
 import com.makalaster.adventurefriends.R;
 
 /**
+ * Fragment for creating a new note in a module.
+ *
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
  * {@link OnCreateNoteListener} interface
@@ -60,11 +62,12 @@ public class NewNoteFragment extends Fragment {
                 String title = titleEditText.getText().toString().trim();
                 String body = bodyEditText.getText().toString().trim();
 
+                // Neither the title nor body of a note can be empty.
                 if (title.isEmpty()) {
-                    titleEditText.setError("Please enter a title");
+                    titleEditText.setError(getString(R.string.note_title_error));
                     titleEditText.requestFocus();
                 } else if (body.isEmpty()) {
-                    bodyEditText.setError("Please enter a body");
+                    bodyEditText.setError(getString(R.string.note_body_error));
                     bodyEditText.requestFocus();
                 } else {
                     mListener.onCreateNote(title, body);

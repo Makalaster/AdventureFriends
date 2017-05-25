@@ -1,7 +1,5 @@
 package com.makalaster.adventurefriends.dm.dmFragments.module;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -14,6 +12,8 @@ import android.view.ViewGroup;
 import com.makalaster.adventurefriends.R;
 
 /**
+ * Holds the viewpager for a module's detail pages.
+ *
  * A simple {@link Fragment} subclass.
  * Use the {@link ModulePagerFragment#newInstance} factory method to
  * create an instance of this fragment.
@@ -49,6 +49,7 @@ public class ModulePagerFragment extends Fragment {
         if (getArguments() != null) {
             mModuleId = getArguments().getString(ARG_MODULE_ID);
         }
+        setRetainInstance(true);
     }
 
     @Override

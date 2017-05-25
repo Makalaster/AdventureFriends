@@ -24,7 +24,7 @@ import java.util.Locale;
  */
 public class NPCDetailFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_NPC_ID = "param1";
+    private static final String ARG_NPC_ID = "npc_id";
 
     private String mNpcId;
 
@@ -66,30 +66,28 @@ public class NPCDetailFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        Resources res = getResources();
-
         NonPlayerCharacter npc = ModuleHolder.getInstance().getNPCById(mNpcId);
         ((TextView) view.findViewById(R.id.npc_name)).setText(npc.getName());
 
         int currentPreciousGoo = npc.getCurrentPG(), maxPreciousGoo = npc.getMaxPG();
         ((TextView) view.findViewById(R.id.health))
                 .setText(String.format(Locale.ENGLISH, "%d %s %d %s",
-                        currentPreciousGoo, res.getString(R.string.slash),
-                        maxPreciousGoo, res.getString(R.string.precious_goo)));
+                        currentPreciousGoo, getString(R.string.slash),
+                        maxPreciousGoo, getString(R.string.precious_goo)));
 
         int body = npc.getBody(), mind = npc.getMind(), essence = npc.getEssence();
         ((TextView) view.findViewById(R.id.stats))
                 .setText(String.format(Locale.ENGLISH, "%s %d %s %d %s %d",
-                        res.getString(R.string.body_label), body,
-                        res.getString(R.string.mind_label), mind,
-                        res.getString(R.string.essence_label), essence));
+                        getString(R.string.body_label), body,
+                        getString(R.string.mind_label), mind,
+                        getString(R.string.essence_label), essence));
 
         int level = npc.getLevel(), money = npc.getMoney();
         ((TextView) view.findViewById(R.id.level_and_money))
                 .setText(String.format(Locale.ENGLISH, "%s %d %s %d %s",
-                        res.getString(R.string.level_label), level,
-                        res.getString(R.string.money_label), money,
-                        res.getString(R.string.pearls)));
+                        getString(R.string.level_label), level,
+                        getString(R.string.money_label), money,
+                        getString(R.string.pearls)));
     }
 
     //TODO maintain npc (equipment, abilities...)

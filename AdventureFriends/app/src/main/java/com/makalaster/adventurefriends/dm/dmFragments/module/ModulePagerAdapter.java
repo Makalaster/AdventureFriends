@@ -5,7 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 /**
- * Created by Makalaster on 5/18/17. Adapter for module pager
+ * Pager adapter for the detail fragments of a campaign module.
  */
 
 public class ModulePagerAdapter extends FragmentPagerAdapter {

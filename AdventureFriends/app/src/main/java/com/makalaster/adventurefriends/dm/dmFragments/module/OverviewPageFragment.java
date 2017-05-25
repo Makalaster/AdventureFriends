@@ -7,7 +7,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.makalaster.adventurefriends.R;
@@ -15,6 +14,10 @@ import com.makalaster.adventurefriends.dm.CampaignHolder;
 import com.makalaster.adventurefriends.model.campaign.Module;
 
 /**
+ * Displays base details of a fragment.
+ * The Launch Module button updates the map for the campaign's players.
+ * The Complete Module button clears out the map for the next module.
+ *
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
  * {@link OnLoadModuleListener} interface

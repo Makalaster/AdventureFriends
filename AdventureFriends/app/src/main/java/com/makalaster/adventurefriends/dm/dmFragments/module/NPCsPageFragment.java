@@ -20,6 +20,11 @@ import com.makalaster.adventurefriends.dm.dmFragments.module.moduleItemRecyclerV
 import com.makalaster.adventurefriends.model.character.NonPlayerCharacter;
 
 /**
+ * Display a list of the NPCs in the current module.
+ * NPC names are displayed in a FireBaseRecyclerAdapter.
+ * Includes a FloatingActionButton to add a new NPC.
+ * Tapping an NPC opens its detail view.
+ *
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
  * {@link OnAddNPCListener} interface

@@ -22,6 +22,9 @@ import com.makalaster.adventurefriends.model.map.OnTileClickedListener;
 import com.makalaster.adventurefriends.model.map.Tile;
 
 /**
+ * Displays the current map for a module.
+ * The DM can use this to edit the map and control NPC actions.
+ *
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
  * {@link OnMapInteractionListener} interface
@@ -121,6 +124,10 @@ public class MapPageFragment extends Fragment implements OnTileClickedListener {
         mListener = null;
     }
 
+    /**
+     * When the map is in edit mode, the DM can place or remove NPCs on the map.
+     * @param tile The tile that was clicked on.
+     */
     @Override
     public void onDmTileClicked(Tile tile) {
         if (tile.containsNonPlayer()) {

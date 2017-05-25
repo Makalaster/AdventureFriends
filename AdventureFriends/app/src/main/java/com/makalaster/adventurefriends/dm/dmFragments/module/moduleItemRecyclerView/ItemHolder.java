@@ -7,7 +7,7 @@ import android.widget.TextView;
 import com.makalaster.adventurefriends.R;
 
 /**
- * Created by Makalaster on 5/19/17.
+ * Class to hold a note or NPC in the DM activity.
  */
 
 public class ItemHolder extends RecyclerView.ViewHolder {

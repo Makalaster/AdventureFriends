@@ -15,6 +15,8 @@ import android.widget.Toast;
 import com.makalaster.adventurefriends.R;
 
 /**
+ * Page to create a new module.
+ *
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
  * {@link OnNewModuleCreatedListener} interface
@@ -69,15 +71,19 @@ public class NewModuleFragment extends Fragment {
         });
     }
 
+    /**
+     * Gather details for the new module from the input sources.
+     * Generate errors for missing information
+     */
     private void createModule() {
         String title = mNewModuleTitle.getText().toString().trim();
         String summary = mNewModuleSummary.getText().toString().trim();
 
         if (title.isEmpty()) {
-            mNewModuleTitle.setError("Please enter a title");
+            mNewModuleTitle.setError(getString(R.string.note_title_error));
             mNewModuleTitle.requestFocus();
         } else if (mModuleTypeSpinner.getSelectedItemPosition() == 0) {
-            Toast.makeText(getContext(), "Please select a module type", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), R.string.module_type_error, Toast.LENGTH_SHORT).show();
         } else {
             mListener.onNewModuleCreated(title, summary, mModuleTypeSpinner.getSelectedItemPosition());
         }

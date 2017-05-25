@@ -13,18 +13,19 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.makalaster.adventurefriends.R;
 import com.makalaster.adventurefriends.dm.CampaignHolder;
-import com.makalaster.adventurefriends.dm.moduleRecyclerView.ModuleViewHolder;
+import com.makalaster.adventurefriends.dm.dmFragments.moduleRecyclerView.ModuleViewHolder;
 import com.makalaster.adventurefriends.model.campaign.Campaign;
 import com.makalaster.adventurefriends.model.campaign.Module;
 
 /**
+ * Displays the campaign details and a list of modules in the campaign.
+ * Includes a FloatingActionButton to add new modules.
+ * Tapping a module opens its detail view.
+ *
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
  * {@link OnModuleInteractionListener} interface
@@ -36,9 +37,6 @@ public class ModuleListFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     public static final String ARG_CAMPAIGN_ID = "campaign_id";
 
-    private static final String TAG = "ModuleListFragment";
-
-    private String mCampaignId;
     private DatabaseReference mCurrentCampaignReference;
     private Campaign mCurrentCampaign;
 
@@ -67,10 +65,10 @@ public class ModuleListFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mCampaignId = getArguments().getString(ARG_CAMPAIGN_ID);
+            String campaignId = getArguments().getString(ARG_CAMPAIGN_ID);
             mCurrentCampaign = CampaignHolder.getInstance().getCampaign();
 
-            mCurrentCampaignReference = FirebaseDatabase.getInstance().getReference("campaigns/" + mCampaignId);
+            mCurrentCampaignReference = FirebaseDatabase.getInstance().getReference("campaigns/" + campaignId);
         }
     }
 
@@ -114,6 +112,10 @@ public class ModuleListFragment extends Fragment {
         });
     }
 
+    /**
+     * Convenience method to populate the campaign detail labels after the campaign has fully loaded.
+     * @param view
+     */
     private void populateLabels(View view) {
         ((TextView)view.findViewById(R.id.campaign_title)).setText(mCurrentCampaign.getCampaignName());
         ((TextView)view.findViewById(R.id.campaign_id)).setText(mCurrentCampaign.getCampaignId());

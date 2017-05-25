@@ -16,6 +16,8 @@ import com.makalaster.adventurefriends.dm.dmFragments.module.ModuleHolder;
 import com.makalaster.adventurefriends.model.Note;
 
 /**
+ * Fragment for viewing a note's details and editing its content.
+ *
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
  * {@link OnNoteSavedListener} interface
@@ -84,7 +86,7 @@ public class NoteDetailFragment extends Fragment {
         mSaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mSaveButton.getText().equals("edit")) {
+                if (mSaveButton.getText().equals(getString(R.string.edit))) {
                     switchToEdit();
                 } else {
                     update();
@@ -93,6 +95,9 @@ public class NoteDetailFragment extends Fragment {
         });
     }
 
+    /**
+     * Update the layout to allow the current note to be edited in place.
+     */
     private void switchToEdit() {
         mEditTitle.setText(mTitleText.getText());
         mEditTitle.setVisibility(View.VISIBLE);
@@ -101,7 +106,7 @@ public class NoteDetailFragment extends Fragment {
         mEditBody.setVisibility(View.VISIBLE);
         mBodyText.setVisibility(View.INVISIBLE);
 
-        mSaveButton.setText("save");
+        mSaveButton.setText(R.string.save);
         mCancelButton.setVisibility(View.VISIBLE);
         mCancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -111,23 +116,29 @@ public class NoteDetailFragment extends Fragment {
         });
     }
 
+    /**
+     * Restore the layout to its original state without making any changes.
+     */
     private void revert() {
         mTitleText.setVisibility(View.VISIBLE);
         mEditTitle.setVisibility(View.GONE);
         mBodyText.setVisibility(View.VISIBLE);
         mEditBody.setVisibility(View.GONE);
         mCancelButton.setVisibility(View.GONE);
-        mSaveButton.setText("edit");
+        mSaveButton.setText(R.string.edit);
     }
 
+    /**
+     * Save the changes to the note and restore the layout to its original state with the changes.
+     */
     private void update() {
         String newTitle = mEditTitle.getText().toString().trim();
         String newBody = mEditBody.getText().toString().trim();
         if (newTitle.isEmpty()) {
-            mEditTitle.setError("Please enter a new title or press cancel");
+            mEditTitle.setError(getString(R.string.new_note_title_error));
             mEditTitle.requestFocus();
         } else if (newBody.isEmpty()) {
-            mEditBody.setError("Please enter a new body or press cancel");
+            mEditBody.setError(getString(R.string.new_note_body_error));
             mEditBody.requestFocus();
         } else {
             mTitleText.setText(mEditTitle.getText().toString().trim());
@@ -137,7 +148,7 @@ public class NoteDetailFragment extends Fragment {
             mBodyText.setVisibility(View.VISIBLE);
             mEditBody.setVisibility(View.GONE);
             mCancelButton.setVisibility(View.GONE);
-            mSaveButton.setText("edit");
+            mSaveButton.setText(R.string.edit);
 
             mListener.onSaveNote(mNoteId, newTitle, newBody);
         }

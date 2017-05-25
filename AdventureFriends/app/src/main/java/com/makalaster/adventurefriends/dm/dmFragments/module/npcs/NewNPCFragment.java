@@ -95,6 +95,10 @@ public class NewNPCFragment extends Fragment {
         });
     }
 
+    /**
+     * Get all of the sizes available in the database to populate the size spinner.
+     * @return A list of all available sizes.
+     */
     private ArrayList<String> getSizes() {
         ArrayList<String> sizeNames = new ArrayList<>();
         List<Size> sizes = mGoblinsGoblins.getAllSizes();
@@ -105,6 +109,10 @@ public class NewNPCFragment extends Fragment {
         return sizeNames;
     }
 
+    /**
+     * Get all of the sizes available in the database to populate the job spinner.
+     * @return A list of all available jobs.
+     */
     private ArrayList<String> getJobs() {
         ArrayList<String> jobNames = new ArrayList<>();
         List<Job> jobs = mGoblinsGoblins.getAllJobs();
@@ -115,6 +123,9 @@ public class NewNPCFragment extends Fragment {
         return jobNames;
     }
 
+    /**
+     * Create a new NPC object based on the provided information
+     */
     public void createNPC() {
         String name = mName.getText().toString().trim();
         String levelText = mLevel.getText().toString().trim();
@@ -145,13 +156,13 @@ public class NewNPCFragment extends Fragment {
         }
 
         if (name.isEmpty()) {
-            mName.setError("Please enter a name");
+            mName.setError(getString(R.string.new_npc_empty_name_error));
             mName.requestFocus();
         } else if (levelText.isEmpty() || Integer.parseInt(levelText) < 1) {
-            mLevel.setError("Please enter a level greater than 0");
+            mLevel.setError(getString(R.string.new_npc_level_error));
             mLevel.requestFocus();
         } else if (moneyText.isEmpty() || Integer.parseInt(moneyText) < 0) {
-            mMoney.setError("Please enter a value for money");
+            mMoney.setError(getString(R.string.new_npc_money_error));
             mMoney.requestFocus();
         } else {
             int level = Integer.parseInt(levelText);

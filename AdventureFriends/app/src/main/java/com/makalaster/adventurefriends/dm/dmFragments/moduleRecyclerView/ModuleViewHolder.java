@@ -1,4 +1,4 @@
-package com.makalaster.adventurefriends.dm.moduleRecyclerView;
+package com.makalaster.adventurefriends.dm.dmFragments.moduleRecyclerView;
 
 import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.view.View;
@@ -7,7 +7,7 @@ import android.widget.TextView;
 import com.makalaster.adventurefriends.R;
 
 /**
- * Created by Makalaster on 5/18/17.
+ * Hold the views for a module item.
  */
 
 public class ModuleViewHolder extends ViewHolder {
