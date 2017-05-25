@@ -30,13 +30,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/name_label"
-                    android:textSize="16sp"/>
+                    android:textSize="@dimen/label_size"/>
 
                 <TextView
                     android:id="@+id/character_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="20sp"/>
+                    android:textSize="@dimen/value_size"/>
 
             </LinearLayout>
 
@@ -49,13 +49,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/size_label"
-                    android:textSize="16sp"/>
+                    android:textSize="@dimen/label_size"/>
 
                 <TextView
                     android:id="@+id/character_size"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="20sp"/>
+                    android:textSize="@dimen/value_size"/>
 
             </LinearLayout>
 
@@ -68,13 +68,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/job_label"
-                    android:textSize="16sp"/>
+                    android:textSize="@dimen/label_size"/>
 
                 <TextView
                     android:id="@+id/character_job"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="20sp"/>
+                    android:textSize="@dimen/value_size"/>
 
             </LinearLayout>
         </RelativeLayout>
@@ -89,31 +89,31 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/health_label"
-            android:textSize="20sp"/>
+            android:textSize="@dimen/label_size"/>
 
         <TextView
             android:id="@+id/current_pg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20sp"/>
+            android:textSize="@dimen/value_size"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/slash"
-            android:textSize="20sp"/>
+            android:textSize="@dimen/label_size"/>
 
         <TextView
             android:id="@+id/max_pg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20sp"/>
+            android:textSize="@dimen/value_size"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/precious_goo"
-            android:textSize="20sp"/>
+            android:textSize="@dimen/label_size"/>
 
     </LinearLayout>
 
@@ -126,37 +126,37 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/level_label"
-            android:textSize="20sp"/>
+            android:textSize="@dimen/label_size"/>
 
         <TextView
             android:id="@+id/current_level"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20sp"/>
+            android:textSize="@dimen/value_size"/>
 
         <TextView
             android:id="@+id/current_xp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20sp"/>
+            android:textSize="@dimen/value_size"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/slash"
-            android:textSize="20sp"/>
+            android:textSize="@dimen/label_size"/>
 
         <TextView
             android:id="@+id/xp_to_next"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20sp"/>
+            android:textSize="@dimen/value_size"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/xp_to_next_level"
-            android:textSize="20sp"/>
+            android:textSize="@dimen/label_size"/>
 
     </LinearLayout>
 
