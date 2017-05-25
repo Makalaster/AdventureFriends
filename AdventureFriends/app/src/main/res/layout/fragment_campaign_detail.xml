@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="8dp"
+    android:padding="@dimen/layout_padding"
     tools:context="com.makalaster.adventurefriends.lobby.lobbyFragments.CampaignDetailFragment">
 
     <TextView
@@ -31,21 +31,21 @@
         android:id="@+id/play_existing_campaign_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="play"/>
+        android:text="@string/play"/>
 
     <Button
         android:id="@+id/view_campaign_logs_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        android:text="view logs"/>
+        android:text="@string/view_logs"/>
 
     <Button
         android:id="@+id/schedule_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        android:text="schedule"/>
+        android:text="@string/schedule"/>
 
 
 </LinearLayout>
