@@ -7,4 +7,9 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="layout_padding">8dp</dimen>
     <dimen name="equipment_top_margin">12dp</dimen>
+    <dimen name="spinner_margin">16dp</dimen>
+    <dimen name="note_body_height">200dp</dimen>
+    <dimen name="npc_input">50dp</dimen>
+    <dimen name="image_size">100dp</dimen>
+    <dimen name="arrow_size">60dp</dimen>
 </resources>

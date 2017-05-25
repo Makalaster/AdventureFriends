@@ -4,7 +4,7 @@
     android:id="@+id/campaign_list_item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="8dp">
+    android:padding="@dimen/layout_padding">
 
     <TextView
         android:id="@+id/campaign_name"
@@ -19,8 +19,8 @@
 
     <ImageView
         android:id="@+id/next_arrow"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="@dimen/arrow_size"
+        android:layout_height="@dimen/arrow_size"
         android:layout_alignParentEnd="true"
         android:background="@drawable/ic_navigate_next_black_24dp"/>
 

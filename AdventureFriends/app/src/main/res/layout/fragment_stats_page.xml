@@ -4,18 +4,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="12dp"
+    android:padding="@dimen/layout_padding"
     tools:context="com.makalaster.adventurefriends.player.pages.StatsPageFragment">
 
-    <!-- TODO extract strings -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/character_image"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="@dimen/image_size"
+            android:layout_height="@dimen/image_size"
             android:background="#819e0d"/>
 
         <RelativeLayout
@@ -30,7 +29,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Name: "
+                    android:text="@string/name_label"
                     android:textSize="16sp"/>
 
                 <TextView
@@ -49,7 +48,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Size: "
+                    android:text="@string/size_label"
                     android:textSize="16sp"/>
 
                 <TextView
@@ -68,7 +67,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Job: "
+                    android:text="@string/job_label"
                     android:textSize="16sp"/>
 
                 <TextView
@@ -89,7 +88,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Health: "
+            android:text="@string/health_label"
             android:textSize="20sp"/>
 
         <TextView
@@ -101,7 +100,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=" / "
+            android:text="@string/slash"
             android:textSize="20sp"/>
 
         <TextView
@@ -113,7 +112,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=" Precious Goo"
+            android:text="@string/precious_goo"
             android:textSize="20sp"/>
 
     </LinearLayout>
@@ -126,7 +125,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Level: "
+            android:text="@string/level_label"
             android:textSize="20sp"/>
 
         <TextView
@@ -144,7 +143,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=" / "
+            android:text="@string/slash"
             android:textSize="20sp"/>
 
         <TextView
@@ -156,7 +155,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=" XP to next level"
+            android:text="@string/xp_to_next_level"
             android:textSize="20sp"/>
 
     </LinearLayout>
@@ -169,7 +168,7 @@
             android:id="@+id/body_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Body: "
+            android:text="@string/body_label"
             android:textSize="16sp"/>
 
         <TextView
@@ -184,7 +183,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/body_label"
-            android:text="Mind: "
+            android:text="@string/mind_label"
             android:textSize="16sp"/>
 
         <TextView
@@ -200,7 +199,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/mind_label"
-            android:text="Essence: "
+            android:text="@string/essence_label"
             android:textSize="16sp"/>
 
         <TextView
@@ -223,7 +222,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toStartOf="@id/speed_value"
-            android:text="Speed: "
+            android:text="@string/speed_label"
             android:textSize="16sp"/>
 
         <TextView
@@ -240,7 +239,7 @@
             android:layout_height="wrap_content"
             android:layout_alignTop="@id/money_value"
             android:layout_toStartOf="@id/money_value"
-            android:text="Money: "
+            android:text="@string/money_label"
             android:textSize="16sp"/>
 
     </RelativeLayout>

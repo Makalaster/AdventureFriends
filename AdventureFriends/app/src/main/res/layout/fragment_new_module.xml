@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp"
+    android:padding="@dimen/layout_padding"
     tools:context="com.makalaster.adventurefriends.dm.dmFragments.NewModuleFragment">
 
     <TextView
@@ -16,8 +16,8 @@
         android:id="@+id/new_module_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textCapWords"
-        android:hint="@string/new_module_title_hint"/>
+        android:hint="@string/new_module_title_hint"
+        android:inputType="textCapWords"/>
 
     <TextView
         android:layout_width="match_parent"
@@ -34,6 +34,8 @@
         android:id="@+id/new_module_type_spinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/spinner_margin"
+        android:layout_marginTop="@dimen/spinner_margin"
         android:entries="@array/module_types"/>
 
     <Button

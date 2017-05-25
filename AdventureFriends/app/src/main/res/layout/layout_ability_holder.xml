@@ -20,7 +20,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=" Level "/>
+            android:text="@string/level"/>
 
         <TextView
             android:id="@+id/ability_level"
@@ -36,7 +36,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Damage: "/>
+            android:text="@string/damage"/>
 
         <TextView
             android:id="@+id/ability_damage"
@@ -47,7 +47,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=" Range: "/>
+            android:text="@string/range"/>
 
         <TextView
             android:id="@+id/ability_range"
@@ -58,7 +58,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=" Check: "/>
+            android:text="@string/check"/>
 
         <TextView
             android:id="@+id/ability_check"
@@ -75,7 +75,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Effects: "/>
+            android:text="@string/effects"/>
 
         <TextView
             android:id="@+id/ability_effects"

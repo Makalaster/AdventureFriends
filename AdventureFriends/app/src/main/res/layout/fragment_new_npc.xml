@@ -4,10 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="12dp"
+    android:padding="@dimen/layout_padding"
     tools:context="com.makalaster.adventurefriends.dm.dmFragments.module.npcs.NewNPCFragment">
 
-    <!-- TODO extract strings -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -15,13 +14,13 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Name:"/>
+            android:text="@string/name_label"/>
 
         <EditText
             android:id="@+id/npc_name_edit_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Name"/>
+            android:hint="@string/name_hint"/>
 
     </LinearLayout>
 
@@ -32,22 +31,22 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Level:"/>
+            android:text="@string/level_label"/>
 
         <EditText
             android:id="@+id/level_edit_text"
-            android:layout_width="50dp"
+            android:layout_width="@dimen/npc_input"
             android:layout_height="wrap_content"
             android:inputType="number"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Money:"/>
+            android:text="@string/money_label"/>
 
         <EditText
             android:id="@+id/money_edit_text"
-            android:layout_width="50dp"
+            android:layout_width="@dimen/npc_input"
             android:layout_height="wrap_content"
             android:inputType="number"/>
 
@@ -56,12 +55,12 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp">
+        android:layout_marginTop="@dimen/spinner_margin">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Size:"/>
+            android:text="@string/size_label"/>
 
         <Spinner
             android:id="@+id/size_spinner"
@@ -73,12 +72,13 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp">
+        android:layout_marginTop="@dimen/spinner_margin"
+        android:layout_marginBottom="@dimen/spinner_margin">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Job:"/>
+            android:text="@string/job_label"/>
 
         <Spinner
             android:id="@+id/job_spinner"
@@ -91,6 +91,6 @@
         android:id="@+id/create_npc_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="create"/>
+        android:text="@string/create"/>
 
 </LinearLayout>

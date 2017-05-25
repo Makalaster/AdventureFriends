@@ -4,10 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="12dp"
+    android:padding="@dimen/layout_padding"
     tools:context="com.makalaster.adventurefriends.dm.dmFragments.module.npcs.NPCDetailFragment">
 
-    <!-- TODO extract strings -->
     <TextView
         android:id="@+id/npc_name"
         android:layout_width="wrap_content"
@@ -25,7 +24,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="/"/>
+            android:text="@string/slash"/>
 
         <TextView
             android:id="@+id/max_pg"
@@ -35,7 +34,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=" Precious Goo"/>
+            android:text="@string/precious_goo"/>
 
     </LinearLayout>
 
@@ -46,7 +45,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Body: "/>
+            android:text="@string/body"/>
 
         <TextView
             android:id="@+id/body"
@@ -56,7 +55,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=" Mind: "/>
+            android:text="@string/mind"/>
 
         <TextView
             android:id="@+id/mind"
@@ -66,14 +65,12 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=" Essence: "/>
+            android:text="@string/essence"/>
 
         <TextView
             android:id="@+id/essence"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
-
-
 
     </LinearLayout>
 
@@ -84,7 +81,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Level: "/>
+            android:text="@string/level"/>
 
         <TextView
             android:id="@+id/npc_level"
@@ -94,7 +91,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=" Money: "/>
+            android:text="@string/money"/>
 
         <TextView
             android:id="@+id/npc_money"
@@ -104,18 +101,18 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=" pearls"/>
+            android:text="@string/pearls"/>
 
     </LinearLayout>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Abilities:"/>
+        android:text="@string/abilities"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Inventory:"/>
+        android:text="@string/inventory"/>
 
 </LinearLayout>

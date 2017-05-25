@@ -4,7 +4,7 @@
     android:id="@+id/npc_or_note_list_item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="16dp">
+    android:padding="@dimen/layout_padding">
 
     <TextView
         android:id="@+id/item_title"
@@ -13,8 +13,8 @@
         android:layout_height="wrap_content"/>
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/arrow_size"
+        android:layout_height="@dimen/arrow_size"
         android:layout_alignParentEnd="true"
         android:background="@drawable/ic_navigate_next_black_24dp"/>
 
