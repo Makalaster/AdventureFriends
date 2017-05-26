@@ -130,7 +130,7 @@ public class DMTest {
             e.printStackTrace();
         }
 
-        ViewInteraction textView = onView(
+        /*ViewInteraction textView = onView(
                 allOf(withId(com.google.android.gms.R.id.title), withText("Choose account for Adventure Friends"),
                         childAtPosition(
                                 childAtPosition(
@@ -138,7 +138,7 @@ public class DMTest {
                                         0),
                                 0),
                         isDisplayed()));
-        textView.check(matches(withText("Choose account for Adventure Friends")));
+        textView.check(matches(withText("Choose account for Adventure Friends")));*/
 
         // Added a sleep statement to match the app's execution delay.
         // The recommended way to handle such scenarios is to use Espresso idling resources:

@@ -223,7 +223,7 @@ public class NonPlayerCharacter {
      * Remove an equipped weapon.
      * @param weapon The weapon to remove.
      */
-    private void remove(Weapon weapon) {
+    public void remove(Weapon weapon) {
         mEquipment.put(WEAPON, null);
         if (weapon.isEquipped()) {
             weapon.setEquipped(false);
@@ -254,7 +254,7 @@ public class NonPlayerCharacter {
      * @param slot The slot from which the item will be removed.
      * @param defense The item to be removed.
      */
-    private void remove(String slot, Defense defense) {
+    public void remove(String slot, Defense defense) {
         mEquipment.put(slot, null);
         if (defense.isEquipped()) {
             defense.setEquipped(false);
