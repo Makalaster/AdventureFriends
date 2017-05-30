@@ -16,6 +16,10 @@ public class User {
     private HashMap<String, Campaign> mCampaigns;
     private HashMap<String, PlayerCharacter> mCharacters;
 
+    public User() {
+
+    }
+
     public User(String id, String name, String email) {
         mId = id;
         mName = name;

@@ -28,11 +28,12 @@ import java.util.Arrays;
  * If a user is already logged in, they are immediately sent to the lobby activity. If not, they are
  * presented with sign-in provider options. Once they are signed in, they are sent to the lobby activity.
  */
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity implements UserHolder.userLoadedListener {
     private static final String TAG = "LoginActivity";
     private static final int AF_SIGN_IN = 1;
 
     private FirebaseAuth mAuth;
+    private UserHolder mUserHolder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,9 +43,12 @@ public class LoginActivity extends AppCompatActivity {
         DBAssetHelper dbSetup = new DBAssetHelper(this);
         dbSetup.getReadableDatabase();
 
+        mUserHolder = UserHolder.getInstance();
+        mUserHolder.setListener(this);
+
         mAuth = FirebaseAuth.getInstance();
         if (mAuth.getCurrentUser() != null) {
-            goToLobby();
+            mUserHolder.LoadCurrentUser(mAuth.getCurrentUser().getUid());
         } else {
             startActivityForResult(
                     AuthUI.getInstance()
@@ -69,7 +73,6 @@ public class LoginActivity extends AppCompatActivity {
 
             if (resultCode == ResultCodes.OK) {
                 checkForUserInDatabaseAndAddIfNotPresent();
-                goToLobby();
             } else {
                 // Sign in failed
                 if (response == null) {
@@ -97,7 +100,9 @@ public class LoginActivity extends AppCompatActivity {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     if (!dataSnapshot.exists()) {
-                        database.child(currentUser.getUid()).setValue(new User(currentUser.getUid(), currentUser.getDisplayName(), currentUser.getEmail()));
+                        User newUser = new User(currentUser.getUid(), currentUser.getDisplayName(), currentUser.getEmail());
+                        database.child(currentUser.getUid()).setValue(newUser);
+                        mUserHolder.LoadCurrentUser(currentUser.getUid());
                     }
                 }
 
@@ -112,5 +117,10 @@ public class LoginActivity extends AppCompatActivity {
     private void goToLobby() {
         startActivity(new Intent(this, LobbyActivity.class));
         finish();
+    }
+
+    @Override
+    public void onUserLoaded() {
+        goToLobby();
     }
 }

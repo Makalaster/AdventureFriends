@@ -21,18 +21,18 @@ import android.widget.Toast;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.makalaster.adventurefriends.LoginActivity;
 import com.makalaster.adventurefriends.R;
+import com.makalaster.adventurefriends.UserHolder;
 import com.makalaster.adventurefriends.dm.CampaignHolder;
 import com.makalaster.adventurefriends.dm.DMActivity;
 import com.makalaster.adventurefriends.dm.dmFragments.ModuleListFragment;
 import com.makalaster.adventurefriends.lobby.lobbyFragments.CampaignDetailFragment;
 import com.makalaster.adventurefriends.lobby.lobbyFragments.CampaignListFragment;
 import com.makalaster.adventurefriends.lobby.lobbyFragments.NewCampaignFragment;
+import com.makalaster.adventurefriends.model.User;
 import com.makalaster.adventurefriends.model.campaign.Campaign;
 import com.makalaster.adventurefriends.player.PlayerActivity;
 
@@ -46,7 +46,7 @@ public class LobbyActivity extends AppCompatActivity
                     NewCampaignFragment.OnCreateNewCampaignListener,
                     CampaignDetailFragment.OnButtonPressedListener {
 
-    private FirebaseAuth mAuth;
+    private UserHolder mUserHolder;
     private FragmentManager mFragmentManager;
 
     @Override
@@ -56,7 +56,7 @@ public class LobbyActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        mAuth = FirebaseAuth.getInstance();
+        mUserHolder = UserHolder.getInstance();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -67,15 +67,11 @@ public class LobbyActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         View hView = navigationView.getHeaderView(0);
 
-        if (mAuth != null) {
-            if (mAuth.getCurrentUser() != null) {
-                FirebaseUser currentUser = mAuth.getCurrentUser();
-                TextView drawerEmail = (TextView) hView.findViewById(R.id.user_email);
-                drawerEmail.setText(currentUser.getEmail());
-                TextView drawerUser = (TextView) hView.findViewById(R.id.user_name);
-                drawerUser.setText(currentUser.getDisplayName());
-            }
-        }
+        User currentUser = mUserHolder.getCurrentUser();
+        TextView drawerEmail = (TextView) hView.findViewById(R.id.user_email);
+        drawerEmail.setText(currentUser.getEmail());
+        TextView drawerUser = (TextView) hView.findViewById(R.id.user_name);
+        drawerUser.setText(currentUser.getName());
 
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -152,6 +148,7 @@ public class LobbyActivity extends AppCompatActivity
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
+                            mUserHolder.clearCurrentUser();
                             startActivity(new Intent(LobbyActivity.this, LoginActivity.class));
                             finish();
                         }
@@ -217,14 +214,14 @@ public class LobbyActivity extends AppCompatActivity
         if (!baseGame.equals("Goblins? Goblins!")) {
             Toast.makeText(this, baseGame + " support coming soon!", Toast.LENGTH_SHORT).show();
         } else {
-            FirebaseUser user = mAuth.getCurrentUser();
+            User user = mUserHolder.getCurrentUser();
             String dmId = null;
             if (user != null) {
-                dmId = user.getUid();
+                dmId = user.getId();
             }
 
             DatabaseReference userReference = FirebaseDatabase.getInstance()
-                    .getReference("users/" + user.getUid() + "/campaigns");
+                    .getReference("users/" + user.getId() + "/campaigns");
 
             DatabaseReference campaignReference = FirebaseDatabase.getInstance().getReference("campaigns");
             DatabaseReference newCampaign = campaignReference.push();
@@ -251,20 +248,19 @@ public class LobbyActivity extends AppCompatActivity
      */
     @Override
     public void onPlayPressed(String dmId, String campaignId) {
-        if (mAuth.getCurrentUser() != null) {
-            if (mAuth.getCurrentUser().getUid().equals(dmId)) {
-                Intent dmIntent = new Intent(this, DMActivity.class);
-                dmIntent.putExtra(ModuleListFragment.ARG_CAMPAIGN_ID, campaignId);
+        if (mUserHolder.getCurrentUser().getId().equals(dmId)) {
+            Intent dmIntent = new Intent(this, DMActivity.class);
+            dmIntent.putExtra(ModuleListFragment.ARG_CAMPAIGN_ID, campaignId);
 
-                startActivity(dmIntent);
-                finish();
-            } else {
-                Intent playerIntent = new Intent(this, PlayerActivity.class);
-                playerIntent.putExtra(ModuleListFragment.ARG_CAMPAIGN_ID, campaignId);
-                CampaignHolder.getInstance().loadCampaign(campaignId);
-                startActivity(playerIntent);
-                finish();
-            }
+            startActivity(dmIntent);
+            finish();
+        } else {
+            Intent playerIntent = new Intent(this, PlayerActivity.class);
+            playerIntent.putExtra(ModuleListFragment.ARG_CAMPAIGN_ID, campaignId);
+            CampaignHolder.getInstance().loadCampaign(campaignId);
+            startActivity(playerIntent);
+            finish();
         }
     }
+
 }
