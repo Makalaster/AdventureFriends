@@ -26,7 +26,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.makalaster.adventurefriends.LoginActivity;
 import com.makalaster.adventurefriends.R;
 import com.makalaster.adventurefriends.UserHolder;
-import com.makalaster.adventurefriends.dm.CampaignHolder;
+import com.makalaster.adventurefriends.model.campaign.CampaignHolder;
 import com.makalaster.adventurefriends.dm.DMActivity;
 import com.makalaster.adventurefriends.dm.dmFragments.ModuleListFragment;
 import com.makalaster.adventurefriends.lobby.lobbyFragments.CampaignDetailFragment;

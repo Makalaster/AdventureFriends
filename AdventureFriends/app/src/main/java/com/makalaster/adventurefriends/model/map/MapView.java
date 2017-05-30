@@ -14,7 +14,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.makalaster.adventurefriends.dm.CampaignHolder;
+import com.makalaster.adventurefriends.model.campaign.CampaignHolder;
 
 import java.util.ArrayList;
 

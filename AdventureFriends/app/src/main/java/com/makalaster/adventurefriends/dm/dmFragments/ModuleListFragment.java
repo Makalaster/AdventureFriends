@@ -16,7 +16,7 @@ import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.makalaster.adventurefriends.R;
-import com.makalaster.adventurefriends.dm.CampaignHolder;
+import com.makalaster.adventurefriends.model.campaign.CampaignHolder;
 import com.makalaster.adventurefriends.dm.dmFragments.moduleRecyclerView.ModuleViewHolder;
 import com.makalaster.adventurefriends.model.campaign.Campaign;
 import com.makalaster.adventurefriends.model.campaign.Module;

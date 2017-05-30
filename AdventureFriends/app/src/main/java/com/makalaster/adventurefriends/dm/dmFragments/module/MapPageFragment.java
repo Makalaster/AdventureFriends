@@ -1,7 +1,6 @@
 package com.makalaster.adventurefriends.dm.dmFragments.module;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -14,8 +13,8 @@ import android.widget.Toast;
 
 import com.makalaster.adventurefriends.R;
 import com.makalaster.adventurefriends.baseGames.GoblinsGoblins;
+import com.makalaster.adventurefriends.model.campaign.ModuleHolder;
 import com.makalaster.adventurefriends.model.character.NonPlayerCharacter;
-import com.makalaster.adventurefriends.model.character.PlayerCharacter;
 import com.makalaster.adventurefriends.model.map.Map;
 import com.makalaster.adventurefriends.model.map.MapView;
 import com.makalaster.adventurefriends.model.map.OnTileClickedListener;

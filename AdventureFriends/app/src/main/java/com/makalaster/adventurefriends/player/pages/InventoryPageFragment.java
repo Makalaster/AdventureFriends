@@ -16,7 +16,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.makalaster.adventurefriends.R;
-import com.makalaster.adventurefriends.dm.CampaignHolder;
+import com.makalaster.adventurefriends.model.campaign.CampaignHolder;
 import com.makalaster.adventurefriends.model.character.components.item.Item;
 import com.makalaster.adventurefriends.player.pages.recyclers.InventoryItemHolder;
 

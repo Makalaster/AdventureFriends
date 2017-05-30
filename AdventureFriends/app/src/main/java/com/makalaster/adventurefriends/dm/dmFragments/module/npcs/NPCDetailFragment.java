@@ -1,8 +1,5 @@
 package com.makalaster.adventurefriends.dm.dmFragments.module.npcs;
 
-import android.content.Context;
-import android.content.res.Resources;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -12,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.makalaster.adventurefriends.R;
-import com.makalaster.adventurefriends.dm.dmFragments.module.ModuleHolder;
+import com.makalaster.adventurefriends.model.campaign.ModuleHolder;
 import com.makalaster.adventurefriends.model.character.NonPlayerCharacter;
 
 import java.util.Locale;

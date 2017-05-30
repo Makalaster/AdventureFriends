@@ -1,4 +1,4 @@
-package com.makalaster.adventurefriends.dm.dmFragments.module;
+package com.makalaster.adventurefriends.model.campaign;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -6,7 +6,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.makalaster.adventurefriends.model.Note;
-import com.makalaster.adventurefriends.model.campaign.Module;
 import com.makalaster.adventurefriends.model.character.NonPlayerCharacter;
 import com.makalaster.adventurefriends.model.map.Map;
 

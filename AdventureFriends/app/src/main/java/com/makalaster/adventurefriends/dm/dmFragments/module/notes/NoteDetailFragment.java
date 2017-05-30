@@ -12,7 +12,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.makalaster.adventurefriends.R;
-import com.makalaster.adventurefriends.dm.dmFragments.module.ModuleHolder;
+import com.makalaster.adventurefriends.model.campaign.ModuleHolder;
 import com.makalaster.adventurefriends.model.Note;
 
 /**

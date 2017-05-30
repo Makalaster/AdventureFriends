@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.makalaster.adventurefriends.R;
-import com.makalaster.adventurefriends.dm.CampaignHolder;
+import com.makalaster.adventurefriends.model.campaign.CampaignHolder;
 import com.makalaster.adventurefriends.model.campaign.Module;
 
 /**
