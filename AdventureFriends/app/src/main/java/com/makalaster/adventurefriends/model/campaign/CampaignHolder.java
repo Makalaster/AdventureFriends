@@ -23,6 +23,7 @@ public class CampaignHolder {
     private HashMap<String, Module> mModules;
     private HashMap<String, PlayerCharacter> mPlayers;
     private Map mCurrentMap;
+    private CampaignLoadedListener mListener;
 
     private static CampaignHolder sInstance;
 
@@ -52,6 +53,8 @@ public class CampaignHolder {
                     mModules = mCampaign.getModules();
                     mPlayers = mCampaign.getPlayers();
                     mCurrentMap = mCampaign.getCurrentMap();
+
+                    mListener.onCampaignLoaded(mCampaignId);
                 }
             }
 
@@ -60,6 +63,10 @@ public class CampaignHolder {
 
             }
         });
+    }
+
+    public void setCampaignLoadedListener(CampaignLoadedListener listener) {
+        mListener = listener;
     }
 
     /**
@@ -168,5 +175,9 @@ public class CampaignHolder {
      */
     public void setCurrentMap(Map currentMap) {
         mCurrentMap = currentMap;
+    }
+
+    public interface CampaignLoadedListener{
+        void onCampaignLoaded(String campaignId);
     }
 }

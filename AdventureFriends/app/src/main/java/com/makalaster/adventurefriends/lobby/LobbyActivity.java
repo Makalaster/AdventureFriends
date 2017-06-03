@@ -44,10 +44,12 @@ public class LobbyActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
                     CampaignListFragment.OnCampaignSelectedListener,
                     NewCampaignFragment.OnCreateNewCampaignListener,
-                    CampaignDetailFragment.OnButtonPressedListener {
+                    CampaignDetailFragment.OnButtonPressedListener,
+                    CampaignHolder.CampaignLoadedListener {
 
     private UserHolder mUserHolder;
     private FragmentManager mFragmentManager;
+    private CampaignHolder mCampaignHolder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +59,8 @@ public class LobbyActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         mUserHolder = UserHolder.getInstance();
+        mCampaignHolder = CampaignHolder.getInstance();
+        mCampaignHolder.setCampaignLoadedListener(this);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -98,7 +102,7 @@ public class LobbyActivity extends AppCompatActivity
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
-            CampaignHolder.getInstance().clearCampaign();
+            mCampaignHolder.clearCampaign();
         }
     }
 
@@ -167,13 +171,7 @@ public class LobbyActivity extends AppCompatActivity
      */
     @Override
     public void onCampaignSelected(String campaignId, String dmId) {
-        CampaignHolder.getInstance().loadCampaign(campaignId);
-
-        Fragment campaignDetailFragment = CampaignDetailFragment.newInstance(campaignId);
-        mFragmentManager.beginTransaction()
-                .addToBackStack(null)
-                .replace(R.id.lobby_fragment_container, campaignDetailFragment, "detail_fragment")
-                .commit();
+        mCampaignHolder.loadCampaign(campaignId);
     }
 
     /**
@@ -257,10 +255,17 @@ public class LobbyActivity extends AppCompatActivity
         } else {
             Intent playerIntent = new Intent(this, PlayerActivity.class);
             playerIntent.putExtra(ModuleListFragment.ARG_CAMPAIGN_ID, campaignId);
-            CampaignHolder.getInstance().loadCampaign(campaignId);
             startActivity(playerIntent);
             finish();
         }
     }
 
+    @Override
+    public void onCampaignLoaded(String campaignId) {
+        Fragment campaignDetailFragment = CampaignDetailFragment.newInstance(campaignId);
+        mFragmentManager.beginTransaction()
+                .addToBackStack(null)
+                .replace(R.id.lobby_fragment_container, campaignDetailFragment, "detail_fragment")
+                .commit();
+    }
 }

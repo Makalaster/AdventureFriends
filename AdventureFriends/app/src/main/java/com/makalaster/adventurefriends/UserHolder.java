@@ -16,7 +16,7 @@ import java.util.HashMap;
  */
 
 public class UserHolder {
-    private userLoadedListener mListener;
+    private UserLoadedListener mListener;
     private DatabaseReference mUserReference;
     private User mCurrentUser;
     private HashMap<String, Campaign> mCampaigns;
@@ -36,7 +36,7 @@ public class UserHolder {
         return sInstance;
     }
 
-    public void setListener(userLoadedListener listener) {
+    public void setListener(UserLoadedListener listener) {
         mListener = listener;
     }
 
@@ -72,7 +72,7 @@ public class UserHolder {
         mUserReference = null;
     }
 
-    public userLoadedListener getListener() {
+    public UserLoadedListener getListener() {
         return mListener;
     }
 
@@ -132,7 +132,7 @@ public class UserHolder {
         sInstance = instance;
     }
 
-    public interface userLoadedListener {
+    public interface UserLoadedListener {
         void onUserLoaded();
     }
 }
