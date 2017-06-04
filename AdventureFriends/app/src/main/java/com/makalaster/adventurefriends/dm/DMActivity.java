@@ -80,7 +80,7 @@ public class DMActivity extends AppCompatActivity
         loadModuleList(mCampaignId);
     }
 
-    //TODO load correct module on rotate
+    //TODO load correct module/page on rotate
     /**
      * Load the list of modules for a campaign.
      * @param id The ID of the current campaign.
