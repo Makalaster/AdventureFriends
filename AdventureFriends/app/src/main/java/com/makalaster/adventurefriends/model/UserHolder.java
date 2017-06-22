@@ -1,11 +1,10 @@
-package com.makalaster.adventurefriends;
+package com.makalaster.adventurefriends.model;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.makalaster.adventurefriends.model.User;
 import com.makalaster.adventurefriends.model.campaign.Campaign;
 import com.makalaster.adventurefriends.model.character.PlayerCharacter;
 
@@ -40,6 +39,10 @@ public class UserHolder {
         mListener = listener;
     }
 
+    /**
+     * Load the currently logged in user into local memory from FireBase.
+     * @param userId The ID of the user to load.
+     */
     public void LoadCurrentUser(String userId) {
         mUserReference = FirebaseDatabase.getInstance().getReference("users/" + userId);
         mUserReference.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -62,6 +65,9 @@ public class UserHolder {
         });
     }
 
+    /**
+     * Clear out the current data for the user holder so it can be refilled without conflict.
+     */
     public void clearCurrentUser() {
         mCurrentUser = null;
         mCampaigns = null;
@@ -132,6 +138,9 @@ public class UserHolder {
         sInstance = instance;
     }
 
+    /**
+     * Interface to listen for when a user has been loaded.
+     */
     public interface UserLoadedListener {
         void onUserLoaded();
     }

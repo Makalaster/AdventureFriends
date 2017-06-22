@@ -1,24 +1,27 @@
-package com.makalaster.adventurefriends.dm.dmFragments.module;
+package com.makalaster.adventurefriends.dm.dmFragments.module.map;
 
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.util.Log;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.makalaster.adventurefriends.R;
-import com.makalaster.adventurefriends.baseGames.GoblinsGoblins;
 import com.makalaster.adventurefriends.model.campaign.ModuleHolder;
 import com.makalaster.adventurefriends.model.character.NonPlayerCharacter;
 import com.makalaster.adventurefriends.model.map.Map;
 import com.makalaster.adventurefriends.model.map.MapView;
 import com.makalaster.adventurefriends.model.map.OnTileClickedListener;
 import com.makalaster.adventurefriends.model.map.Tile;
+
+import java.util.ArrayList;
 
 /**
  * Displays the current map for a module.
@@ -31,13 +34,15 @@ import com.makalaster.adventurefriends.model.map.Tile;
  * Use the {@link MapPageFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MapPageFragment extends Fragment implements OnTileClickedListener {
+public class MapPageFragment extends Fragment implements OnTileClickedListener, UnplacedNonPlayerCharacterRecyclerViewAdapter.OnItemClickListener {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_MODULE_ID = "module_id";
     private static final String TAG = "MapPageFragment";
 
     private String mModuleId;
     private Map mMap;
+    private AlertDialog mDialog;
+    private Tile mTile;
 
     private OnMapInteractionListener mListener;
 
@@ -98,9 +103,9 @@ public class MapPageFragment extends Fragment implements OnTileClickedListener {
                     mapView.setEditMode(true);
                     Toast.makeText(v.getContext(), "Editing", Toast.LENGTH_SHORT).show();
                 } else {
+                    mListener.onMapSaved(mMap);
                     mapView.setEditMode(false);
                     Toast.makeText(v.getContext(), "Map saved", Toast.LENGTH_SHORT).show();
-                    mListener.onMapSaved(mMap);
                 }
             }
         });
@@ -130,22 +135,67 @@ public class MapPageFragment extends Fragment implements OnTileClickedListener {
     @Override
     public void onDmTileClicked(Tile tile) {
         if (tile.containsNonPlayer()) {
+            tile.getNonPlayer().setPlaced(false);
             mMap.removeNonPlayer(tile.getX(), tile.getY());
         } else {
-            mMap.addNonPlayer(
+            mTile = tile;
+            displayNPCDialog();
+            //TODO choose from list of existing NPCs.
+            //TODO only show unplaced NPCs.
+            //TODO tapping placed NPC adds to unplaced list.
+
+            /*mMap.addNonPlayer(
                     new NonPlayerCharacter("Jimmy", "1234", 5,
                             GoblinsGoblins.getInstance(getContext()).getSizeById(1),
                             GoblinsGoblins.getInstance(getContext()).getJobById(1),
                             5), tile.getX(), tile.getY());
-
-            Log.d(TAG, "onDmTileClicked: X - " + tile.getX() + " Y - " + tile.getY());
+            */
         }
+    }
+
+    private void displayNPCDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        View npcListView = LayoutInflater.from(getContext()).inflate(R.layout.layout_unplaced_npcs_dialog, null);
+        builder.setView(npcListView);
+
+        RecyclerView npcList = (RecyclerView) npcListView.findViewById(R.id.unplaced_npc_recycler);
+        npcList.setLayoutManager(new LinearLayoutManager(npcListView.getContext(), LinearLayoutManager.VERTICAL, false));
+        npcList.setAdapter(new UnplacedNonPlayerCharacterRecyclerViewAdapter(getUnplacedNPCs(), this));
+
+        builder.setTitle("Select an NPC to place")
+                .setNegativeButton("Cancel", null);
+
+        mDialog = builder.create();
+        mDialog.show();
+    }
+
+    private ArrayList<NonPlayerCharacter> getUnplacedNPCs() {
+        ModuleHolder moduleHolder = ModuleHolder.getInstance();
+        ArrayList<NonPlayerCharacter> allNPCs = moduleHolder.getNPCs();
+        ArrayList<NonPlayerCharacter> unplaced = new ArrayList<>();
+        for (NonPlayerCharacter npc : allNPCs) {
+            if (!npc.isPlaced()) {
+                unplaced.add(npc);
+            }
+        }
+
+        return unplaced;
     }
 
     //TODO implement controlling non-player characters
     @Override
     public void onPlayerTileClicked(Tile tile) {
 
+    }
+
+    @Override
+    public void placeNPC(String id) {
+        ModuleHolder moduleHolder = ModuleHolder.getInstance();
+        NonPlayerCharacter placedNPC = moduleHolder.getNPCById(id);
+        placedNPC.setPlaced(true);
+        mMap.addNonPlayer(placedNPC, mTile.getX(), mTile.getY());
+
+        mDialog.dismiss();
     }
 
     /**

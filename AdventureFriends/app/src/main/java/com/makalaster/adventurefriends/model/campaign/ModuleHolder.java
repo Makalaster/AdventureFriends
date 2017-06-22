@@ -9,6 +9,7 @@ import com.makalaster.adventurefriends.model.Note;
 import com.makalaster.adventurefriends.model.character.NonPlayerCharacter;
 import com.makalaster.adventurefriends.model.map.Map;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -129,6 +130,15 @@ public class ModuleHolder {
         mNPCs.put(NPCId, nonPlayerCharacter);
     }
 
+    public ArrayList<NonPlayerCharacter> getNPCs() {
+        ArrayList<NonPlayerCharacter> npcs = new ArrayList<>();
+        if (!(mNPCs == null)) {
+            npcs.addAll(mNPCs.values());
+        }
+
+        return npcs;
+    }
+
     /**
      * Get the map for the current module.
      * @return The map for the current module.
@@ -143,5 +153,6 @@ public class ModuleHolder {
      */
     public void setMap(Map map) {
         mMap = map;
+        mModule.setMap(map);
     }
 }

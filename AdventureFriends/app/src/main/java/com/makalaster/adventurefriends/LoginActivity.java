@@ -19,6 +19,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.makalaster.adventurefriends.baseGames.DBAssetHelper;
 import com.makalaster.adventurefriends.lobby.LobbyActivity;
 import com.makalaster.adventurefriends.model.User;
+import com.makalaster.adventurefriends.model.UserHolder;
 
 import java.util.Arrays;
 
@@ -114,11 +115,17 @@ public class LoginActivity extends AppCompatActivity implements UserHolder.UserL
         }
     }
 
+    /**
+     * Convenience method to send the user to the lobby activity.
+     */
     private void goToLobby() {
         startActivity(new Intent(this, LobbyActivity.class));
         finish();
     }
 
+    /**
+     * When a user has been loaded, go to the lobby.
+     */
     @Override
     public void onUserLoaded() {
         goToLobby();

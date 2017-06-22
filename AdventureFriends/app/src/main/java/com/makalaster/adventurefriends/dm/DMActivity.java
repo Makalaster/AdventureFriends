@@ -12,13 +12,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.inputmethod.InputMethodManager;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.makalaster.adventurefriends.R;
 import com.makalaster.adventurefriends.dm.dmFragments.ModuleListFragment;
 import com.makalaster.adventurefriends.dm.dmFragments.NewModuleFragment;
-import com.makalaster.adventurefriends.dm.dmFragments.module.MapPageFragment;
+import com.makalaster.adventurefriends.dm.dmFragments.module.map.MapPageFragment;
 import com.makalaster.adventurefriends.model.campaign.CampaignHolder;
 import com.makalaster.adventurefriends.model.campaign.ModuleHolder;
 import com.makalaster.adventurefriends.dm.dmFragments.module.ModulePagerFragment;
@@ -310,6 +311,9 @@ public class DMActivity extends AppCompatActivity
         ModuleHolder.getInstance().addNPC(id, newLocalNonPlayerCharacter);
 
         mFragmentManager.popBackStack();
+
+        InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
     }
 
     /**

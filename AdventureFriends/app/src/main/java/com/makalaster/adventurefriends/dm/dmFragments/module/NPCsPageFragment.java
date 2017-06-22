@@ -82,16 +82,9 @@ public class NPCsPageFragment extends Fragment {
         DatabaseReference npcs = FirebaseDatabase.getInstance().getReference(
                 "campaigns/" + campaignId + "/modules/" + mModuleId + "/npcs");
 
-        FloatingActionButton newNPCFab = (FloatingActionButton) view.findViewById(R.id.new_npc_fab);
-        newNPCFab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.onAddNPC();
-            }
-        });
-
         RecyclerView npcRecycler = (RecyclerView) view.findViewById(R.id.npc_recycler_view);
         npcRecycler.setLayoutManager(new LinearLayoutManager(view.getContext(), LinearLayoutManager.VERTICAL, false));
+
         npcRecycler.setAdapter(new FirebaseRecyclerAdapter<NonPlayerCharacter, ItemHolder>(NonPlayerCharacter.class, R.layout.layout_module_item, ItemHolder.class, npcs) {
             @Override
             protected void populateViewHolder(ItemHolder viewHolder, final NonPlayerCharacter model, int position) {
@@ -102,6 +95,14 @@ public class NPCsPageFragment extends Fragment {
                         mListener.onSelectNPC(model.getId());
                     }
                 });
+            }
+        });
+
+        FloatingActionButton newNPCFab = (FloatingActionButton) view.findViewById(R.id.new_npc_fab);
+        newNPCFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListener.onAddNPC();
             }
         });
     }

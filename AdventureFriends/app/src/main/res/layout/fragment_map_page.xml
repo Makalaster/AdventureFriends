@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.makalaster.adventurefriends.dm.dmFragments.module.MapPageFragment">
+    tools:context="com.makalaster.adventurefriends.dm.dmFragments.module.map.MapPageFragment">
 
     <com.makalaster.adventurefriends.model.map.MapView
         android:id="@+id/dm_map"

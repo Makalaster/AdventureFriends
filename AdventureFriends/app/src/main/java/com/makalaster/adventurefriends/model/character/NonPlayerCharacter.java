@@ -29,6 +29,7 @@ public class NonPlayerCharacter {
     private HashMap<String, Item> mEquipment;
     private HashMap<String, Note> mNotes;
     private HashMap<String, Ability> mAbilities;
+    private boolean mIsPlaced;
 
     public NonPlayerCharacter() {
     }
@@ -51,6 +52,7 @@ public class NonPlayerCharacter {
         fillEquipment();
         mNotes = new HashMap<>();
         mAbilities = new HashMap<>();
+        mIsPlaced = false;
     }
 
     public String getId() {
@@ -147,6 +149,14 @@ public class NonPlayerCharacter {
 
     public void setMoney(int money) {
         mMoney = money;
+    }
+
+    public boolean isPlaced() {
+        return mIsPlaced;
+    }
+
+    public void setPlaced(boolean placed) {
+        mIsPlaced = placed;
     }
 
     public HashMap<String, Item> getInventory() {

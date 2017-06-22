@@ -4,6 +4,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import com.makalaster.adventurefriends.dm.dmFragments.module.map.MapPageFragment;
+
 /**
  * Pager adapter for the detail fragments of a campaign module.
  */
