@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,6 +41,7 @@ public class MapPageFragment extends Fragment implements OnTileClickedListener, 
     private static final String TAG = "MapPageFragment";
 
     private String mModuleId;
+    private MapView mMapView;
     private Map mMap;
     private AlertDialog mDialog;
     private Tile mTile;
@@ -84,8 +86,8 @@ public class MapPageFragment extends Fragment implements OnTileClickedListener, 
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        final MapView mapView = (MapView) view.findViewById(R.id.dm_map);
-        mapView.setTileClickedListener(this);
+        mMapView = (MapView) view.findViewById(R.id.dm_map);
+        mMapView.setTileClickedListener(this);
         Map map = ModuleHolder.getInstance().getMap();
         if (map == null) {
             mMap = new Map();
@@ -93,18 +95,18 @@ public class MapPageFragment extends Fragment implements OnTileClickedListener, 
             mMap = map;
         }
 
-        mapView.setMap(mMap);
+        mMapView.setMap(mMap);
 
         FloatingActionButton updateMapFab = (FloatingActionButton) view.findViewById(R.id.update_map_fab);
         updateMapFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!mapView.isEditMode()) {
-                    mapView.setEditMode(true);
+                if (!mMapView.isEditMode()) {
+                    mMapView.setEditMode(true);
                     Toast.makeText(v.getContext(), "Editing", Toast.LENGTH_SHORT).show();
                 } else {
                     mListener.onMapSaved(mMap);
-                    mapView.setEditMode(false);
+                    mMapView.setEditMode(false);
                     Toast.makeText(v.getContext(), "Map saved", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -135,21 +137,11 @@ public class MapPageFragment extends Fragment implements OnTileClickedListener, 
     @Override
     public void onDmTileClicked(Tile tile) {
         if (tile.containsNonPlayer()) {
-            tile.getNonPlayer().setPlaced(false);
+            ModuleHolder.getInstance().setNPCPlaced(tile.getNonPlayer().getId(), false);
             mMap.removeNonPlayer(tile.getX(), tile.getY());
         } else {
             mTile = tile;
             displayNPCDialog();
-            //TODO choose from list of existing NPCs.
-            //TODO only show unplaced NPCs.
-            //TODO tapping placed NPC adds to unplaced list.
-
-            /*mMap.addNonPlayer(
-                    new NonPlayerCharacter("Jimmy", "1234", 5,
-                            GoblinsGoblins.getInstance(getContext()).getSizeById(1),
-                            GoblinsGoblins.getInstance(getContext()).getJobById(1),
-                            5), tile.getX(), tile.getY());
-            */
         }
     }
 
@@ -191,9 +183,10 @@ public class MapPageFragment extends Fragment implements OnTileClickedListener, 
     @Override
     public void placeNPC(String id) {
         ModuleHolder moduleHolder = ModuleHolder.getInstance();
-        NonPlayerCharacter placedNPC = moduleHolder.getNPCById(id);
-        placedNPC.setPlaced(true);
-        mMap.addNonPlayer(placedNPC, mTile.getX(), mTile.getY());
+        moduleHolder.setNPCPlaced(id, true);
+        mMap.addNonPlayer(moduleHolder.getNPCById(id), mTile.getX(), mTile.getY());
+
+        mMapView.invalidate();
 
         mDialog.dismiss();
     }

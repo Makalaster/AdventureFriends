@@ -195,7 +195,7 @@ public class MapView extends View {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Map newMap = dataSnapshot.getValue(Map.class);
-                if (newMap != null) {
+                if (newMap != null && newMap.isLaunched()) {
                     mMap.setTiles(newMap.getTiles());
                     invalidate();
                 }

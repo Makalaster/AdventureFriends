@@ -10,7 +10,6 @@ import com.makalaster.adventurefriends.model.character.NonPlayerCharacter;
 import com.makalaster.adventurefriends.model.map.Map;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * Class to hold the current module. Allows for local caching and reduces calls to FireBase database.
@@ -22,15 +21,10 @@ import java.util.HashMap;
 public class ModuleHolder {
     private static ModuleHolder sInstance;
     private Module mModule;
-    private Map mMap;
-    private HashMap<String, Note> mNotes;
-    private HashMap<String, NonPlayerCharacter> mNPCs;
+    private DatabaseReference mModuleReference;
 
     private ModuleHolder() {
         mModule = new Module();
-        mNotes = new HashMap<>();
-        mNPCs = new HashMap<>();
-        mMap = new Map();
     }
 
     public static ModuleHolder getInstance() {
@@ -46,14 +40,11 @@ public class ModuleHolder {
      * @param moduleId The ID of the current module.
      */
     public void loadModule(String campaignId, String moduleId) {
-        DatabaseReference module = FirebaseDatabase.getInstance().getReference("campaigns/" + campaignId + "/modules/" + moduleId);
-        module.addListenerForSingleValueEvent(new ValueEventListener() {
+        mModuleReference = FirebaseDatabase.getInstance().getReference("campaigns/" + campaignId + "/modules/" + moduleId);
+        mModuleReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 mModule = dataSnapshot.getValue(Module.class);
-                mNotes = mModule.getNotes();
-                mNPCs = mModule.getNPCs();
-                mMap = mModule.getMap();
             }
 
             @Override
@@ -68,16 +59,13 @@ public class ModuleHolder {
      */
     public void clearModule() {
         mModule = null;
-        mNotes = null;
-        mNPCs = null;
-        mMap = null;
     }
 
     /**
      * Remove all data from the current map.
      */
     public void clearMap() {
-        mMap.clearTiles();
+        mModule.getMap().clearTiles();
     }
 
     /**
@@ -94,7 +82,7 @@ public class ModuleHolder {
      * @return The note associated with the given ID.
      */
     public Note getNoteById(String noteId) {
-        return mNotes.get(noteId);
+        return mModule.getNotes().get(noteId);
     }
 
     /**
@@ -103,10 +91,7 @@ public class ModuleHolder {
      * @param note The note to be added.
      */
     public void addNote(String noteId, Note note) {
-        if (mNotes == null) {
-            mNotes = new HashMap<>();
-        }
-        mNotes.put(noteId, note);
+        mModule.addNote(noteId, note);
     }
 
     /**
@@ -115,7 +100,7 @@ public class ModuleHolder {
      * @return The NPC associated with the given ID.
      */
     public NonPlayerCharacter getNPCById(String NPCId) {
-        return mNPCs.get(NPCId);
+        return mModule.getNPCs().get(NPCId);
     }
 
     /**
@@ -124,17 +109,17 @@ public class ModuleHolder {
      * @param nonPlayerCharacter The NPC that was created.
      */
     public void addNPC(String NPCId, NonPlayerCharacter nonPlayerCharacter) {
-        if (mNPCs == null) {
-            mNPCs = new HashMap<>();
-        }
-        mNPCs.put(NPCId, nonPlayerCharacter);
+        mModule.addNPC(NPCId, nonPlayerCharacter);
+    }
+
+    public void setNPCPlaced(String id, boolean placed) {
+        getNPCById(id).setPlaced(placed);
+        mModuleReference.child("npcs").child(id).child("placed").setValue(placed);
     }
 
     public ArrayList<NonPlayerCharacter> getNPCs() {
         ArrayList<NonPlayerCharacter> npcs = new ArrayList<>();
-        if (!(mNPCs == null)) {
-            npcs.addAll(mNPCs.values());
-        }
+        npcs.addAll(mModule.getNPCs().values());
 
         return npcs;
     }
@@ -144,7 +129,7 @@ public class ModuleHolder {
      * @return The map for the current module.
      */
     public Map getMap() {
-        return mMap;
+        return mModule.getMap();
     }
 
     /**
@@ -152,7 +137,6 @@ public class ModuleHolder {
      * @param map The new map for the module.
      */
     public void setMap(Map map) {
-        mMap = map;
         mModule.setMap(map);
     }
 }

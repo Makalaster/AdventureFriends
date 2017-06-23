@@ -67,6 +67,9 @@ public class Module {
     }
 
     public void addNote(String id, Note note) {
+        if (mNotes == null) {
+            mNotes = new HashMap<>();
+        }
         mNotes.put(id, note);
     }
 
@@ -79,6 +82,9 @@ public class Module {
     }
 
     public void addNPC(String id, NonPlayerCharacter nonPlayerCharacter) {
+        if (mNPCs == null) {
+            mNPCs = new HashMap<>();
+        }
         mNPCs.put(id, nonPlayerCharacter);
     }
 
@@ -91,7 +97,6 @@ public class Module {
     }
 
     public static int getModuleBattle() {
-
         return MODULE_BATTLE;
     }
 

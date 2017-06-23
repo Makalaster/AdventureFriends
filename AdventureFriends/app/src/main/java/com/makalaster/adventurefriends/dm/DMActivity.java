@@ -270,11 +270,11 @@ public class DMActivity extends AppCompatActivity
      */
     @Override
     public void onMapSaved(Map map) {
-        Module module = ModuleHolder.getInstance().getModule();
+        ModuleHolder module = ModuleHolder.getInstance();
         module.setMap(map);
 
         DatabaseReference mapReference = FirebaseDatabase.getInstance()
-                .getReference("campaigns/" + mCampaignId + "/modules/" + module.getId() + "/map");
+                .getReference("campaigns/" + mCampaignId + "/modules/" + module.getModule().getId() + "/map");
 
         mapReference.setValue(map);
     }
